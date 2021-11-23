@@ -36,7 +36,7 @@
         "url": "/support"
       },
       {
-        "text": "Brand Assets / Logos",
+        "text": "Brand Assets",
         "url": "/brand-assets"
       },
       {
@@ -48,8 +48,16 @@
         "url": "https://status.supabase.com/"
       },
       {
-        "text": "Terms of service",
+        "text": "Privacy Policy",
+        "url": "/docs/company/privacy"
+      },
+      {
+        "text": "Terms of Service",
         "url": "/docs/company/terms"
+      },
+      {
+        "text": "DPA",
+        "url": "/legal/dpa"
       }
     ]
   },
