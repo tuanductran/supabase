@@ -63,7 +63,7 @@ const DPA = () => {
                 </Text>
 
                 <Text type="secondary">
-                  <p>Data Processing Addendum last updated 23rd november 2021</p>
+                  <p>Data Processing Addendum last updated 23rd November 2021</p>
                 </Text>
 
                 <Text>
@@ -72,7 +72,10 @@ const DPA = () => {
                     only use this email to notify you of when it is updated. This email will never
                     be used for marketing purposes. For more information on how we treat personal
                     information, please refer to our{' '}
-                    <Link href="/docs/company/privacy">Privacy Policy</Link>.
+                    <Link href="/docs/company/privacy">
+                      <a className="underline cursor-pointer">Privacy Policy</a>
+                    </Link>
+                    .
                   </p>
                 </Text>
 
