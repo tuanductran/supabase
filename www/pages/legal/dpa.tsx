@@ -88,7 +88,7 @@ const DPA = () => {
                       onChange={(e) => setEmail(e.target.value)}
                       type="email"
                       required
-                      descriptionText="We only keep a record of your email so we can update you when the document has been updated."
+                      label="Enter your email to receive updates when this document is updated."
                       placeholder="Your email address"
                       error={error}
                       actions={
