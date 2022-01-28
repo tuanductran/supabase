@@ -7,7 +7,7 @@ import { useRef, useState, useEffect } from 'react'
 import { debounce, isUndefined, values } from 'lodash'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Button, Typography, Listbox, IconUsers, IconAlertCircle } from '@supabase/ui'
+import { Button, Typography, Listbox, IconUsers, IconAlertCircle, Input } from '@supabase/ui'
 
 import { API_URL } from 'lib/constants'
 import { post } from 'lib/common/fetch'
@@ -74,14 +74,14 @@ export const Wizard = observer(() => {
   const currentOrg = organizations.find((o: any) => o.slug === slug)
   const stripeCustomerId = currentOrg?.stripe_customer_id
 
-  const totalFreeProjects = ui.profile?.total_free_projects ?? 0
-  const freeProjectsLimit = ui.profile?.free_project_limit ?? DEFAULT_FREE_PROJECTS_LIMIT
+  const totalFreeProjects = 600 // ui.profile?.total_free_projects ?? 0
+  const freeProjectsLimit = 600 // ui.profile?.free_project_limit ?? DEFAULT_FREE_PROJECTS_LIMIT
 
   const isEmptyOrganizations = organizations.length <= 0
   const isEmptyPaymentMethod = stripeCustomer
     ? stripeCustomer.paymentMethods?.data?.length <= 0
     : undefined
-  const isOverFreeProjectLimit = totalFreeProjects >= freeProjectsLimit
+  const isOverFreeProjectLimit = false // totalFreeProjects >= freeProjectsLimit
   const isInvalidSlug = isUndefined(currentOrg)
   const isSelectFreeTier = dbPricingPlan === PRICING_PLANS.FREE
 
@@ -147,8 +147,8 @@ export const Wizard = observer(() => {
     } else delayedCheckPasswordStrength(value)
   }
 
-  function onDbRegionChange(e: any) {
-    setDbRegion(e.target.value)
+  function onDbRegionChange(value: string) {
+    setDbRegion(value)
   }
 
   function onDbPricingPlanChange(value: string) {
@@ -192,9 +192,7 @@ export const Wizard = observer(() => {
         hideHeaderStyling
         title={
           <div key="panel-title">
-            <Typography.Title level={4} className="mb-0">
-              Create a new project
-            </Typography.Title>
+            <h3>Create a new project</h3>
           </div>
         }
         footer={
@@ -202,10 +200,8 @@ export const Wizard = observer(() => {
             <Button type="default" onClick={() => Router.push('/')}>
               Cancel
             </Button>
-            <div className="space-x-3">
-              <Typography.Text type="secondary" small>
-                You can rename your project later
-              </Typography.Text>
+            <div className="space-x-3 items-center">
+              <span className="text-scale-900 text-xs">You can rename your project later</span>
               <Button
                 onClick={onClickNext}
                 loading={newProjectedLoading}
@@ -219,12 +215,12 @@ export const Wizard = observer(() => {
       >
         <>
           <Panel.Content className="pt-0 pb-6">
-            <Typography.Text>
+            <p className="text-scale-900 text-sm">
               Your project will have its own dedicated instance and full postgres database.
               <br />
               An API will be set up so you can easily interact with your new database.
               <br />
-            </Typography.Text>
+            </p>
           </Panel.Content>
           <Panel.Content className="Form section-block--body has-inputs-centered border-b border-t border-panel-border-interior-light dark:border-panel-border-interior-dark space-y-4">
             <Listbox
@@ -251,8 +247,8 @@ export const Wizard = observer(() => {
           {canCreateProject && (
             <>
               <Panel.Content className="Form section-block--body has-inputs-centered border-b border-t border-panel-border-interior-light dark:border-panel-border-interior-dark">
-                <FormField
-                  // @ts-ignore
+                <Input
+                  layout="horizontal"
                   label="Name"
                   type="text"
                   placeholder="Project name"
@@ -263,34 +259,43 @@ export const Wizard = observer(() => {
               </Panel.Content>
 
               <Panel.Content className="Form section-block--body has-inputs-centered border-b border-panel-border-interior-light dark:border-panel-border-interior-dark">
-                <FormField
-                  // @ts-ignore
+                <Input
+                  layout="horizontal"
                   label="Database Password"
                   type="password"
                   placeholder="Type in a strong password"
                   value={dbPass}
                   onChange={onDbPassChange}
-                  description={
+                  descriptionText={
                     <PasswordStrengthBar
                       passwordStrengthScore={passwordStrengthScore}
                       password={dbPass}
                       passwordStrengthMessage={passwordStrengthMessage}
                     />
                   }
-                  errorMessage={passwordStrengthWarning}
+                  error={passwordStrengthWarning}
                 />
               </Panel.Content>
 
               <Panel.Content className="Form section-block--body has-inputs-centered border-b border-panel-border-interior-light dark:border-panel-border-interior-dark">
-                <FormField
-                  // @ts-ignore
+                <Listbox
+                  layout="horizontal"
                   label="Region"
                   type="select"
-                  choices={REGIONS}
                   value={dbRegion}
-                  onChange={onDbRegionChange}
-                  description="Select a region close to you for the best performance."
-                />
+                  // @ts-ignore
+                  onChange={(value: string) => onDbRegionChange(value)}
+                  descriptionText="Select a region close to you for the best performance."
+                >
+                  {Object.keys(REGIONS).map((option: string, i) => {
+                    const label = Object.values(REGIONS)[i]
+                    return (
+                      <Listbox.Option key={option} label={label} value={label}>
+                        {label}
+                      </Listbox.Option>
+                    )
+                  })}
+                </Listbox>
               </Panel.Content>
             </>
           )}
@@ -342,8 +347,8 @@ const NotOrganizationOwnerWarning = () => {
         description={
           <div className="space-y-3">
             <p className="text-sm leading-normal">
-              Only the organization owner can create new projects. Contact your organization owner to
-              create a new project for this organization.
+              Only the organization owner can create new projects. Contact your organization owner
+              to create a new project for this organization.
             </p>
           </div>
         }

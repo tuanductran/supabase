@@ -15,49 +15,53 @@ const LayoutHeader = ({ customHeaderComponents, breadcrumbs = [], headerBorder =
   const { selectedOrganization, selectedProject } = ui
 
   return (
-    <div className={`p-2 max-h-12 h-12 ${headerBorder ? 'border-b dark:border-dark' : ''}`}>
-      <div className="PageHeader">
-        <div className="Breadcrumbs flex justify-between">
-          <div className="text-sm flex items-center">
-            {/* Organization is selected */}
-            {selectedOrganization ? (
-              <>
-                {/* Org Dropdown */}
-                <OrgDropdown />
+    <div
+      className={`py-2 px-5 max-h-12 h-12 flex justify-between ${
+        headerBorder ? 'border-b dark:border-dark' : ''
+      }`}
+    >
+      {/* <div className="PageHeader"> */}
+      {/* <div className="flex justify-between"> */}
+      <div className="text-sm flex items-center -ml-2">
+        {/* Organization is selected */}
+        {selectedOrganization ? (
+          <>
+            {/* Org Dropdown */}
+            <OrgDropdown />
 
-                {/* Project is selected */}
-                {selectedProject && (
-                  <>
-                    <Typography.Text className="mx-2 ">
-                      <IconChevronRight size="tiny" strokeWidth={1} />
-                    </Typography.Text>
-                    {/* Project Dropdown */}
-                    <ProjectDropdown />
-                  </>
-                )}
+            {/* Project is selected */}
+            {selectedProject && (
+              <>
+                <Typography.Text className="mx-2 ">
+                  <IconChevronRight size="tiny" strokeWidth={1} />
+                </Typography.Text>
+                {/* Project Dropdown */}
+                <ProjectDropdown />
               </>
-            ) : (
-              <Typography.Text small className="mx-2">
-                <Link href="/">
-                  <a
-                    className={`block px-2 py-1 focus:outline-none focus:bg-transparent cursor-pointer dark:hover:text-white`}
-                  >
-                    Supabase
-                  </a>
-                </Link>
-              </Typography.Text>
             )}
-            {/* Additional breadcrumbs are supplied */}
-            <BreadcrumbsView defaultValue={breadcrumbs} />
-          </div>
-          <div className="flex space-x-2">
-            {customHeaderComponents && customHeaderComponents}
-            {IS_PLATFORM && <HelpPopover />}
-            {IS_PLATFORM && <FeedbackDropdown />}
-          </div>
-        </div>
+          </>
+        ) : (
+          <Typography.Text small className="mx-2">
+            <Link href="/">
+              <a
+                className={`block px-2 py-1 focus:outline-none focus:bg-transparent cursor-pointer dark:hover:text-white`}
+              >
+                Supabase
+              </a>
+            </Link>
+          </Typography.Text>
+        )}
+        {/* Additional breadcrumbs are supplied */}
+        <BreadcrumbsView defaultValue={breadcrumbs} />
+      </div>
+      <div className="flex space-x-2">
+        {customHeaderComponents && customHeaderComponents}
+        {IS_PLATFORM && <HelpPopover />}
+        {IS_PLATFORM && <FeedbackDropdown />}
       </div>
     </div>
+    // </div>
+    // </div>
   )
 }
 export default observer(LayoutHeader)
