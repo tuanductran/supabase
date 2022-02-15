@@ -290,8 +290,18 @@ export const Wizard = observer(() => {
                   {Object.keys(REGIONS).map((option: string, i) => {
                     const label = Object.values(REGIONS)[i]
                     return (
-                      <Listbox.Option key={option} label={label} value={label}>
-                        {label}
+                      <Listbox.Option
+                        key={option}
+                        label={label}
+                        value={label}
+                        addOnBefore={({ active, selected }: any) => (
+                          <img
+                            className="w-5 rounded-sm"
+                            src={`/img/regions/${Object.keys(REGIONS)[i]}.svg`}
+                          />
+                        )}
+                      >
+                        <span className="text-scale-1200">{label}</span>
                       </Listbox.Option>
                     )
                   })}

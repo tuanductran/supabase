@@ -22,24 +22,25 @@ const InformationBox: FC<Props> = ({
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultVisibility)
   return (
-    <div className="block w-full bg-gray-100 dark:bg-gray-600 py-3 border border-gray-600 dark:border-gray-500 border-opacity-20 rounded">
-      <div className="flex flex-col">
-        <div className="flex items-center justify-between px-3">
+    <div className="block w-full bg-scale-100 dark:bg-scale-400 py-3 border border-scale-600 dark:border-scale-500 rounded">
+      <div className="flex flex-col px-4">
+        <div className="flex items-center justify-between">
           <div className="flex space-x-3 w-full lg:items-center">
-            <Typography.Text>{icon}</Typography.Text>
+            <span className="text-scale-900">{icon}</span>
             <div className="flex-grow">
-              <Typography.Text>{title}</Typography.Text>
+              <h5 className="text-sm text-scale-1200">{title}</h5>
             </div>
           </div>
           {description && !hideCollapse ? (
-            <div className="cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
-              <Typography>
-                {isExpanded ? (
-                  <IconMinimize2 size={14} strokeWidth={1.5} />
-                ) : (
-                  <IconMaximize2 size={14} strokeWidth={1.5} />
-                )}
-              </Typography>
+            <div
+              className="cursor-pointer text-scale-900"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? (
+                <IconMinimize2 size={14} strokeWidth={1.5} />
+              ) : (
+                <IconMaximize2 size={14} strokeWidth={1.5} />
+              )}
             </div>
           ) : null}
         </div>
@@ -49,17 +50,16 @@ const InformationBox: FC<Props> = ({
           }`}
           style={{ maxHeight: isExpanded ? 500 : 0 }}
         >
-          <div className="px-3">
-            <Typography.Text type="secondary" small>
-              {description}
-            </Typography.Text>
-          </div>
+          <p className="text-sm text-scale-1100">{description}</p>
+
           {url && (
-            <div className="px-3">
-              <a href={url} target="_blank">
-                <Typography.Text small>{urlLabel}</Typography.Text>
-              </a>
-            </div>
+            <a
+              href={url}
+              target="_blank"
+              className="text-sm transition-colors underline text-scale-1100 hover:text-scale-1200"
+            >
+              {urlLabel}
+            </a>
           )}
         </div>
       </div>

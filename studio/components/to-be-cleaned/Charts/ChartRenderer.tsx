@@ -1,4 +1,4 @@
-import { IconBarChart2, Loading, Typography } from '@supabase/ui'
+import { IconBarChart2, Loading } from '@supabase/ui'
 import { useState } from 'react'
 import {
   BarChart as RechartBarChart,
@@ -85,20 +85,18 @@ const Header = ({
 
   return (
     <>
-      <Typography.Text className="mb-0" type="secondary">
-        {label ?? attribute}
-      </Typography.Text>
-      <Typography.Title level={3} className="mb-0 font-normal">
-        {title}
+      <p className="mb-0 text-scale-900 text-sm">{label ?? attribute}</p>
+      <p className="text-scale-1200">
+        <span className="text-2xl">{title}</span>
         <span className="text-lg">{format}</span>
-      </Typography.Title>
-      <Typography.Text type="secondary" className="opacity-50" small>
+      </p>
+      <p className="text-scale-900 text-xs">
         {focus ? (
           data && data[focus] && dayjs(data[focus].period_start).format(FOCUS_FORMAT)
         ) : (
           <span className="opacity-0">x</span>
         )}
-      </Typography.Text>
+      </p>
     </>
   )
 }
@@ -107,18 +105,15 @@ const NoData = () => (
   <div
     className="
       h-full w-full
-      border border-dashed dark:border-dark
+      border border-dashed border-scale-600
       flex flex-col items-center justify-center
+      space-y-2 text-center
     "
   >
-    <Typography.Text className="mb-2">
-      <IconBarChart2 />
-    </Typography.Text>
-    <Typography.Text>No data to show</Typography.Text>
-    <div className="text-center">
-      <Typography.Text small className="opacity-50">
-        May take 24 hours for data to appear
-      </Typography.Text>
+    <IconBarChart2 className="text-scale-800" />
+    <div>
+      <p className="text-scale-1100 text-xs">No data to show</p>
+      <p className="text-scale-900 text-xs">May take 24 hours for data to show</p>
     </div>
   </div>
 )
@@ -229,17 +224,17 @@ export function BarChart({
               </RechartBarChart>
             </ResponsiveContainer>
             {data && (
-              <div className="flex items-center justify-between -mt-5">
-                <Typography.Text type="secondary" className="opacity-50" small>
+              <div className="text-xs text-scale-900 flex items-center justify-between -mt-5">
+                <span>
                   {dayjs(data[0].period_start).format(
                     customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
                   )}
-                </Typography.Text>
-                <Typography.Text type="secondary" className="opacity-50" small>
+                </span>
+                <span>
                   {dayjs(data[data?.length - 1]?.period_start).format(
                     customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
                   )}
-                </Typography.Text>
+                </span>
               </div>
             )}
           </>
@@ -347,17 +342,17 @@ export function AreaChart({
               </RechartAreaChart>
             </ResponsiveContainer>
             {data && (
-              <div className="flex items-center justify-between -mt-5">
-                <Typography.Text type="secondary" className="opacity-50" small>
+              <div className="text-scale-900 text-xs flex items-center justify-between -mt-5">
+                <span>
                   {dayjs(data[0].period_start).format(
                     customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
                   )}
-                </Typography.Text>
-                <Typography.Text type="secondary" className="opacity-50" small>
+                </span>
+                <span>
                   {dayjs(data[data?.length - 1]?.period_start).format(
                     customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
                   )}
-                </Typography.Text>
+                </span>
               </div>
             )}
           </>
