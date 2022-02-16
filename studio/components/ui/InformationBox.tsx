@@ -9,6 +9,7 @@ interface Props {
   urlLabel?: string
   defaultVisibility?: boolean
   hideCollapse?: boolean
+  button?: React.ReactNode
 }
 
 const InformationBox: FC<Props> = ({
@@ -19,6 +20,7 @@ const InformationBox: FC<Props> = ({
   urlLabel = 'Read more',
   defaultVisibility = false,
   hideCollapse = false,
+  button,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultVisibility)
   return (
@@ -61,6 +63,8 @@ const InformationBox: FC<Props> = ({
               {urlLabel}
             </a>
           )}
+
+          {button && <div>{button}</div>}
         </div>
       </div>
     </div>
