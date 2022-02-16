@@ -19,6 +19,7 @@ import {
   IconX,
   IconLoader,
   IconRefreshCw,
+  Alert,
 } from '@supabase/ui'
 import { PostgresSchema, PostgresTable } from '@supabase/postgres-meta'
 
@@ -94,64 +95,83 @@ const TableEditorMenu: FC<Props> = ({
   const maxScrollHeight = schemaViews.length > 0 ? 270 : 515
 
   return (
-    <div className="my-6 flex flex-col flex-grow">
-      {/* Schema selection dropdown */}
-      <div className="mx-4">
-        {meta.schemas.isLoading ? (
-          <div className="h-[30px] border border-gray-500 px-3 rounded flex items-center space-x-3">
-            <IconLoader className="animate-spin" size={14} />
-            <Typography.Text small>Loading schemas...</Typography.Text>
+    <div className="my-6 mx-4 flex flex-col flex-grow space-y-6">
+      <div className="space-y-3">
+        {/* Schema selection dropdown */}
+        <div className="px-3">
+          {meta.schemas.isLoading ? (
+            <div className="h-[30px] border border-gray-500 px-3 rounded flex items-center space-x-3">
+              <IconLoader className="animate-spin" size={12} />
+              <span className="text-xs text-scale-900">Loading schemas...</span>
+            </div>
+          ) : (
+            <Listbox
+              size="tiny"
+              value={selectedSchema}
+              onChange={(name: string) => {
+                setSearchText('')
+                setSchemaViews([])
+                onSelectSchema(name)
+              }}
+            >
+              {schemas.map((schema) => (
+                <Listbox.Option
+                  key={schema.id}
+                  value={schema.name}
+                  label={
+                    <>
+                      <span className="text-scale-900">schema</span> <span>{schema.name}</span>
+                    </>
+                  }
+                >
+                  <span className="text-scale-900">schema</span>{' '}
+                  <span className="text-scale-1200">{schema.name}</span>
+                </Listbox.Option>
+              ))}
+            </Listbox>
+          )}
+        </div>
+
+        {selectedSchema === 'public' && (
+          <div className="px-3">
+            {/* Add new table button */}
+            <Button
+              block
+              size="tiny"
+              icon={
+                <div className="text-scale-900">
+                  <IconEdit size={14} strokeWidth={1.5} />
+                </div>
+              }
+              type="default"
+              style={{ justifyContent: 'start' }}
+              onClick={onAddTable}
+            >
+              New table
+            </Button>
           </div>
-        ) : (
-          <Listbox
-            icon={<IconDatabase size={16} />}
-            size="tiny"
-            value={selectedSchema}
-            onChange={(name: string) => {
-              setSearchText('')
-              setSchemaViews([])
-              onSelectSchema(name)
-            }}
-          >
-            {schemas.map((schema) => (
-              <Listbox.Option key={schema.id} value={schema.name} label={schema.name}>
-                {schema.name}
-              </Listbox.Option>
-            ))}
-          </Listbox>
         )}
       </div>
 
-      <div className="mx-4 my-4 space-y-1">
-        {/* Add new table button */}
-        {selectedSchema === 'public' && (
-          <Button
-            block
-            icon={<IconPlus />}
-            type="text"
-            style={{ justifyContent: 'start' }}
-            onClick={onAddTable}
-          >
-            New table
-          </Button>
-        )}
-
-        {/* Table search input */}
+      {/* Table search input */}
+      <div className="block mb-2 px-3">
         <Input
-          layout="vertical"
-          icon={<IconSearch size="tiny" />}
-          className="sbui-input-no-border"
-          placeholder="Search for a table"
+          // layout="vertical"
+          className="border-none"
+          icon={
+            <div className="text-scale-900">
+              <IconSearch size={12} strokeWidth={1.5} />
+            </div>
+          }
+          placeholder="Filter tables"
           onChange={(e) => setSearchText(e.target.value)}
           value={searchText}
           size="tiny"
           actions={
             searchText && (
-              <IconX
-                size={'tiny'}
-                className="cursor-pointer mx-1"
-                onClick={() => setSearchText('')}
-              />
+              <Button size="tiny" type="text" onClick={() => setSearchText('')}>
+                <IconX size={12} strokeWidth={2} />
+              </Button>
             )
           }
         />
@@ -159,30 +179,35 @@ const TableEditorMenu: FC<Props> = ({
 
       {/* List of tables belonging to selected schema */}
       {schemaTables.length > 0 && (
-        <div className="mx-2 mt-6 space-y-2">
-          <div className="px-4 w-full flex items-center justify-between">
-            <Typography.Text type="secondary" small>
-              All tables
-            </Typography.Text>
-            <div className="cursor-pointer" onClick={refreshTables}>
-              <Typography.Text type="secondary">
-                <IconRefreshCw className={isRefreshing ? 'animate-spin' : ''} size={14} />
-              </Typography.Text>
-            </div>
-          </div>
-          <div className="overflow-y-auto space-y-1" style={{ maxHeight: maxScrollHeight }}>
+        <Menu type="pills">
+          <Menu.Group
+            // @ts-ignore
+            title={
+              <>
+                <div className="w-full flex items-center justify-between">
+                  <span>All tables</span>
+                  <button className="cursor-pointer" onClick={refreshTables}>
+                    <IconRefreshCw className={isRefreshing ? 'animate-spin' : ''} size={14} />
+                  </button>
+                </div>
+              </>
+            }
+          />
+
+          <div>
             {schemaTables.map((table) => {
               const isActive = Number(id) === table.id
               return (
                 <Link key={table.name} href={`/project/${projectRef}/editor/${table.id}`}>
                   <a className="block editor-product-menu">
                     <Menu.Item rounded active={isActive}>
-                      <div className="flex justify-between py-[2px]">
+                      <div className="flex w-full justify-between py-[2px]">
                         <Typography.Text className="truncate flex items-center">
                           {table.name}
                         </Typography.Text>
                         {isActive && (
                           <Dropdown
+                            size="small"
                             side="bottom"
                             align="start"
                             overlay={[
@@ -200,7 +225,7 @@ const TableEditorMenu: FC<Props> = ({
                               >
                                 Duplicate Table
                               </Dropdown.Item>,
-                              <Divider key="divider" light />,
+                              <Dropdown.Seperator />,
                               <Dropdown.Item
                                 key="delete-table"
                                 icon={<IconTrash size="tiny" />}
@@ -210,12 +235,9 @@ const TableEditorMenu: FC<Props> = ({
                               </Dropdown.Item>,
                             ]}
                           >
-                            <Button
-                              as="span"
-                              type="text"
-                              icon={<IconChevronDown />}
-                              style={{ padding: '3px' }}
-                            />
+                            <div className="text-scale-900 transition-colors hover:text-scale-1200">
+                              <IconChevronDown size={14} strokeWidth={2} />
+                            </div>
                           </Dropdown>
                         )}
                       </div>
@@ -225,46 +247,48 @@ const TableEditorMenu: FC<Props> = ({
               )
             })}
           </div>
-        </div>
+        </Menu>
       )}
 
       {/* List of views belonging to selected schema */}
       {filteredSchemaViews.length > 0 && (
-        <div className="mx-2 mt-6 space-y-2">
-          <div className="px-4 w-full flex items-center justify-between">
-            <Typography.Text type="secondary" small>
-              All Views
-            </Typography.Text>
-          </div>
-          <div className="overflow-y-auto space-y-1" style={{ maxHeight: maxScrollHeight }}>
-            {schemaViews.map((view: SchemaView) => {
-              const viewId = Base64.encode(JSON.stringify(view))
-              const isActive = id === viewId
-              return (
-                <Link key={viewId} href={`/project/${projectRef}/editor/${viewId}`}>
-                  <div className="dash-product-menu">
-                    <Menu.Item key={viewId} rounded active={isActive}>
-                      <div className="flex justify-between">
-                        <Typography.Text className="truncate">{view.name}</Typography.Text>
-                      </div>
-                    </Menu.Item>
+        <Menu type="pills">
+          <Menu.Group
+            // @ts-ignore
+            title={
+              <>
+                <div className="w-full flex items-center justify-between">
+                  <span>All views</span>
+                </div>
+              </>
+            }
+          />
+
+          {schemaViews.map((view: SchemaView) => {
+            const viewId = Base64.encode(JSON.stringify(view))
+            const isActive = id === viewId
+            return (
+              <Link key={viewId} href={`/project/${projectRef}/editor/${viewId}`}>
+                <Menu.Item key={viewId} rounded active={isActive}>
+                  <div className="flex justify-between">
+                    <Typography.Text className="truncate">{view.name}</Typography.Text>
                   </div>
-                </Link>
-              )
-            })}
-          </div>
-        </div>
+                </Menu.Item>
+              </Link>
+            )
+          })}
+        </Menu>
       )}
 
       {searchText.length > 0 && schemaTables.length === 0 && filteredSchemaViews.length === 0 && (
-        <div className="my-2 mx-6">
-          <Typography.Text type="secondary">No tables or views found</Typography.Text>
+        <div className="px-3">
+          <Alert title="No tables or views found">This schema has no tables or views</Alert>
         </div>
       )}
 
       {searchText.length === 0 && schemaTables.length === 0 && filteredSchemaViews.length === 0 && (
-        <div className="my-2 mx-6">
-          <Typography.Text type="secondary">No tables available</Typography.Text>
+        <div className="px-3">
+          <Alert title="No tables available">There are no tables in this schema</Alert>
         </div>
       )}
     </div>
