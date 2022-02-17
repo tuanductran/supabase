@@ -61,6 +61,7 @@
     "zxcvbn": "^4.4.2"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.2",
     "@testing-library/dom": "^8.11.1",
     "@testing-library/react": "^12.1.2",
     "@testing-library/user-event": "^13.5.0",
