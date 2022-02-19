@@ -34,7 +34,7 @@ const ProjectList: FC<Props> = ({ onSelectRestore = () => {}, onSelectDelete = (
             <Loading active={isLoading}>
               <Typography.Title level={4}>{name}</Typography.Title>
             </Loading>
-            <ul className="grid grid-cols-1 gap-4 mx-auto sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <ul className="grid gap-4 mx-auto grid-cols-1 sm:grid-cols-1 md:grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 ">
               {!isLoading && isEmpty && (
                 <div className="max-w-4xl text-center col-span-4 space-y-4 border-2 border-gray-300 border-dashed rounded-lg p-6">
                   <Typography.Title level={5}>No projects.</Typography.Title>
@@ -55,7 +55,13 @@ const ProjectList: FC<Props> = ({ onSelectRestore = () => {}, onSelectDelete = (
                     onSelectRestore={() => onSelectRestore(project)}
                   />
                 ) : (
-                  <ProjectCard key={makeRandomString(5)} project={project} />
+                  <ProjectCard
+                    paused={project.status === PROJECT_STATUS.INACTIVE}
+                    key={makeRandomString(5)}
+                    project={project}
+                    onSelectDelete={() => onSelectDelete(project)}
+                    onSelectRestore={() => onSelectRestore(project)}
+                  />
                 )
               )}
             </ul>
