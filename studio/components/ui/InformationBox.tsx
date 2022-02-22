@@ -10,6 +10,9 @@ interface Props {
   defaultVisibility?: boolean
   hideCollapse?: boolean
   button?: React.ReactNode
+  className?: string
+  block?: boolean
+  size?: 'tiny' | 'small' | 'normal' | 'large'
 }
 
 const InformationBox: FC<Props> = ({
@@ -21,12 +24,19 @@ const InformationBox: FC<Props> = ({
   defaultVisibility = false,
   hideCollapse = false,
   button,
+  className = '',
+  block = false,
+  size = 'normal',
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultVisibility)
 
-  // const padding = { tiny: 'py-1', small: 'py-2', normal: 'py-3', large: 'py-4' }[size]
+  const padding = { tiny: 'py-1', small: 'py-2', normal: 'py-3', large: 'py-4' }[size]
+
   return (
-    <div className="block w-full bg-scale-100 dark:bg-scale-400 py-3 border border-scale-600 dark:border-scale-500 rounded">
+    <div
+      className={`${block ? 'block w-full' : ''}
+      block w-full bg-scale-100 dark:bg-scale-400 py-3 border border-scale-600 dark:border-scale-500 rounded ${className}`}
+    >
       <div className="flex flex-col px-4">
         <div className="flex items-center justify-between">
           <div className="flex space-x-3 w-full lg:items-center">
