@@ -10,6 +10,7 @@ import {
   Tooltip,
   Cell,
   ResponsiveContainer,
+  TooltipProps,
 } from 'recharts'
 
 import dayjs from 'dayjs'
@@ -17,6 +18,7 @@ import customParseFormat from 'dayjs/plugin/customParseFormat'
 import timezone from 'dayjs/plugin/timezone'
 import utc from 'dayjs/plugin/utc'
 import { formatBytes } from 'lib/helpers'
+import { TooltipType } from 'recharts/types/util/types'
 
 dayjs.extend(customParseFormat)
 dayjs.extend(timezone)
@@ -42,6 +44,8 @@ const Header = ({
   data,
   customDateFormat,
   label,
+  minimalHeader = false,
+  displayDateInUtc = false,
 }: any) => {
   let FOCUS_FORMAT = customDateFormat
     ? customDateFormat
@@ -82,21 +86,50 @@ const Header = ({
       }
     }
   }
+  const day = (value: number | string) => (displayDateInUtc ? dayjs(value).utc() : dayjs(value))
+
+  const chartTitle = (
+    <h3 className={'text-scale-900 ' + (minimalHeader ? 'text-xs' : 'text-sm')}>
+      {label ?? attribute}
+    </h3>
+  )
+  const highlighted = (
+    <h5
+      className={
+        'text-xl text-scale-1200 font-normal ' + (minimalHeader ? 'text-base' : 'text-2xl')
+      }
+    >
+      {title}
+      <span className="text-lg">{format}</span>
+    </h5>
+  )
+  const date = (
+    <h5 className="text-xs text-scale-900">
+      {focus ? (
+        data && data[focus] && day(data[focus].period_start).format(FOCUS_FORMAT)
+      ) : (
+        <span className="opacity-0">x</span>
+      )}
+    </h5>
+  )
+
+  if (minimalHeader) {
+    return (
+      <div className="flex flex-row gap-x-4 items-center" style={{ minHeight: '1.8rem' }}>
+        {chartTitle}
+        <div className="flex flex-row gap-x-2 items-baseline">
+          {highlighted}
+          {date}
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
-      <p className="mb-0 text-scale-900 text-sm">{label ?? attribute}</p>
-      <p className="text-scale-1200">
-        <span className="text-2xl">{title}</span>
-        <span className="text-lg">{format}</span>
-      </p>
-      <p className="text-scale-900 text-xs">
-        {focus ? (
-          data && data[focus] && dayjs(data[focus].period_start).format(FOCUS_FORMAT)
-        ) : (
-          <span className="opacity-0">x</span>
-        )}
-      </p>
+      {chartTitle}
+      {highlighted}
+      {date}
     </>
   )
 }
@@ -117,7 +150,6 @@ const NoData = () => (
     </div>
   </div>
 )
-
 const total = (data: any, format: any, attribute: any) => {
   let total = 0
   data?.map((item: any) => {
@@ -140,7 +172,12 @@ export function BarChart({
   format,
   highlightedValue,
   customDateFormat,
+  displayDateInUtc = false,
   label,
+  onBarClick,
+  minimalHeader,
+  minmalChart,
+  className = '',
 }: any) {
   const hasData = data ? dataCheck(data, attribute) : true
 
@@ -162,85 +199,97 @@ export function BarChart({
     setMouseLeave(true)
   }
 
+  const day = (value: number | string) => (displayDateInUtc ? dayjs(value).utc() : dayjs(value))
+
   return (
     <Loading active={!data}>
-      <Header
-        attribute={attribute}
-        focus={focusBar}
-        highlightedValue={highlightedValue}
-        data={data}
-        label={label}
-        format={format}
-        customDateFormat={customDateFormat}
-      />
-      <div style={{ width: '100%', height: '160px' }}>
-        {hasData ? (
-          <>
-            <ResponsiveContainer>
-              <RechartBarChart
-                data={data}
-                margin={{
-                  top: 0,
-                  right: 0,
-                  left: 0,
-                  bottom: 0,
-                }}
-                className="overflow-visible"
-                onMouseMove={onMouseMove}
-                onMouseLeave={onMouseLeave}
-              >
-                <XAxis
-                  dataKey="period_start"
-                  //interval={size === 'small' ? 5 : 1}
-                  interval={data ? data.length - 2 : 0}
-                  angle={0}
-                  // stroke="#4B5563"
-                  tick={{ fontSize: '0px', color: '#6B7280' }}
-                  axisLine={{ stroke: '#444444' }}
-                  tickLine={{ stroke: '#444444' }}
-                />
-                <Tooltip content={<CustomTooltip />} />
-                {/* <YAxis dataKey={attribute} /> */}
-                {/* <YAxis type="number" domain={[(0, 100)]} /> */}
-                {yAxisLimit && <YAxis type="number" domain={[0, yAxisLimit]} hide />}
-                <Bar
-                  dataKey={attribute}
-                  fill="#3ecf8e"
-                  // barSize={2}
-                  animationDuration={300}
+      <div className={className}>
+        <Header
+          minimalHeader={minimalHeader}
+          attribute={attribute}
+          focus={focusBar}
+          highlightedValue={highlightedValue}
+          data={data}
+          label={label}
+          format={format}
+          customDateFormat={customDateFormat}
+          displayDateInUtc={displayDateInUtc}
+        />
+        <div style={{ width: '100%', height: minmalChart ? '96px' : '160px' }}>
+          {hasData ? (
+            <>
+              <ResponsiveContainer>
+                <RechartBarChart
+                  data={data}
+                  margin={{
+                    top: 0,
+                    right: 0,
+                    left: 0,
+                    bottom: 0,
+                  }}
+                  className="overflow-visible cursor-pointer"
+                  onMouseMove={onMouseMove}
+                  onMouseLeave={onMouseLeave}
+                  onClick={(tooltipData: any) => {
+                    // receives tooltip data https://github.com/recharts/recharts/blob/2a3405ff64a0c050d2cf94c36f0beef738d9e9c2/src/chart/generateCategoricalChart.tsx
+                    if (onBarClick) onBarClick(tooltipData)
+                  }}
                 >
-                  {data?.map((entry: any, index: any) => (
-                    <Cell
-                      key={`cell-${index}`}
-                      className="transition-all duration-300"
-                      fill={
-                        focusBar === index || mouseLeave ? '#3ecf8e' : 'rgba(62, 207, 142, 0.2)'
-                      }
-                      enableBackground={12}
-                      // for this, we make the hovered colour #2B5CE7, else its opacity decreases to 20%
-                    />
-                  ))}
-                </Bar>
-              </RechartBarChart>
-            </ResponsiveContainer>
-            {data && (
-              <div className="text-xs text-scale-900 flex items-center justify-between -mt-5">
-                <span>
-                  {dayjs(data[0].period_start).format(
-                    customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
-                  )}
-                </span>
-                <span>
-                  {dayjs(data[data?.length - 1]?.period_start).format(
-                    customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
-                  )}
-                </span>
-              </div>
-            )}
-          </>
-        ) : (
-          <NoData />
-        )}
+                  <XAxis
+                    dataKey="period_start"
+                    //interval={size === 'small' ? 5 : 1}
+                    interval={data ? data.length - 2 : 0}
+                    angle={0}
+                    // stroke="#4B5563"
+                    tick={{ fontSize: '0px', color: '#6B7280' }}
+                    axisLine={{ stroke: '#444444' }}
+                    tickLine={{ stroke: '#444444' }}
+                  />
+                  <Tooltip content={<CustomTooltip />} />
+                  {/* <YAxis dataKey={attribute} /> */}
+                  {/* <YAxis type="number" domain={[(0, 100)]} /> */}
+                  {yAxisLimit && <YAxis type="number" domain={[0, yAxisLimit]} hide />}
+                  <Bar
+                    dataKey={attribute}
+                    fill="#3ecf8e"
+                    // barSize={2}
+                    animationDuration={300}
+                  >
+                    {data?.map((entry: any, index: any) => (
+                      <Cell
+                        key={`cell-${index}`}
+                        className={`transition-all duration-300 ${
+                          onBarClick ? 'cursor-pointer' : ''
+                        }`}
+                        fill={
+                          focusBar === index || mouseLeave ? '#3ecf8e' : 'rgba(62, 207, 142, 0.2)'
+                        }
+                        enableBackground={12}
+                        // for this, we make the hovered colour #2B5CE7, else its opacity decreases to 20%
+                      />
+                    ))}
+                  </Bar>
+                </RechartBarChart>
+              </ResponsiveContainer>
+              {data && (
+                <div className="text-xs text-scale-900 flex items-center justify-between -mt-5">
+                  <span>
+                    {day(data[0].period_start).format(
+                      customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
+                    )}
+                  </span>
+                  <span>
+                    {day(data[data?.length - 1]?.period_start).format(
+                      customDateFormat ? customDateFormat : DATE_FORMAT__WITH_TIME
+                    )}
+                  </span>
+                </div>
+              )}
+            </>
+          ) : (
+            <NoData />
+          )}
+        </div>
       </div>
     </Loading>
   )

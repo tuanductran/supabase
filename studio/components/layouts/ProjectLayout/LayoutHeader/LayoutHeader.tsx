@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite'
 import Link from 'next/link'
-import { Typography } from '@supabase/ui'
 
 import { IS_PLATFORM } from 'lib/constants'
 import { useStore } from 'hooks'

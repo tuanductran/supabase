@@ -32,8 +32,9 @@ interface Props {
 }
 
 const ProjectUsage: FC<Props> = ({ project }) => {
+  const logsTimestampFilter = useFlag('logsTimestampFilter')
   const logsUsageChartIntervals = useFlag('logsUsageChartIntervals')
-  const [interval, setInterval] = useState<string>('minutely')
+  const [interval, setInterval] = useState<string>('hourly')
   const router = useRouter()
   const { ref } = router.query
   const { data, error }: any = useSWR(
@@ -45,7 +46,7 @@ const ProjectUsage: FC<Props> = ({ project }) => {
     // { refreshInterval: isActive ? 3000 : 30000 }
   )
   const selectedInterval = logsUsageChartIntervals
-    ? CHART_INTERVALS.find((i) => i.key === interval) || CHART_INTERVALS[0]
+    ? CHART_INTERVALS.find((i) => i.key === interval) || CHART_INTERVALS[1]
     : CHART_INTERVALS[2]
   const startDate = dayjs()
     .subtract(selectedInterval.startValue, selectedInterval.startUnit)
@@ -53,6 +54,21 @@ const ProjectUsage: FC<Props> = ({ project }) => {
   const endDate = dayjs().format(DATE_FORMAT)
   const charts = data?.data
   const datetimeFormat = selectedInterval.format || 'MMM D, ha'
+  const handleBarClick = (v: any, search: string) => {
+    if (!logsTimestampFilter) return
+    if (!v || !v.activePayload?.[0]?.payload) return
+    // returns rechart internal tooltip data type
+    const payload = v.activePayload[0].payload
+    const timestamp = payload.timestamp
+    const timestampDigits = String(timestamp).length
+    if (timestampDigits < 16) {
+      // pad unix timestamp with additional 0 and then forward
+      const paddedTimestamp = String(timestamp) + '0'.repeat(16 - timestampDigits)
+      router.push(`/project/${ref}/settings/logs/api?te=${paddedTimestamp}`)
+    } else {
+      router.push(`/project/${ref}/settings/logs/api?te=${timestamp}`)
+    }
+  }
   return (
     <div className="mx-6 space-y-6">
       <div className="flex flex-row items-center gap-2">
@@ -195,6 +211,7 @@ const ProjectUsage: FC<Props> = ({ project }) => {
                   customDateFormat={datetimeFormat}
                   data={charts}
                   isLoading={!charts && !error ? true : false}
+                  onBarClick={(v)=> handleBarClick(v, "/realtime")}
                 />
               </Panel.Content>
             </Panel>

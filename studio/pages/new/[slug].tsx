@@ -30,6 +30,7 @@ import Panel from 'components/to-be-cleaned/Panel'
 import InformationBox from 'components/ui/InformationBox'
 import { passwordStrength } from 'lib/helpers'
 import PasswordStrengthBar from 'components/ui/PasswordStrengthBar'
+import { useSubscriptionStats } from 'hooks'
 
 interface StripeCustomer {
   paymentMethods: any
@@ -60,6 +61,8 @@ export const Wizard = observer(() => {
   const { slug } = router.query
   const { app, ui } = useStore()
 
+  const subscriptionStats = useSubscriptionStats()
+
   const [projectName, setProjectName] = useState('')
   const [dbPass, setDbPass] = useState('')
   const [dbRegion, setDbRegion] = useState(REGIONS_DEFAULT)
@@ -86,7 +89,10 @@ export const Wizard = observer(() => {
   const isSelectFreeTier = dbPricingPlan === PRICING_PLANS.FREE
 
   const canCreateProject =
-    currentOrg?.is_owner && (!isSelectFreeTier || (isSelectFreeTier && !isOverFreeProjectLimit))
+    currentOrg?.is_owner &&
+    !subscriptionStats.isError &&
+    !subscriptionStats.isLoading &&
+    (!isSelectFreeTier || (isSelectFreeTier && !isOverFreeProjectLimit))
 
   const canSubmit =
     projectName != '' &&
@@ -94,11 +100,6 @@ export const Wizard = observer(() => {
     dbRegion != '' &&
     dbPricingPlan != '' &&
     (isSelectFreeTier || (!isSelectFreeTier && !isEmptyPaymentMethod))
-
-  const passwordErrorMessage =
-    dbPass != '' && passwordStrengthScore < DEFAULT_MINIMUM_PASSWORD_STRENGTH
-      ? 'You need a stronger password'
-      : undefined
 
   const delayedCheckPasswordStrength = useRef(
     debounce((value) => checkPasswordStrength(value), 300)
@@ -334,10 +335,21 @@ export const Wizard = observer(() => {
                 ))}
               </Listbox>
 
-              {isSelectFreeTier && isOverFreeProjectLimit && <FreeProjectLimitWarning />}
+              {isSelectFreeTier && isOverFreeProjectLimit && (
+                <FreeProjectLimitWarning limit={freeProjectsLimit} />
+              )}
               {!isSelectFreeTier && isEmptyPaymentMethod && (
                 <EmptyPaymentMethodWarning stripeCustomerId={stripeCustomerId} />
               )}
+            </Panel.Content>
+          )}
+
+          {subscriptionStats.isLoading && (
+            <Panel.Content>
+              <div className="py-10">
+                {/* @ts-ignore */}
+                <Loading active={true} />
+              </div>
             </Panel.Content>
           )}
         </>
@@ -367,7 +379,7 @@ const NotOrganizationOwnerWarning = () => {
   )
 }
 
-const FreeProjectLimitWarning = () => {
+const FreeProjectLimitWarning = ({ limit }: { limit: number }) => {
   return (
     <div className="mt-4">
       <InformationBox
@@ -378,8 +390,7 @@ const FreeProjectLimitWarning = () => {
         description={
           <div className="space-y-3">
             <p className="text-sm leading-normal">
-              Your account can only have a maximum of 2 free projects. You can only choose paid
-              pricing plan.
+              {`Your account can only have up to ${limit} free projects - to create another free project, you'll need to delete an existing free project first.`}
             </p>
           </div>
         }

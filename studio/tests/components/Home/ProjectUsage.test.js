@@ -7,12 +7,13 @@ import { get } from 'lib/common/fetch'
 jest.mock('next/router')
 import { useRouter } from 'next/router'
 import { clickDropdown } from 'tests/helpers'
-useRouter.mockReturnValue({ query: { ref: '123' } })
+const mockPush = jest.fn()
+useRouter.mockReturnValue({ query: { ref: '123' }, push: mockPush })
 
 // need to wrap component with SWRConfig in order to clear cache between tests
 // TODO: abstract out to global setup
 import { SWRConfig } from 'swr'
-const ProjectUsage = jest.fn() 
+const ProjectUsage = jest.fn()
 ProjectUsage.mockImplementation((props) => {
   const Original = jest.requireActual('components/interfaces/Home/ProjectUsage').default
   // wrap with SWR to reset the cache each time
@@ -30,10 +31,9 @@ jest.mock('hooks')
 import { useFlag } from 'hooks'
 useFlag.mockReturnValue(true)
 
-
-
 beforeEach(() => {
   get.mockReset()
+  mockPush.mockReset()
 })
 
 const MOCK_CHART_DATA = {
@@ -62,7 +62,7 @@ test('mounts correctly', async () => {
     return { data: MOCK_CHART_DATA }
   })
   render(<ProjectUsage project="12345" />)
-  await waitFor(() => screen.getByText(/Statistics for past 60 minutes/))
+  await waitFor(() => screen.getByText(/Statistics for past 24 hours/))
   await waitFor(() => screen.getByText(/123/))
   await waitFor(() => screen.getByText(/223/))
   await waitFor(() => screen.getByText(/323/))
@@ -71,27 +71,24 @@ test('mounts correctly', async () => {
 
 test('dropdown options changes chart query', async () => {
   get.mockImplementation((url) => {
-    console.log(url)
     if (url.includes('usage')) return {}
     return { data: MOCK_CHART_DATA }
   })
   render(<ProjectUsage project="12345" />)
-  await waitFor(() => screen.getByText(/Statistics for past 60 minutes/))
-  await waitFor(() => screen.getAllByRole('button', { name: '60 minutes' }))
+  await waitFor(() => screen.getByText(/Statistics for past 24 hours/))
+  await waitFor(() => screen.getAllByRole('button', { name: '24 hours' }))
   console.log(get.mock.calls)
-  await waitFor(()=>{
-    expect(get).toHaveBeenCalledWith(expect.stringContaining('interval=minutely'))
-
+  await waitFor(() => {
+    expect(get).toHaveBeenCalledWith(expect.stringContaining('interval=hourly'))
   })
   // find button that has radix id
-  const [btn] = screen.getAllByRole('button', { name: '60 minutes' }).filter((e) => e.id)
+  const [btn] = screen.getAllByRole('button', { name: '24 hours' }).filter((e) => e.id)
   clickDropdown(btn)
   await waitFor(() => screen.getByText(/7 days/))
-  await waitFor(() => screen.getByText(/24 hours/))
+  await waitFor(() => screen.getByText(/60 minutes/))
 
   // simulate changing of dropdown
-  userEvent.click(screen.getByText(/24 hours/))
-  await waitFor(() => screen.getByText(/Statistics for past 24 hours/))
-  expect(get).toHaveBeenCalledWith(expect.stringContaining('interval=hourly'))
-
+  userEvent.click(screen.getByText(/60 minutes/))
+  await waitFor(() => screen.getByText(/Statistics for past 60 minutes/))
+  expect(get).toHaveBeenCalledWith(expect.stringContaining('interval=minutely'))
 })

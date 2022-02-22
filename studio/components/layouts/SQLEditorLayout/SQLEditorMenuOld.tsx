@@ -235,7 +235,7 @@ const SideBarContent = observer(() => {
                 })}
               </div>
             )}
-            <Loading active={contentStore.isLoading}>
+            <Loading active={contentStore.isInitialized}>
               <div className="px-3 space-y-6">
                 {favouriteTabs.length >= 1 && (
                   <div className="editor-product-menu">

@@ -1,5 +1,5 @@
 import { FC, ReactNode, useState } from 'react'
-import { IconMaximize2, IconMinimize2, Typography } from '@supabase/ui'
+import { IconMaximize2, IconMinimize2 } from '@supabase/ui'
 
 interface Props {
   icon?: ReactNode
@@ -23,6 +23,8 @@ const InformationBox: FC<Props> = ({
   button,
 }) => {
   const [isExpanded, setIsExpanded] = useState<boolean>(defaultVisibility)
+
+  // const padding = { tiny: 'py-1', small: 'py-2', normal: 'py-3', large: 'py-4' }[size]
   return (
     <div className="block w-full bg-scale-100 dark:bg-scale-400 py-3 border border-scale-600 dark:border-scale-500 rounded">
       <div className="flex flex-col px-4">
