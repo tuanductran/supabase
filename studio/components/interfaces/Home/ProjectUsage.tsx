@@ -86,7 +86,7 @@ const ProjectUsage: FC<Props> = ({ project }) => {
               </Dropdown.RadioGroup>
             }
           >
-            <Button type="default" iconRight={<IconChevronDown />}>
+            <Button as="span" type="default" iconRight={<IconChevronDown />}>
               {selectedInterval.label}
             </Button>
           </Dropdown>
@@ -211,7 +211,7 @@ const ProjectUsage: FC<Props> = ({ project }) => {
                   customDateFormat={datetimeFormat}
                   data={charts}
                   isLoading={!charts && !error ? true : false}
-                  onBarClick={(v)=> handleBarClick(v, "/realtime")}
+                  onBarClick={(v) => handleBarClick(v, '/realtime')}
                 />
               </Panel.Content>
             </Panel>
