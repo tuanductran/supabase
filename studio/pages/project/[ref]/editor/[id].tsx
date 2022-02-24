@@ -14,6 +14,8 @@ import { TableGridEditor } from 'components/interfaces'
 import ConfirmationModal from 'components/ui/ConfirmationModal'
 import { Modal } from '@supabase/ui'
 
+import GridHeaderActions from 'components/interfaces/TableGridEditor/GridHeaderActions'
+
 const TableEditorPage: NextPage = () => {
   const router = useRouter()
   const { id }: any = router.query
@@ -152,6 +154,7 @@ const TableEditorPage: NextPage = () => {
       onDeleteTable={onDeleteTable}
       onDuplicateTable={onDuplicateTable}
     >
+      <GridHeaderActions table={selectedTable as PostgresTable} />
       <TableGridEditor
         selectedSchema={selectedSchema}
         selectedTable={selectedTable}

@@ -7,7 +7,15 @@ import { useRef, useState, useEffect } from 'react'
 import { debounce, isUndefined, values } from 'lodash'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
-import { Button, Typography, Listbox, IconUsers, IconAlertCircle, Input } from '@supabase/ui'
+import {
+  Button,
+  Typography,
+  Listbox,
+  IconUsers,
+  IconAlertCircle,
+  Input,
+  Loading,
+} from '@supabase/ui'
 
 import { API_URL } from 'lib/constants'
 import { post } from 'lib/common/fetch'

@@ -20,6 +20,8 @@ import {
   IconLoader,
   IconRefreshCw,
   Alert,
+  IconAlertCircle,
+  Badge,
 } from '@supabase/ui'
 import { PostgresSchema, PostgresTable } from '@supabase/postgres-meta'
 
@@ -201,45 +203,60 @@ const TableEditorMenu: FC<Props> = ({
                 <Link key={table.name} href={`/project/${projectRef}/editor/${table.id}`}>
                   <a className="block editor-product-menu">
                     <Menu.Item rounded active={isActive}>
-                      <div className="flex w-full justify-between py-[2px]">
-                        <Typography.Text className="truncate flex items-center">
-                          {table.name}
-                        </Typography.Text>
-                        {isActive && (
-                          <Dropdown
-                            size="small"
-                            side="bottom"
-                            align="start"
-                            overlay={[
-                              <Dropdown.Item
-                                key="edit-table"
-                                icon={<IconEdit size="tiny" />}
-                                onClick={() => onEditTable(table)}
-                              >
-                                Edit Table
-                              </Dropdown.Item>,
-                              <Dropdown.Item
-                                key="duplicate-table"
-                                icon={<IconCopy size="tiny" />}
-                                onClick={() => onDuplicateTable(table)}
-                              >
-                                Duplicate Table
-                              </Dropdown.Item>,
-                              <Dropdown.Seperator />,
-                              <Dropdown.Item
-                                key="delete-table"
-                                icon={<IconTrash size="tiny" />}
-                                onClick={() => onDeleteTable(table)}
-                              >
-                                Delete Table
-                              </Dropdown.Item>,
-                            ]}
-                          >
-                            <div className="text-scale-900 transition-colors hover:text-scale-1200">
-                              <IconChevronDown size={14} strokeWidth={2} />
+                      <div className="flex w-full justify-between items-center gap-1">
+                        <div className="flex items-center gap-2 truncate">
+                          <span className="truncate">{table.name}</span>
+                          {!table.rls_enabled && (
+                            <div className="text-amber-900 p-0.5 rounded-full">
+                              <IconAlertCircle size={14} strokeWidth={2} />
                             </div>
-                          </Dropdown>
-                        )}
+                            // <Badge color="amber">
+                            //   <div className="text-amber-900 p-0.5 rounded-full">
+                            //     <IconAlertCircle size={14} strokeWidth={2} />
+                            //   </div>
+                            //   <span>public</span>
+                            // </Badge>
+                          )}
+                        </div>
+
+                        <Dropdown
+                          size="small"
+                          side="bottom"
+                          align="start"
+                          overlay={[
+                            <Dropdown.Item
+                              key="edit-table"
+                              icon={<IconEdit size="tiny" />}
+                              onClick={() => onEditTable(table)}
+                            >
+                              Edit Table
+                            </Dropdown.Item>,
+                            <Dropdown.Item
+                              key="duplicate-table"
+                              icon={<IconCopy size="tiny" />}
+                              onClick={() => onDuplicateTable(table)}
+                            >
+                              Duplicate Table
+                            </Dropdown.Item>,
+                            <Dropdown.Seperator />,
+                            <Dropdown.Item
+                              key="delete-table"
+                              icon={<IconTrash size="tiny" />}
+                              onClick={() => onDeleteTable(table)}
+                            >
+                              Delete Table
+                            </Dropdown.Item>,
+                          ]}
+                        >
+                          <div
+                            className={
+                              'text-scale-900 transition-colors hover:text-scale-1200 items-center justify-center ' +
+                              (isActive ? 'opacity-100' : 'opacity-0')
+                            }
+                          >
+                            <IconChevronDown size={14} strokeWidth={2} />
+                          </div>
+                        </Dropdown>
                       </div>
                     </Menu.Item>
                   </a>

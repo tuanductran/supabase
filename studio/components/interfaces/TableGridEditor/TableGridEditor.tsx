@@ -138,9 +138,9 @@ const TableGridEditor: FC<Props> = ({
         editable={!isViewSelected && selectedTable.schema === 'public'}
         schema={selectedTable.schema}
         table={gridTable}
-        headerActions={
-          !isViewSelected && <GridHeaderActions table={selectedTable as PostgresTable} />
-        }
+        // headerActions={
+        //   !isViewSelected && <GridHeaderActions table={selectedTable as PostgresTable} />
+        // }
         onAddColumn={onAddColumn}
         onEditColumn={onSelectEditColumn}
         onDeleteColumn={onSelectDeleteColumn}
