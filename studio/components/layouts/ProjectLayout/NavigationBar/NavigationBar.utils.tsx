@@ -5,6 +5,8 @@ import {
   IconSettings,
   IconDatabase,
   IconBarChart,
+  IconCode,
+  IconList,
 } from '@supabase/ui'
 import SVG from 'react-inlinesvg'
 
@@ -31,6 +33,16 @@ export const generateProductRoutes = (ref: string): Route[] => {
       icon: <IconUsers size={18} strokeWidth={2} />,
       link: `/project/${ref}/auth/users`,
     },
+    ...(IS_PLATFORM
+      ? [
+          {
+            key: 'functions',
+            label: 'Functions',
+            icon: <IconCode size={18} strokeWidth={2} />,
+            link: `/project/${ref}/functions`,
+          },
+        ]
+      : []),
     ...(IS_PLATFORM
       ? [
           {
@@ -71,6 +83,16 @@ export const generateOtherRoutes = (ref: string) => {
             label: 'Reports',
             icon: <IconBarChart size={18} strokeWidth={2} />,
             link: `/project/${ref}/reports`,
+          },
+        ]
+      : []),
+    ...(IS_PLATFORM
+      ? [
+          {
+            key: 'logs',
+            label: 'Logs',
+            icon: <IconList size={18} strokeWidth={2} />,
+            link: `/project/${ref}/logs/database`,
           },
         ]
       : []),
