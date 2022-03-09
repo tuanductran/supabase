@@ -27,6 +27,8 @@ const LogTable = ({ isCustomQuery, data = [] }: Props) => {
     columnNames.includes('event_message') &&
     columnNames.length === 4
 
+  // const hasLogDataFormat = false
+
   const columns = (hasLogDataFormat ? ['timestamp', 'event_message'] : columnNames).map((v) => ({
     key: v,
     name: v,
@@ -90,8 +92,14 @@ const LogTable = ({ isCustomQuery, data = [] }: Props) => {
       "
       >
         <div className="flex items-center gap-2">
-          <span className="text-sm text-scale-1200">Query results</span>
-          <span className="text-sm text-scale-1100">4,256 log results</span>
+          {data && data.length ? (
+            <>
+              <span className="text-sm text-scale-1200">Query results</span>
+              <span className="text-sm text-scale-1100">{data && data.length}</span>
+            </>
+          ) : (
+            <span className="text-xs text-scale-1200">Results will be shown below</span>
+          )}
         </div>
         <div className="flex items-center gap-2">
           <Button type="default" icon={<IconEye />}>

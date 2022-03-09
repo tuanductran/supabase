@@ -69,3 +69,19 @@ export const LOG_TYPE_LABEL_MAPPING: { [k: string]: string } = {
   api: 'API',
   database: 'Database',
 }
+
+export const genDefaultQuery = (table: string, where: string = ''): string => `SELECT
+  id, timestamp, event_message, metadata
+FROM
+  ${table}${where ? '\nWHERE ' + where : ''}
+`
+
+// export const genDefaultFunctionQuery = () => {
+//   return `
+//     select m.event_type, m.function_id, event_message, m.level from function_logs
+//     cross join unnest(metadata) as m
+//     where m.level = 'info'
+//   `
+// }
+
+export const genCountQuery = (table: string): string => `SELECT count(*) as count FROM ${table}`

@@ -24,22 +24,22 @@ export interface CountData {
   count: number
 }
 
-export interface Count {
-  data: [CountData] | []
-  error?: any
+type LFResponse<T> = {
+  result: T[]
+  error?: {
+    message: string
+  }
 }
 
-export interface Logs {
-  data: LogData[]
-  count: number
-  error: any
-}
+export type Count = LFResponse<CountData>
+
+export type Logs = LFResponse<LogData>
 
 export interface LogsWrapper {
   type: QueryType
   mode: Mode
 }
 
-export type QueryType = 'api' | 'database' | 'sql'
+export type QueryType = 'api' | 'database' | 'functions' | 'fn_edge' | 'sql'
 
 export type Mode = 'simple' | 'custom'

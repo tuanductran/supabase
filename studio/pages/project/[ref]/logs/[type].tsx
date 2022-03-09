@@ -13,13 +13,13 @@ import sqlNew from '../sql/sql-new'
 
 export const LogPage: NextPage = () => {
   const [type, setType] = useState<QueryType>('database')
-  const [mode, setMode] = useState<Mode>('simple')
+  const [mode, setMode] = useState<Mode>('custom')
   // ! custom is SQL only logging !
 
   return (
     <>
+      <SourceSwitcher type={type} setType={setType} mode={mode} setMode={setMode} />
       <LogsLayout>
-        <SourceSwitcher type={type} setType={setType} mode={mode} setMode={setMode} />
         <LogWrapper type={type} mode={mode} />
       </LogsLayout>
     </>
@@ -38,7 +38,10 @@ const SourceSwitcher = ({
   setMode: (string: Mode) => void
 }) => {
   return (
-    <div className="text-scale-900 mb-4 flex gap-4 items-center">
+    <div className="px-8 absolute top-8 left-10 bg-amber-200 border border-amber-500 rounded p-3 text-scale-900 mb-4 flex gap-4 items-center z-40">
+      <h3 className="text-base font-semibold text-scale-1200">
+        This is for development, not for production!
+      </h3>
       <span className="text-xs text-scale-900">Temporary source switcher</span>
       <div className="flex items-center gap-2">
         <span>Sql Mode?</span>
@@ -59,6 +62,18 @@ const SourceSwitcher = ({
           onClick={() => setType('database')}
         >
           Database
+        </Button>
+        <Button
+          type={type === 'functions' ? 'secondary' : 'default'}
+          onClick={() => setType('functions')}
+        >
+          Functions
+        </Button>
+        <Button
+          type={type === 'fn_edge' ? 'secondary' : 'default'}
+          onClick={() => setType('fn_edge')}
+        >
+          Function edge
         </Button>
       </div>
     </div>

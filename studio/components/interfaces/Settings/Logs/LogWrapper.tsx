@@ -13,6 +13,7 @@ import {
   Card,
   Loading,
   Alert,
+  Input,
 } from '@supabase/ui'
 
 import { withAuth } from 'hooks'
@@ -31,6 +32,8 @@ import {
   LogData,
   LogSearchCallback,
   LOG_TYPE_LABEL_MAPPING,
+  genDefaultQuery,
+  genCountQuery,
 } from 'components/interfaces/Settings/Logs'
 import { uuidv4 } from 'lib/helpers'
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite'
@@ -78,6 +81,8 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
     value && value.toLowerCase().includes('select') ? true : false
 
   const isSelectQuery = checkIfSelectQuery(editorValue)
+
+  const table = type === 'api' ? 'edge_logs' : 'postgres_logs'
 
   useEffect(() => {
     setParams({ ...params, type: type })
@@ -131,23 +136,23 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
   }
 
   // handle log fetching
-  const getKeyLogs: SWRInfiniteKeyLoader = (_pageIndex: number, prevPageData) => {
+  const getKeyLogs: SWRInfiniteKeyLoader = (_pageIndex: number, prevPageData: Logs) => {
     let queryParams
     // if prev page data is 100 items, could possibly have more records that are not yet fetched within this interval
     if (prevPageData === null) {
       // reduce interval window limit by using the timestamp of the last log
       queryParams = genQueryParams(params)
-    } else if ((prevPageData?.data ?? []).length === 0) {
+    } else if ((prevPageData.result ?? []).length === 0) {
       // no rows returned, indicates that no more data to retrieve and append.
       return null
     } else {
-      const len = prevPageData.data.length
-      const { timestamp: tsLimit }: LogData = prevPageData.data[len - 1]
+      const len = prevPageData.result.length
+      const { timestamp: tsLimit }: LogData = prevPageData.result[len - 1]
       // create new key from params
       queryParams = genQueryParams({ ...params, timestamp_end: String(tsLimit) })
     }
 
-    const logUrl = `${API_URL}/projects/${ref}/logs?${queryParams}`
+    const logUrl = `${API_URL}/projects/${ref}/analytics/endpoints/logs.${type}?${queryParams}`
 
     console.log('logUrl', logUrl)
     return logUrl
@@ -163,27 +168,24 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
   } = useSWRInfinite<Logs>(getKeyLogs, get, { revalidateOnFocus: false })
 
   let logData: LogData[] = []
-
-  let error: null | string = swrError ? swrError.message : null
-
-  data.forEach((response: Logs) => {
-    if (!error && response && response.data) {
-      logData = [...logData, ...response.data]
+  let error: null | string | object = swrError ? swrError.message : null
+  data.forEach((response) => {
+    if (!error && response?.result) {
+      logData = [...logData, ...response.result]
     }
     if (!error && response && response.error) {
       error = response.error
     }
   })
 
-  const countUrl = `${API_URL}/projects/${ref}/logs?${genQueryParams({
+  const countUrl = `${API_URL}/projects/${ref}/analytics/endpoints/logs.${type}?${genQueryParams({
     ...params,
-    count: String(true),
+    sql: genCountQuery(table),
     period_start: String(latestRefresh),
   })}`
 
   const { data: countData } = useSWR<Count>(countUrl, get, { refreshInterval: 5000 })
-
-  const newCount = countData?.data?.[0]?.count ?? 0
+  const newCount = countData?.result?.[0]?.count ?? 0
 
   const handleRefresh = () => {
     setLatestRefresh(new Date().toISOString())
@@ -197,6 +199,18 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
     })
     setSize(1)
   }
+
+  // const handleModeToggle = () => {
+  //   if (mode === 'simple') {
+  //     setMode('custom')
+  //     onSelectTemplate({
+  //       mode: 'custom',
+  //       searchString: genDefaultQuery(table),
+  //     })
+  //   } else {
+  //     setMode('simple')
+  //   }
+  // }
 
   const onSelectTemplate = (template: LogTemplate) => {
     if (template.mode === 'simple') {
@@ -221,8 +235,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
   const handleEditorSubmit = () => {
     setParams((prev) => ({
       ...prev,
-      where: isSelectQuery ? '' : cleanEditorValue(editorValue),
-      sql: isSelectQuery ? cleanEditorValue(editorValue) : '',
+      sql: checkIfSelectQuery(editorValue) ? editorValue : genDefaultQuery(table, editorValue),
       search_query: '',
     }))
 
@@ -285,6 +298,8 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
           editorValue={editorValue}
           setEditorValue={setEditorValue}
           setEditorId={setEditorId}
+          table={table}
+          mode={mode}
         />
         {mode === 'custom' && (
           <>
@@ -325,7 +340,8 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
           </div>
         </Alert>
       )}
-      {showChart && mode !== 'custom' && (
+
+      {/* {showChart && mode === 'custom' && (
         <div>
           <LogEventChart
             data={!isValidating ? logData : undefined}
@@ -334,7 +350,8 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
             }}
           />
         </div>
-      )}
+      )} */}
+
       <div className="flex flex-col flex-grow relative">
         {isValidating && (
           <div
@@ -359,7 +376,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
 
         {error && (
           <div className="flex w-full h-full justify-center items-center mx-auto">
-            <Card className="flex flex-col gap-y-2  w-1/3">
+            <Card className="flex flex-col gap-y-2 w-2/5 bg-scale-400">
               <div className="flex flex-row gap-x-2 py-2">
                 <IconAlertCircle size={16} />
                 <Typography.Text type="secondary">
@@ -370,9 +387,12 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
                 <summary>
                   <Typography.Text type="secondary">Error Message</Typography.Text>
                 </summary>
-                <Typography.Text className="block whitespace-pre-wrap" small code type="warning">
-                  {JSON.stringify(error, null, 2)}
-                </Typography.Text>
+                <Input.TextArea
+                  label="Error Messages"
+                  value={JSON.stringify(error, null, 2)}
+                  borderless
+                  className=" border-t-2 border-scale-800 pt-2 font-mono"
+                />
               </details>
             </Card>
           </div>
