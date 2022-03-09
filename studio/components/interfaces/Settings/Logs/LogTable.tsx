@@ -1,6 +1,6 @@
 import dayjs from 'dayjs'
 import { useEffect, useState, useMemo } from 'react'
-import { Typography } from '@supabase/ui'
+import { Button, IconDownload, IconDownloadCloud, IconEye, Typography } from '@supabase/ui'
 import DataGrid from '@supabase/react-data-grid'
 
 import LogSelection from './LogSelection'
@@ -82,45 +82,66 @@ const LogTable = ({ isCustomQuery, data = [] }: Props) => {
     return Object.values(logMap).sort((a, b) => b.timestamp - a.timestamp)
   }, [stringData])
   return (
-    <section className="flex flex-1 flex-row" style={{ maxHeight }}>
-      <DataGrid
-        style={{ height: '100%' }}
-        className="flex-grow flex-1"
-        onSelectedCellChange={({ idx, rowIdx }) => {
-          if (!hasLogDataFormat) return
-          setFocusedLog(data[rowIdx] as LogData)
-        }}
-        noRowsFallback={
-          <div className="p-4">
-            <Typography.Text type="secondary" small className="font-mono">
-              No data returned from query
-            </Typography.Text>
-          </div>
-        }
-        columns={columns as any}
-        rowClass={(r) => {
-          if (!hasLogDataFormat) return 'cursor-pointer'
-          const row = r as LogData
-          return `${row.id === focusedLog?.id ? 'bg-green-800' : 'cursor-pointer'}`
-        }}
-        rows={logDataRows}
-        rowKeyGetter={(r) => {
-          if (!hasLogDataFormat) return Object.keys(r)[0]
-          const row = r as LogData
-          return row.id
-        }}
-        onRowClick={(r) => {
-          if (!hasLogDataFormat) return
-          const row = r as LogData
-          setFocusedLog(logMap[row.id])
-        }}
-      />
-      {focusedLog && (
-        <div className="w-2/5 flex flex-col">
-          <LogSelection onClose={() => setFocusedLog(null)} log={focusedLog} />
+    <>
+      <div
+        className="w-full bg-scale-300 rounded rounded-b-none border-t border-l border-r
+        flex items-center justify-between
+        px-5 py-2
+      "
+      >
+        <div className="flex items-center gap-2">
+          <span className="text-sm text-scale-1200">Query results</span>
+          <span className="text-sm text-scale-1100">4,256 log results</span>
         </div>
-      )}
-    </section>
+        <div className="flex items-center gap-2">
+          <Button type="default" icon={<IconEye />}>
+            Histogram
+          </Button>
+          <Button type="default" icon={<IconDownloadCloud />}>
+            Download
+          </Button>
+        </div>
+      </div>
+      <section className="flex flex-1 flex-row" style={{ maxHeight }}>
+        <DataGrid
+          style={{ height: '100%' }}
+          className="flex-grow flex-1"
+          onSelectedCellChange={({ idx, rowIdx }) => {
+            if (!hasLogDataFormat) return
+            setFocusedLog(data[rowIdx] as LogData)
+          }}
+          noRowsFallback={
+            <div className="p-4">
+              <Typography.Text type="secondary" small className="font-mono">
+                No data returned from query
+              </Typography.Text>
+            </div>
+          }
+          columns={columns as any}
+          rowClass={(r) => {
+            if (!hasLogDataFormat) return 'cursor-pointer'
+            const row = r as LogData
+            return `${row.id === focusedLog?.id ? 'bg-green-800' : 'cursor-pointer'}`
+          }}
+          rows={logDataRows}
+          rowKeyGetter={(r) => {
+            if (!hasLogDataFormat) return Object.keys(r)[0]
+            const row = r as LogData
+            return row.id
+          }}
+          onRowClick={(r) => {
+            if (!hasLogDataFormat) return
+            const row = r as LogData
+            setFocusedLog(logMap[row.id])
+          }}
+        />
+        {focusedLog && (
+          <div className="w-2/5 flex flex-col">
+            <LogSelection onClose={() => setFocusedLog(null)} log={focusedLog} />
+          </div>
+        )}
+      </section>
+    </>
   )
 }
 export default LogTable

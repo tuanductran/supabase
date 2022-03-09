@@ -31,7 +31,7 @@ import {
   LogData,
   LogSearchCallback,
   LOG_TYPE_LABEL_MAPPING,
-} from 'components/interfaces/Logs'
+} from 'components/interfaces/Settings/Logs'
 import { uuidv4 } from 'lib/helpers'
 import useSWRInfinite, { SWRInfiniteKeyLoader } from 'swr/infinite'
 import { isUndefined } from 'lodash'

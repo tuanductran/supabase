@@ -11,10 +11,15 @@ import {
   IconSearch,
   IconClock,
   Popover,
+  IconChevronRight,
+  IconSave,
+  IconPlay,
+  IconPlayCircle,
 } from '@supabase/ui'
 import { LogSearchCallback, LogTemplate } from '.'
 import dayjs from 'dayjs'
 import utc from 'dayjs/plugin/utc'
+import { uuidv4 } from 'lib/helpers'
 interface Props {
   defaultSearchValue?: string
   defaultFromValue?: string
@@ -28,8 +33,10 @@ interface Props {
   onSelectTemplate: (template: LogTemplate) => void
   isShowingEventChart: boolean
   onToggleEventChart: () => void
-  editorValue: string
   handleEditorSubmit: () => void
+  editorValue: string
+  setEditorValue: (x: string) => void
+  setEditorId: (x: any) => void
 }
 
 dayjs.extend(utc)
@@ -50,8 +57,10 @@ const LogPanel: FC<Props> = ({
   onSelectTemplate,
   isShowingEventChart,
   onToggleEventChart,
-  editorValue,
   handleEditorSubmit,
+  editorValue,
+  setEditorValue,
+  setEditorId,
 }) => {
   const [search, setSearch] = useState('')
   const [from, setFrom] = useState({ value: '', error: '' })
@@ -89,11 +98,18 @@ const LogPanel: FC<Props> = ({
 
   const showFromReset = from.value !== ''
   return (
-    <div className="bg-panel-header-light dark:bg-panel-header-dark">
-      <div className="px-2 py-1 flex items-center justify-between w-full">
+    <div
+      className="
+    border
+    border-panel-border-light dark:border-panel-border-dark rounded rounded-bl-none rounded-br-none
+    bg-panel-header-light dark:bg-panel-header-dark
+    
+    "
+    >
+      <div className="px-5 py-2 flex items-center justify-between w-full">
         <div className="flex flex-row gap-x-4 items-center">
-          <Button
-            type="text"
+          {/* <Button
+            type="default"
             icon={
               <div className="relative">
                 {newCount > 0 && (
@@ -119,7 +135,7 @@ const LogPanel: FC<Props> = ({
             onClick={onRefresh}
           >
             Refresh
-          </Button>
+          </Button> */}
           <Dropdown
             side="bottom"
             align="start"
@@ -129,7 +145,7 @@ const LogPanel: FC<Props> = ({
               </Dropdown.Item>
             ))}
           >
-            <Button as="span" type="text" iconRight={<IconChevronDown />}>
+            <Button as="span" type="default" iconRight={<IconChevronDown size={14} />}>
               Templates
             </Button>
           </Dropdown>
@@ -139,7 +155,7 @@ const LogPanel: FC<Props> = ({
             <Toggle size="tiny" checked={isCustomQuery} onChange={onCustomClick} />
           </div>
         </div>
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-6">
           {!isCustomQuery && (
             <>
               <div className="flex flex-row">
@@ -206,14 +222,16 @@ const LogPanel: FC<Props> = ({
                 }}
               >
                 <Input
+                  size="tiny"
                   placeholder="Search events"
                   onChange={(e) => setSearch(e.target.value)}
                   value={search}
+                  icon={<IconSearch size={14} />}
                   actions={[
                     search && (
                       <IconX
                         key="clear-search"
-                        size="tiny"
+                        size={14}
                         className="cursor-pointer mx-1"
                         title="Clear search"
                         onClick={() => setSearch('')}
@@ -221,16 +239,50 @@ const LogPanel: FC<Props> = ({
                     ),
 
                     <Button key="go" size="tiny" title="Go" type="default" onClick={handleSearch}>
-                      <IconSearch size={16} />
+                      <IconSearch size={12} />
                     </Button>,
                   ]}
                 />
-                <Button type={editorValue ? 'secondary' : 'text'} onClick={handleEditorSubmit}>
-                  Run
-                </Button>
               </form>
             </>
           )}
+          <div className="flex items-center gap-x-2">
+            {/* <Button type="default" icon={<IconSave size={14} />}>
+              Save
+            </Button> */}
+            {editorValue && (
+              <Button
+                type="default"
+                onClick={() => {
+                  setEditorValue('')
+                  setEditorId(uuidv4())
+                }}
+              >
+                Clear
+              </Button>
+            )}
+          </div>
+          <div className="flex items-center gap-x-2">
+            {editorValue && (
+              <Button
+                iconRight={<IconPlay strokeWidth={2} size={14} />}
+                type="alternative"
+                onClick={() => {
+                  setEditorValue('')
+                  setEditorId(uuidv4())
+                }}
+              >
+                Stream logs
+              </Button>
+            )}
+            <Button
+              iconRight={<IconPlay strokeWidth={2} size={14} />}
+              type={editorValue ? 'primary' : 'default'}
+              onClick={handleEditorSubmit}
+            >
+              Run
+            </Button>
+          </div>
         </div>
       </div>
     </div>
