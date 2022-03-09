@@ -34,3 +34,12 @@ export interface Logs {
   count: number
   error: any
 }
+
+export interface LogsWrapper {
+  type: QueryType
+  mode: Mode
+}
+
+export type QueryType = 'api' | 'database' | 'sql'
+
+export type Mode = 'simple' | 'custom'

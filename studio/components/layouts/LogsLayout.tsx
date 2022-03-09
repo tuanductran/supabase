@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite'
 import { useStore, withAuth } from 'hooks'
 import { IconCode, IconList, IconSlash, Tabs } from '@supabase/ui'
 import { Tab } from '@headlessui/react'
-import FunctionsNav from './LogsNav'
+import FunctionsNav from '../interfaces/Settings/Logs/LogsNav'
 import React from 'react'
 
 const PageLayout = ({ children }: { children?: React.ReactNode }) => {

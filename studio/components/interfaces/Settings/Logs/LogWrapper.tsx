@@ -12,6 +12,7 @@ import {
   IconInfo,
   Card,
   Loading,
+  Alert,
 } from '@supabase/ui'
 
 import { withAuth } from 'hooks'
@@ -37,6 +38,10 @@ import { isUndefined } from 'lodash'
 import dayjs from 'dayjs'
 import InformationBox from 'components/ui/InformationBox'
 
+import LogsLayout from 'components/layouts/LogsLayout'
+
+import { LogsWrapper } from './Logs.types'
+
 /**
  * Acts as a container component for the entire log display
  *
@@ -48,16 +53,19 @@ import InformationBox from 'components/ui/InformationBox'
  * - `s` for search query.
  * - `te` for timestamp start value.
  */
-export const LogPage: NextPage = () => {
+export const LogWrapper = ({ type, mode }: LogsWrapper) => {
   const router = useRouter()
-  const { ref, type, q, s, te } = router.query
+  const { ref, q, s, te } = router.query
   const [editorId, setEditorId] = useState<string>(uuidv4())
   const [editorValue, setEditorValue] = useState('')
   const [showChart, setShowChart] = useState(true)
-  const [mode, setMode] = useState<'simple' | 'custom'>('simple')
+
+  // ! custom is SQL only logging !
+  // const [mode, setMode] = useState<'simple' | 'custom'>('custom')
+
   const [latestRefresh, setLatestRefresh] = useState<string>(new Date().toISOString())
   const [params, setParams] = useState({
-    type: '',
+    type: type,
     search_query: '',
     sql: '',
     where: '',
@@ -65,17 +73,19 @@ export const LogPage: NextPage = () => {
     timestamp_end: '',
   })
   const title = `Logs - ${LOG_TYPE_LABEL_MAPPING[type as keyof typeof LOG_TYPE_LABEL_MAPPING]}`
+
   const checkIfSelectQuery = (value: string) =>
-    value.toLowerCase().includes('select') ? true : false
+    value && value.toLowerCase().includes('select') ? true : false
+
   const isSelectQuery = checkIfSelectQuery(editorValue)
 
   useEffect(() => {
-    setParams({ ...params, type: type as string })
+    setParams({ ...params, type: type })
   }, [type])
 
   useEffect(() => {
     // on mount, set initial values
-    if (q) {
+    if (mode === 'custom') {
       onSelectTemplate({
         mode: 'custom',
         searchString: q as string,
@@ -91,7 +101,22 @@ export const LogPage: NextPage = () => {
     } else {
       setParams((prev) => ({ ...prev, timestamp_end: '' }))
     }
-  }, [])
+  }, [mode, type])
+
+  // useEffect(() => {
+  //   // resets the params
+  //   // whenever the type or custom SQL is toggled
+  //   setParams({
+  //     type: type,
+  //     search_query: '',
+  //     sql: '',
+  //     where: '',
+  //     timestamp_start: '',
+  //     timestamp_end: '',
+  //   })
+
+  //   getKeyLogs()
+  // }, [mode, type])
 
   const genQueryParams = (params: { [k: string]: string }) => {
     // remove keys which are empty strings, null, or undefined
@@ -104,6 +129,7 @@ export const LogPage: NextPage = () => {
     const qs = new URLSearchParams(params).toString()
     return qs
   }
+
   // handle log fetching
   const getKeyLogs: SWRInfiniteKeyLoader = (_pageIndex: number, prevPageData) => {
     let queryParams
@@ -122,8 +148,11 @@ export const LogPage: NextPage = () => {
     }
 
     const logUrl = `${API_URL}/projects/${ref}/logs?${queryParams}`
+
+    console.log('logUrl', logUrl)
     return logUrl
   }
+
   const {
     data = [],
     error: swrError,
@@ -132,8 +161,11 @@ export const LogPage: NextPage = () => {
     size,
     setSize,
   } = useSWRInfinite<Logs>(getKeyLogs, get, { revalidateOnFocus: false })
+
   let logData: LogData[] = []
+
   let error: null | string = swrError ? swrError.message : null
+
   data.forEach((response: Logs) => {
     if (!error && response && response.data) {
       logData = [...logData, ...response.data]
@@ -148,7 +180,9 @@ export const LogPage: NextPage = () => {
     count: String(true),
     period_start: String(latestRefresh),
   })}`
+
   const { data: countData } = useSWR<Count>(countUrl, get, { refreshInterval: 5000 })
+
   const newCount = countData?.data?.[0]?.count ?? 0
 
   const handleRefresh = () => {
@@ -164,17 +198,7 @@ export const LogPage: NextPage = () => {
     setSize(1)
   }
 
-  const handleModeToggle = () => {
-    if (mode === 'simple') {
-      setMode('custom')
-      // setWhere(DEFAULT_QUERY)
-    } else {
-      setMode('simple')
-    }
-  }
-
   const onSelectTemplate = (template: LogTemplate) => {
-    setMode(template.mode)
     if (template.mode === 'simple') {
       setParams((prev) => ({ ...prev, search_query: template.searchString, sql: '', where: '' }))
     } else {
@@ -193,6 +217,7 @@ export const LogPage: NextPage = () => {
       setEditorId(uuidv4())
     }
   }
+
   const handleEditorSubmit = () => {
     setParams((prev) => ({
       ...prev,
@@ -200,6 +225,7 @@ export const LogPage: NextPage = () => {
       sql: isSelectQuery ? cleanEditorValue(editorValue) : '',
       search_query: '',
     }))
+
     router.push({
       pathname: router.pathname,
       query: {
@@ -210,6 +236,7 @@ export const LogPage: NextPage = () => {
       },
     })
   }
+
   const handleSearch: LogSearchCallback = ({ query, from, fromMicro }) => {
     const unixMicro = fromMicro ? fromMicro : dayjs(from).valueOf() * 1000
     setParams((prev) => ({
@@ -230,13 +257,15 @@ export const LogPage: NextPage = () => {
     })
     setEditorValue('')
   }
+
   const cleanEditorValue = (value: string) => {
     if (typeof value !== 'string') return value
     return value.replace(/\n/g, ' ')
   }
+
   return (
-    <SettingsLayout title={title}>
-      <div className="h-full flex flex-col flex-grow">
+    <div className="h-full flex flex-col flex-grow space-y-4">
+      <div>
         <LogPanel
           isShowingEventChart={showChart}
           onToggleEventChart={() => setShowChart(!showChart)}
@@ -250,12 +279,23 @@ export const LogPage: NextPage = () => {
           defaultFromValue={
             params.timestamp_end ? dayjs(Number(params.timestamp_end) / 1000).toISOString() : ''
           }
-          onCustomClick={handleModeToggle}
+          // onCustomClick={handleModeToggle}
           onSelectTemplate={onSelectTemplate}
+          handleEditorSubmit={handleEditorSubmit}
+          editorValue={editorValue}
+          setEditorValue={setEditorValue}
+          setEditorId={setEditorId}
         />
         {mode === 'custom' && (
-          <React.Fragment>
-            <div className="min-h-[7rem] h-28">
+          <>
+            <div
+              className="
+                min-h-[7rem] h-40
+                border-l border-b border-r
+                border-panel-border-light dark:border-panel-border-dark
+                rounded-b overflow-hidden
+            "
+            >
               <CodeEditor
                 id={editorId}
                 language="pgsql"
@@ -264,93 +304,82 @@ export const LogPage: NextPage = () => {
                 onInputRun={handleRefresh}
               />
             </div>
-            <div className="flex flex-row justify-end items-center px-2 py-1 w-full">
-              {isSelectQuery && (
-                <InformationBox
-                  className="shrink mr-auto"
-                  block={false}
-                  size="tiny"
-                  icon={<IconInfo size="tiny" />}
-                  title={`Custom queries are restricted to a ${
-                    type === 'database' ? '2 hour' : '7 day'
-                  } querying window.`}
-                />
-              )}
-              <div className="flex flex-row gap-x-2 justify-end p-2">
-                {editorValue && (
-                  <Button
-                    type="text"
-                    onClick={() => {
-                      setEditorValue('')
-                      setEditorId(uuidv4())
-                    }}
-                  >
-                    Clear
-                  </Button>
-                )}
-                <Button type={editorValue ? 'secondary' : 'text'} onClick={handleEditorSubmit}>
-                  Run
-                </Button>
-              </div>
-            </div>
-          </React.Fragment>
+            {/* <div className="flex flex-row justify-end items-center px-2 py-1 w-full"> */}
+            {/* </div> */}
+          </>
         )}
-        {showChart && mode !== 'custom' && (
-          <div>
-            <LogEventChart
-              data={!isValidating ? logData : undefined}
-              onBarClick={(timestampMicro) => {
-                handleSearch({ query: params.search_query, fromMicro: timestampMicro })
-              }}
-            />
+      </div>
+      {isSelectQuery && (
+        <Alert
+          variant="warning"
+          withIcon
+          title={`Custom queries are restricted to a ${
+            type === 'database' ? '2 hour' : '7 day'
+          } querying window.`}
+        >
+          <div className="flex flex-col gap-3">
+            <span>You will need to upgrade this project if you wush to extend the restriction</span>
+            <div>
+              <Button type="default">Upgrade project</Button>
+            </div>
+          </div>
+        </Alert>
+      )}
+      {showChart && mode !== 'custom' && (
+        <div>
+          <LogEventChart
+            data={!isValidating ? logData : undefined}
+            onBarClick={(timestampMicro) => {
+              handleSearch({ query: params.search_query, fromMicro: timestampMicro })
+            }}
+          />
+        </div>
+      )}
+      <div className="flex flex-col flex-grow relative">
+        {isValidating && (
+          <div
+            className={[
+              'absolute top-0 w-full h-full flex items-center justify-center',
+              'bg-gray-100 opacity-75 z-50',
+            ].join(' ')}
+          >
+            <IconLoader className="animate-spin" />
           </div>
         )}
-        <div className="flex flex-col flex-grow relative">
-          {isValidating && (
-            <div
-              className={[
-                'absolute top-0 w-full h-full flex items-center justify-center',
-                'bg-gray-100 opacity-75 z-50',
-              ].join(' ')}
-            >
-              <IconLoader className="animate-spin" />
-            </div>
-          )}
 
-          <LogTable data={logData} isCustomQuery={mode === 'custom'} />
-          {/* Footer section of log ui, appears below table */}
-          <div className="p-2">
-            {!isSelectQuery && (
-              <Button onClick={() => setSize(size + 1)} icon={<IconRewind />} type="default">
-                Load older
-              </Button>
-            )}
-          </div>
-
-          {error && (
-            <div className="flex w-full h-full justify-center items-center mx-auto">
-              <Card className="flex flex-col gap-y-2  w-1/3">
-                <div className="flex flex-row gap-x-2 py-2">
-                  <IconAlertCircle size={16} />
-                  <Typography.Text type="secondary">
-                    Sorry! An error occured when fetching data.
-                  </Typography.Text>
-                </div>
-                <details className="cursor-pointer">
-                  <summary>
-                    <Typography.Text type="secondary">Error Message</Typography.Text>
-                  </summary>
-                  <Typography.Text className="block whitespace-pre-wrap" small code type="warning">
-                    {JSON.stringify(error, null, 2)}
-                  </Typography.Text>
-                </details>
-              </Card>
-            </div>
+        <LogTable data={logData} isCustomQuery={mode === 'custom'} />
+        {/* Footer section of log ui, appears below table */}
+        <div className="p-2">
+          {!isSelectQuery && (
+            <Button onClick={() => setSize(size + 1)} icon={<IconRewind />} type="default">
+              Load older
+            </Button>
           )}
         </div>
+
+        {error && (
+          <div className="flex w-full h-full justify-center items-center mx-auto">
+            <Card className="flex flex-col gap-y-2  w-1/3">
+              <div className="flex flex-row gap-x-2 py-2">
+                <IconAlertCircle size={16} />
+                <Typography.Text type="secondary">
+                  Sorry! An error occured when fetching data.
+                </Typography.Text>
+              </div>
+              <details className="cursor-pointer">
+                <summary>
+                  <Typography.Text type="secondary">Error Message</Typography.Text>
+                </summary>
+                <Typography.Text className="block whitespace-pre-wrap" small code type="warning">
+                  {JSON.stringify(error, null, 2)}
+                </Typography.Text>
+              </details>
+            </Card>
+          </div>
+        )}
       </div>
-    </SettingsLayout>
+    </div>
   )
 }
 
-export default withAuth(observer(LogPage))
+export default LogWrapper

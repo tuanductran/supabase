@@ -108,7 +108,41 @@ const LogPanel: FC<Props> = ({
     >
       <div className="px-5 py-2 flex items-center justify-between w-full">
         <div className="flex flex-row gap-x-4 items-center">
-          {/* <Button
+          {!isCustomQuery && (
+            <form
+              id="log-panel-search"
+              onSubmit={(e) => {
+                // prevent redirection
+                e.preventDefault()
+                handleSearch()
+              }}
+            >
+              <Input
+                className="w-60"
+                size="tiny"
+                placeholder="Search events"
+                onChange={(e) => setSearch(e.target.value)}
+                value={search}
+                icon={<IconSearch size={14} />}
+                actions={[
+                  search && (
+                    <IconX
+                      key="clear-search"
+                      size={14}
+                      className="cursor-pointer mx-1"
+                      title="Clear search"
+                      onClick={() => setSearch('')}
+                    />
+                  ),
+
+                  <Button key="go" size="tiny" title="Go" type="default" onClick={handleSearch}>
+                    <IconSearch size={12} />
+                  </Button>,
+                ]}
+              />
+            </form>
+          )}
+          <Button
             type="default"
             icon={
               <div className="relative">
@@ -135,25 +169,22 @@ const LogPanel: FC<Props> = ({
             onClick={onRefresh}
           >
             Refresh
-          </Button> */}
-          <Dropdown
-            side="bottom"
-            align="start"
-            overlay={templates.map((template: LogTemplate) => (
-              <Dropdown.Item key={template.label} onClick={() => onSelectTemplate(template)}>
-                <Typography.Text>{template.label}</Typography.Text>
-              </Dropdown.Item>
-            ))}
-          >
-            <Button as="span" type="default" iconRight={<IconChevronDown size={14} />}>
-              Templates
-            </Button>
-          </Dropdown>
-
-          <div className="flex items-center space-x-2">
-            <p className="text-xs">Search logs via query</p>
-            <Toggle size="tiny" checked={isCustomQuery} onChange={onCustomClick} />
-          </div>
+          </Button>
+          {isCustomQuery && (
+            <Dropdown
+              side="bottom"
+              align="start"
+              overlay={templates.map((template: LogTemplate) => (
+                <Dropdown.Item key={template.label} onClick={() => onSelectTemplate(template)}>
+                  <Typography.Text>{template.label}</Typography.Text>
+                </Dropdown.Item>
+              ))}
+            >
+              <Button as="span" type="default" iconRight={<IconChevronDown size={14} />}>
+                Templates
+              </Button>
+            </Dropdown>
+          )}
         </div>
         <div className="flex items-center gap-x-6">
           {!isCustomQuery && (
@@ -213,37 +244,6 @@ const LogPanel: FC<Props> = ({
                 </div>
               )}
               {/* wrap with form so that if user presses enter, the search value will submit automatically */}
-              <form
-                id="log-panel-search"
-                onSubmit={(e) => {
-                  // prevent redirection
-                  e.preventDefault()
-                  handleSearch()
-                }}
-              >
-                <Input
-                  size="tiny"
-                  placeholder="Search events"
-                  onChange={(e) => setSearch(e.target.value)}
-                  value={search}
-                  icon={<IconSearch size={14} />}
-                  actions={[
-                    search && (
-                      <IconX
-                        key="clear-search"
-                        size={14}
-                        className="cursor-pointer mx-1"
-                        title="Clear search"
-                        onClick={() => setSearch('')}
-                      />
-                    ),
-
-                    <Button key="go" size="tiny" title="Go" type="default" onClick={handleSearch}>
-                      <IconSearch size={12} />
-                    </Button>,
-                  ]}
-                />
-              </form>
             </>
           )}
           <div className="flex items-center gap-x-2">
@@ -262,27 +262,30 @@ const LogPanel: FC<Props> = ({
               </Button>
             )}
           </div>
-          <div className="flex items-center gap-x-2">
-            {editorValue && (
+          {isCustomQuery && (
+            <div className="flex items-center gap-x-2">
+              {editorValue && (
+                <Button
+                  iconRight={<IconPlay strokeWidth={2} size={14} />}
+                  type="alternative"
+                  onClick={() => {
+                    setEditorValue('')
+                    setEditorId(uuidv4())
+                  }}
+                >
+                  Stream logs
+                </Button>
+              )}
               <Button
                 iconRight={<IconPlay strokeWidth={2} size={14} />}
-                type="alternative"
-                onClick={() => {
-                  setEditorValue('')
-                  setEditorId(uuidv4())
-                }}
+                type={editorValue ? 'primary' : 'default'}
+                onClick={handleEditorSubmit}
+                loading={isLoading}
               >
-                Stream logs
+                Run
               </Button>
-            )}
-            <Button
-              iconRight={<IconPlay strokeWidth={2} size={14} />}
-              type={editorValue ? 'primary' : 'default'}
-              onClick={handleEditorSubmit}
-            >
-              Run
-            </Button>
-          </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
