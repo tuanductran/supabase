@@ -43,3 +43,5 @@ export interface LogsWrapper {
 export type QueryType = 'api' | 'database' | 'functions' | 'fn_edge' | 'sql'
 
 export type Mode = 'simple' | 'custom'
+
+export type Table = 'edge_logs' | 'postgres_logs'

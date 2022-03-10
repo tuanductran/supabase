@@ -38,7 +38,7 @@ const SourceSwitcher = ({
   setMode: (string: Mode) => void
 }) => {
   return (
-    <div className="px-8 absolute top-8 left-10 bg-amber-200 border border-amber-500 rounded p-3 text-scale-900 mb-4 flex gap-4 items-center z-40">
+    <div className="px-8 bg-amber-200 border border-amber-500 rounded p-3 text-scale-900 mb-4 flex gap-4 items-center z-40">
       <h3 className="text-base font-semibold text-scale-1200">
         This is for development, not for production!
       </h3>

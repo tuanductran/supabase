@@ -72,7 +72,7 @@ module.exports = ui({
     // },
     borderColor: (theme) => ({
       ...theme('colors'),
-      DEFAULT: 'var(--colors-scale5)',
+      DEFAULT: 'var(--colors-scale6)',
       dark: 'var(--colors-scale4)',
     }),
     divideColor: (theme) => ({

@@ -92,7 +92,7 @@ export const generateOtherRoutes = (ref: string) => {
             key: 'logs',
             label: 'Logs',
             icon: <IconList size={18} strokeWidth={2} />,
-            link: `/project/${ref}/logs/database`,
+            link: `/project/${ref}/logs`,
           },
         ]
       : []),

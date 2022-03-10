@@ -101,7 +101,7 @@ const LogPanel: FC<Props> = ({
     onSearch({ query: search, from: '' })
   }
 
-  const handleSearch = () => onSearch({ query: search, from: from.value })
+  const handleSearch = (value: string) => onSearch({ query: value, from: from.value })
 
   const showFromReset = from.value !== ''
 
@@ -200,55 +200,81 @@ const LogPanel: FC<Props> = ({
     </div>
   )
 
-  const SimplePanelLayout = () => (
-    <div className="flex justify-between">
-      <div className="flex items-center gap-6">
-        <div className="flex items-center gap-2">
-          <form
-            id="log-panel-search"
-            onSubmit={(e) => {
-              // prevent redirection
-              e.preventDefault()
-              handleSearch()
-            }}
-          >
-            <Input
-              className="w-60"
-              size="tiny"
-              placeholder="Search events"
-              onChange={(e) => setSearch(e.target.value)}
-              value={search}
-              icon={<IconSearch size={14} />}
-              actions={[
-                search && (
-                  <IconX
-                    key="clear-search"
-                    size={14}
-                    className="cursor-pointer mx-1"
-                    title="Clear search"
-                    onClick={() => setSearch('')}
-                  />
-                ),
+  const SimplePanelLayout = () => {
+    const [localSearchValue, setlocalSearchValue] = useState(search)
 
-                <Button key="go" size="tiny" title="Go" type="default" onClick={handleSearch}>
-                  <IconSearch size={12} />
-                </Button>,
-              ]}
-            />
-          </form>
-          <ResetButton />
+    const hasEdits = localSearchValue !== search
+
+    return (
+      <div className="flex justify-between">
+        <div className="flex items-center gap-6">
+          <div className="flex items-center gap-2">
+            <form
+              id="log-panel-search"
+              onSubmit={(e) => {
+                // prevent redirection
+                e.preventDefault()
+                setSearch(localSearchValue)
+                handleSearch(localSearchValue)
+              }}
+            >
+              <Input
+                className="w-60"
+                size="tiny"
+                placeholder="Search events"
+                onChange={(e) => setlocalSearchValue(e.target.value)}
+                onBlur={(e: React.FocusEvent<HTMLInputElement>) => {
+                  setSearch(e.target.value)
+                  handleSearch(localSearchValue)
+                }}
+                icon={
+                  <div className="text-scale-900">
+                    <IconSearch size={14} />
+                  </div>
+                }
+                value={localSearchValue}
+                actions={
+                  hasEdits && (
+                    <button
+                      onClick={() => handleSearch(localSearchValue)}
+                      className="text-scale-1100 hover:text-scale-1200 mx-2"
+                    >
+                      {'↲'}
+                    </button>
+                  )
+                }
+                // icon={<IconSearch size={14} />}
+                // actions={[
+                //   search && (
+                //     <IconX
+                //       key="clear-search"
+                //       size={14}
+                //       className="cursor-pointer mx-1"
+                //       title="Clear search"
+                //       onClick={() => setSearch('')}
+                //     />
+                //   ),
+
+                //   <Button key="go" size="tiny" title="Go" type="default" onClick={handleSearch}>
+                //     <IconSearch size={12} />
+                //   </Button>,
+                // ]}
+              />
+            </form>
+            <ResetButton />
+          </div>
+          <div className="flex">
+            <DateRange />
+          </div>
         </div>
-        <div className="flex">
-          <DateRange />
+        <div>
+          <Button type="secondary" icon={<IconExternalLink />}>
+            Open logs
+          </Button>
         </div>
       </div>
-      <div>
-        <Button type="secondary" icon={<IconExternalLink />}>
-          Open logs
-        </Button>
-      </div>
-    </div>
-  )
+    )
+  }
 
   if (mode === 'custom') {
     return <CustomPanelLayout />

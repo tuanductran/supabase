@@ -154,7 +154,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
 
     const logUrl = `${API_URL}/projects/${ref}/analytics/endpoints/logs.${type}?${queryParams}`
 
-    console.log('logUrl', logUrl)
+    // console.log('logUrl', logUrl)
     return logUrl
   }
 
@@ -252,6 +252,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
 
   const handleSearch: LogSearchCallback = ({ query, from, fromMicro }) => {
     const unixMicro = fromMicro ? fromMicro : dayjs(from).valueOf() * 1000
+
     setParams((prev) => ({
       ...prev,
       search_query: query || '',
@@ -259,6 +260,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
       where: '',
       sql: '',
     }))
+
     router.push({
       pathname: router.pathname,
       query: {
@@ -324,6 +326,7 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
           </>
         )}
       </div>
+
       {isSelectQuery && (
         <Alert
           variant="warning"
@@ -352,51 +355,55 @@ export const LogWrapper = ({ type, mode }: LogsWrapper) => {
         </div>
       )} */}
 
-      <div className="flex flex-col flex-grow relative">
+      <div className={'flex flex-col flex-grow relative'}>
         {isValidating && (
           <div
             className={[
-              'absolute top-0 w-full h-full flex items-center justify-center',
-              'bg-gray-100 opacity-75 z-50',
+              'absolute w-full flex justify-center top-16',
+              'z-50',
+              'flex items-center gap-2',
             ].join(' ')}
           >
             <IconLoader className="animate-spin" />
+            <span>Fetching logs...</span>
           </div>
         )}
 
-        <LogTable data={logData} isCustomQuery={mode === 'custom'} />
-        {/* Footer section of log ui, appears below table */}
-        <div className="p-2">
-          {!isSelectQuery && (
-            <Button onClick={() => setSize(size + 1)} icon={<IconRewind />} type="default">
-              Load older
-            </Button>
+        <div className={'flex flex-col flex-grow h-full ' + (isValidating ? 'opacity-30' : '')}>
+          <LogTable data={logData} isCustomQuery={mode === 'custom'} queryType={type} />
+          {/* Footer section of log ui, appears below table */}
+          <div className="p-2">
+            {!isSelectQuery && (
+              <Button onClick={() => setSize(size + 1)} icon={<IconRewind />} type="default">
+                Load older
+              </Button>
+            )}
+          </div>
+
+          {error && (
+            <div className="flex w-full h-full justify-center items-center mx-auto">
+              <Card className="flex flex-col gap-y-2 w-2/5 bg-scale-400">
+                <div className="flex flex-row gap-x-2 py-2">
+                  <IconAlertCircle size={16} />
+                  <Typography.Text type="secondary">
+                    Sorry! An error occured when fetching data.
+                  </Typography.Text>
+                </div>
+                <details className="cursor-pointer">
+                  <summary>
+                    <Typography.Text type="secondary">Error Message</Typography.Text>
+                  </summary>
+                  <Input.TextArea
+                    label="Error Messages"
+                    value={JSON.stringify(error, null, 2)}
+                    borderless
+                    className=" border-t-2 border-scale-800 pt-2 font-mono"
+                  />
+                </details>
+              </Card>
+            </div>
           )}
         </div>
-
-        {error && (
-          <div className="flex w-full h-full justify-center items-center mx-auto">
-            <Card className="flex flex-col gap-y-2 w-2/5 bg-scale-400">
-              <div className="flex flex-row gap-x-2 py-2">
-                <IconAlertCircle size={16} />
-                <Typography.Text type="secondary">
-                  Sorry! An error occured when fetching data.
-                </Typography.Text>
-              </div>
-              <details className="cursor-pointer">
-                <summary>
-                  <Typography.Text type="secondary">Error Message</Typography.Text>
-                </summary>
-                <Input.TextArea
-                  label="Error Messages"
-                  value={JSON.stringify(error, null, 2)}
-                  borderless
-                  className=" border-t-2 border-scale-800 pt-2 font-mono"
-                />
-              </details>
-            </Card>
-          </div>
-        )}
       </div>
     </div>
   )

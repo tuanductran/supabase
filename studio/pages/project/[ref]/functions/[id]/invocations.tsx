@@ -16,7 +16,7 @@ export const LogPage: NextPage = () => {
   return (
     <>
       <FunctionLayout>
-        <LogWrapper type={'functions'} mode={'simple'} />
+        <LogWrapper type={'fn_edge'} mode={'simple'} />
       </FunctionLayout>
     </>
   )

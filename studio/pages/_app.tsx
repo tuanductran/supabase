@@ -6,6 +6,7 @@ import 'styles/stripe.scss'
 import 'styles/toast.scss'
 import 'styles/code.scss'
 import 'styles/monaco.scss'
+import 'styles/react-data-grid-logs.scss'
 import 'styles/contextMenu.scss'
 
 import Head from 'next/head'
