@@ -154,3 +154,34 @@ export const SeverityFormatter = ({ value }: any) => {
 export const HeaderFormmater = ({ value }: any) => {
   return <div className="text-scale-900 font-normal flex items-center text-xs h-full">{value}</div>
 }
+
+/*
+ * JSON Syntax Highlighter
+ *
+ * for http response codes
+ */
+
+export function jsonSyntaxHighlight(json: string) {
+  json = JSON.stringify(json, null, 2)
+  json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+  const newJseon = json.replace(
+    /("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g,
+    function (match) {
+      var cls = 'number text-tomato-900'
+      if (/^"/.test(match)) {
+        if (/:$/.test(match)) {
+          cls = 'key text-scale-1100'
+        } else {
+          cls = 'string text-brand-900'
+        }
+      } else if (/true|false/.test(match)) {
+        cls = 'boolean text-amber-900'
+      } else if (/null/.test(match)) {
+        cls = 'null text-red-900'
+      }
+      return '<span class="' + cls + '">' + match + '</span>'
+    }
+  )
+  console.log('output', newJseon)
+  return newJseon
+}

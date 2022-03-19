@@ -7,6 +7,7 @@ interface Props {
   defaultValue: string
   readOnly?: boolean
   onInputChange: (value: any) => void
+  className?: string
 }
 
 const JsonEditor: FC<Props> = ({
@@ -14,6 +15,7 @@ const JsonEditor: FC<Props> = ({
   defaultValue = '',
   readOnly = false,
   onInputChange = (value) => {},
+  className,
 }) => {
   const monaco = useMonaco()
   const editorRef = useRef()
@@ -60,7 +62,7 @@ const JsonEditor: FC<Props> = ({
 
   return (
     <Editor
-      className="monaco-editor"
+      className={className || 'monaco-editor'}
       theme="vs-dark"
       defaultLanguage={'json'}
       defaultValue={defaultValue}

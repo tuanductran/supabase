@@ -26,6 +26,8 @@ const LogTable = ({ isCustomQuery, data = [], queryType }: Props) => {
 
   // console.log('focusedLog', focusedLog)
 
+  isCustomQuery = false
+
   // whether the data structure is LogData format.
   // const hasLogDataFormat =
   //   columnNames.includes('timestamp') &&
@@ -63,27 +65,6 @@ const LogTable = ({ isCustomQuery, data = [], queryType }: Props) => {
     })
   )
 
-  function parseResponseCode(value: number) {
-    const split = value.toString().split('')[0]
-    switch (split) {
-      case '2':
-        return 'success'
-        break
-      case '5':
-        return 'error'
-        break
-      case '4':
-        return 'warning'
-        break
-      case '4':
-        return 'normal'
-        break
-
-      default:
-        break
-    }
-  }
-
   let columns
 
   switch (queryType) {
@@ -104,15 +85,17 @@ const LogTable = ({ isCustomQuery, data = [], queryType }: Props) => {
           name: 'timestamp',
           formatter: (data: any) => (
             <span className="flex w-full h-full items-center gap-1">
-              <span className="text-xs">{dayjs(data?.row?.timestamp).format('DD MMM')}</span>
-              <span className="text-xs">{dayjs(data?.row?.timestamp).format('HH:mm:ss')}</span>
+              <span className="text-xs">{dayjs(data?.row?.timestamp / 1000).format('DD MMM')}</span>
+              <span className="text-xs">
+                {dayjs(data?.row?.timestamp / 1000).format('HH:mm:ss')}
+              </span>
               {/* {data?.row?.timestamp} */}
             </span>
           ),
           width: 128,
         },
         {
-          key: 'status',
+          key: 'status_code',
           headerRenderer: () => <HeaderFormmater value={'Status'} />,
           name: 'status_code',
           formatter: (data: any) => (
@@ -153,10 +136,10 @@ const LogTable = ({ isCustomQuery, data = [], queryType }: Props) => {
           formatter: (data: any) => (
             <span className="flex w-full h-full items-center gap-1">
               <span className="text-xs !text-scale-1100">
-                {dayjs(data?.row?.timestamp).format('DD MMM')}
+                {dayjs(data?.row?.timestamp / 1000).format('DD MMM')}
               </span>
               <span className="text-xs !text-scale-1100">
-                {dayjs(data?.row?.timestamp).format('HH:mm:ss')}
+                {dayjs(data?.row?.timestamp / 1000).format('HH:mm:ss')}
               </span>
               {/* {data?.row?.timestamp} */}
             </span>
@@ -204,6 +187,10 @@ const LogTable = ({ isCustomQuery, data = [], queryType }: Props) => {
   }, [stringData])
 
   if (!data) return null
+
+  console.log(data)
+  console.log('logMap', logMap)
+  console.log(columns)
 
   // [Joshen] Hmm quite hacky now, but will do
   const maxHeight = isCustomQuery ? 'calc(100vh - 42px - 10rem)' : 'calc(100vh - 42px - 3rem)'

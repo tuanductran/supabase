@@ -3,6 +3,8 @@ import { FC } from 'react'
 import { Typography, IconX, Input } from '@supabase/ui'
 
 import { LogData } from './Logs.types'
+import JsonEditor from 'components/interfaces/TableGridEditor/SidePanelEditor/RowEditor/JsonEditor/JsonCodeEditor'
+import { jsonSyntaxHighlight } from './LogsFomatters'
 
 interface Props {
   log: LogData
@@ -14,6 +16,19 @@ interface Props {
  */
 const LogSelection: FC<Props> = ({ log, onClose }) => {
   // console.log('log in selecion', log)
+
+  console.log('log selection in component', log)
+  // @ts-ignore
+  console.log('log response', log?.response)
+  // @ts-ignore
+  console.log('log request', log?.request)
+
+  // response highlight
+  // @ts-ignore
+  const response = log?.response ? jsonSyntaxHighlight(log.response) : ''
+
+  console.log('output', response)
+
   return (
     <div
       className={[
@@ -68,6 +83,37 @@ const LogSelection: FC<Props> = ({ log, onClose }) => {
                 />
               </div>
             </div>
+            <pre className="text-sm px-5">
+              <h3 className="text-xl text-scale-1200">Request</h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: log.request ? jsonSyntaxHighlight(log.request) : '',
+                }}
+              />
+            </pre>
+            <pre className="text-sm px-5">
+              <h3 className="text-xl text-scale-1200">Request</h3>
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: log.response ? jsonSyntaxHighlight(log.response) : '',
+                }}
+              />
+            </pre>
+          </div>
+          <div>
+            {/* <JsonEditor
+              className="logs-json"
+              readOnly
+              defaultValue={log.response ? JSON.stringify(log.response, null, 2) : ''}
+              onInputChange={() => {}}
+            />
+            <JsonEditor
+              className="logs-json"
+              readOnly
+              defaultValue={log.request ? JSON.stringify(log.request, null, 2) : ''}
+              onInputChange={() => {}}
+            />
+            <JsonEditor readOnly defaultValue={log.event_message} onInputChange={() => {}} /> */}
           </div>
         </>
       ) : (
