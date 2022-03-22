@@ -66,7 +66,7 @@ ALTER TABLE leaderboard ENABLE ROW LEVEL SECURITY;
 
 or via the Supabase Dashboard, by navigating to Auth > Policies, and clicking the red padlock on the leaderboard table, so that it turns white.
 
-![Enable row level security in Supabase](/img/auth-deep-dive-2.png)
+![Enable row level security in Supabase](/img/learn/row-level-security/auth-deep-dive-2.png)
 
 You'll notice that both reading and writing now fail with an error like:
 
@@ -106,7 +106,7 @@ Other available functions for use here include: `auth.email()` and `auth.uid()` 
 
 If you'd prefer to use the dashboard to add your policy you can do so by clicking "Add Policy" in the Policies tab and making a policy like this:
 
-![Add a read only policy in Supabase](/img/auth-deep-dive-2-2.png)
+![Add a read only policy in Supabase](/img/learn/row-level-security/auth-deep-dive-2-2.png)
 
 You should now be able to read from your leaderboard, but will still not be able to write, update, or delete from it, which is exactly what we wanted!
 
