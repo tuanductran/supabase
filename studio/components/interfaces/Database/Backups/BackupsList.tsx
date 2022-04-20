@@ -5,6 +5,7 @@ import { Typography, IconInfo } from '@supabase/ui'
 import { useStore } from 'hooks'
 import { STRIPE_PRODUCT_IDS } from 'lib/constants'
 import BackupItem from './BackupItem'
+import PhysicalBackupPanel from './PhysicalBackupPanel'
 import Loading from 'components/ui/Loading'
 import UpgradeToPro from 'components/ui/UpgradeToPro'
 import Panel from 'components/to-be-cleaned/Panel'
@@ -39,7 +40,7 @@ const BackupsList: FC<Props> = ({}) => {
   }
 
   // Data Loaded
-  const { backups, tierId } = projectData
+  const { backups, tierId, earliestPhysicalBackup, walgEnabled } = projectData
   const sortedBackups = backups.sort((a: any, b: any) => b.id - a.id)
 
   if (tierId === STRIPE_PRODUCT_IDS.FREE) {
@@ -75,6 +76,12 @@ const BackupsList: FC<Props> = ({}) => {
               return <BackupItem key={x.id} projectRef={projectRef} backup={x} index={i} />
             })}
         </Panel>
+      )}
+      {walgEnabled && (
+        <PhysicalBackupPanel
+          projectRef={projectRef}
+          earliestPhysicalBackup={earliestPhysicalBackup}
+        />
       )}
     </div>
   )
