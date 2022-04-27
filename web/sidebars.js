@@ -11,12 +11,13 @@ const dart = require('./sidebar_spec_dart')
 
 module.exports = {
   supabaseClient: [
-    {
-      type: 'category',
-      label: 'JavaScript',
-      collapsed: false,
-      items: supabaseClient.docs,
-    },
+    'reference/javascript/reference',
+    // {
+    //   type: 'category',
+    //   label: 'JavaScript',
+    //   collapsed: false,
+    //   items: supabaseClient.docs,
+    // },
     // {
     //   type: 'category',
     //   label: 'Postgres',

@@ -28,40 +28,32 @@ const Page = ({
   errors = '',
 }: PageParmas) =>
   `
----
-id: ${id}
-title: "${title}"
-slug: ${slug}
-custom_edit_url: ${EDIT_BASE_URL}/${specFileName}
----
-
-import Tabs from '@theme/Tabs';
-import TabItem from '@theme/TabItem';
+## ${title}
 
 ${description}
 
 ${spotlight}
 
-${parameters ? `## Parameters` : ''}
+${parameters ? `#### Parameters` : ''}
 
 ${parameters}
 
-${notes ? '## Notes' : ''}
+${notes ? '#### Notes' : ''}
 
 ${notes}
 
-${result ? `## Result` : ''}
+${result ? `#### Result` : ''}
 
 ${result}
 
-${errors ? `## Errors` : ''}
+${errors ? `#### Errors` : ''}
 
 ${errors}
 
-${examples.length > 0 ? '## Examples' : ''}
+${examples.length > 0 ? '#### Examples' : ''}
 
 ${examples.join(`\n\n`)}
 
-`.trim()
+`
 
 export default Page

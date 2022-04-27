@@ -44,11 +44,18 @@ export const slugify = (text) => {
 /**
  * writeToDisk()
  */
-export const writeToDisk = (fileName: string, content: any) => {
+export const writeToDisk = (fileName: string, content: any, append: boolean = false) => {
   return new Promise((resolve, reject) => {
-    fs.writeFile(fileName, content, (err) => {
-      if (err) return reject(err)
-      else return resolve(true)
-    })
+    if (append) {
+      fs.appendFile(fileName, content, (err) => {
+        if (err) return reject(err)
+        else return resolve(true)
+      })
+    } else {
+      fs.writeFile(fileName, content, (err) => {
+        if (err) return reject(err)
+        else return resolve(true)
+      })
+    }
   })
 }

@@ -81,8 +81,8 @@ async function gen(inputFileName, outputDir) {
       })
 
       // Write to disk
-      const dest = outputDir + `/${slug}.mdx`
-      await writeToDisk(dest, content)
+      const dest = outputDir + `/reference.mdx`
+      await writeToDisk(dest, content, true)
       console.log('Saved: ', dest)
     } catch (error) {
       console.error(error)
@@ -169,7 +169,12 @@ function generateExamples(id: string, specExamples: any, allLanguages: any) {
     let allTabs = example.hideCodeBlock
       ? ''
       : Tabs(id, allLanguages, generateTabs(allLanguages, example))
-    return Example({ name: example.name, description: example.description, tabs: allTabs, note: example.note })
+    return Example({
+      name: example.name,
+      description: example.description,
+      tabs: allTabs,
+      note: example.note,
+    })
   })
 }
 
