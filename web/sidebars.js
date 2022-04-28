@@ -10,8 +10,13 @@ const supabaseCli = require('./sidebar_spec_cli')
 const dart = require('./sidebar_spec_dart')
 
 module.exports = {
-  supabaseClient: [
-    'reference/javascript/reference',
+  reference: [
+    {
+      type: 'category',
+      label: 'Client Libraries',
+      collapsed: false,
+      items: ['reference', 'reference/javascript-reference'],
+    },
     // {
     //   type: 'category',
     //   label: 'JavaScript',
@@ -24,12 +29,12 @@ module.exports = {
     //   collapsed: false,
     //   items: postgres.docs,
     // },
-    {
-      type: 'category',
-      label: 'Dart',
-      collapsed: false,
-      items: dart.docs,
-    },
+    // {
+    //   type: 'category',
+    //   label: 'Dart',
+    //   collapsed: false,
+    //   items: dart.docs,
+    // },
     {
       type: 'category',
       label: 'CLI',

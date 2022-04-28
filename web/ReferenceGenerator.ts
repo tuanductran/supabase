@@ -50,11 +50,20 @@ async function gen(inputFileName, outputDir) {
   await writeToDisk(sidebarFileName, sidebar)
   console.log('Sidebar created: ', sidebarFileName)
 
+  const dest = outputDir + `.mdx`
+  await writeToDisk(
+    dest,
+    frontmatter({
+      id: `${docSpec.info.id}`,
+      slug: `${docSpec.info.slug}`,
+      title: `${docSpec.info.title}`,
+      specFileName: inputFileName,
+    })
+  )
+
   // Index Page
-  const indexFilename = outputDir + `/index.mdx`
   const index = generateDocsIndexPage(docSpec, inputFileName)
-  await writeToDisk(indexFilename, index)
-  console.log('The index was saved: ', indexFilename)
+  await writeToDisk(dest, index, true)
 
   // Generate Pages
   pages.forEach(async (pageSpec: OpenRef.Page) => {
@@ -75,13 +84,12 @@ async function gen(inputFileName, outputDir) {
         title: pageSpec.title || pageSpec.pageName,
         description,
         parameters: hasTsRef ? generateParameters(tsDefinition) : '',
-        spotlight: generateSpotlight(id, pageSpec['examples'] || [], allLanguages),
-        examples: generateExamples(id, pageSpec['examples'] || [], allLanguages),
+        spotlight: generateCodeBlocks(id, pageSpec['examples'] || [], docSpec.info.language, true),
+        examples: generateCodeBlocks(id, pageSpec['examples'] || [], docSpec.info.language, false),
         notes: pageSpec.notes,
       })
 
       // Write to disk
-      const dest = outputDir + `/reference.mdx`
       await writeToDisk(dest, content, true)
       console.log('Saved: ', dest)
     } catch (error) {
@@ -176,6 +184,19 @@ function generateExamples(id: string, specExamples: any, allLanguages: any) {
       note: example.note,
     })
   })
+}
+
+function generateCodeBlocks(id: string, specExamples: any, language: string, spotlight: boolean) {
+  return specExamples
+    .filter((x) => x.isSpotlight == spotlight)
+    .map((example) => {
+      return Example({
+        name: example.name,
+        description: example.description,
+        note: example.note,
+        codeBlock: example[language],
+      })
+    })
 }
 
 /**
@@ -274,3 +295,16 @@ function generateDocsIndexPage(docSpec: any, inputFileName: string) {
 // Run everything
 const argv = require('minimist')(process.argv.slice(2))
 main(argv['_'], argv)
+
+const EDIT_BASE_URL = 'https://github.com/supabase/supabase/edit/master/web'
+const frontmatter = ({ id, title, slug, specFileName }) => `---
+id: ${id}
+title: "${title}"
+slug: ${slug}
+custom_edit_url: ${EDIT_BASE_URL}/${specFileName}
+---
+
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+`
