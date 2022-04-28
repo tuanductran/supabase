@@ -1,8 +1,7 @@
-const EDIT_BASE_URL = 'https://github.com/supabase/supabase/edit/master/web'
-
 type PageParmas = {
   id: string
   title: string
+  titleSize?: 'h2' | 'h3'
   slug: string
   specFileName: string
   description?: string
@@ -17,6 +16,7 @@ type PageParmas = {
 const Page = ({
   id,
   title,
+  titleSize = 'h3',
   slug,
   specFileName,
   description = '',
@@ -28,7 +28,7 @@ const Page = ({
   errors = '',
 }: PageParmas) =>
   `
-## ${title}
+${titleSize === 'h2' ? `## ${title}` : `### ${title}`}
 
 ${description}
 
@@ -54,6 +54,10 @@ ${examples.length > 0 ? '#### Examples' : ''}
 
 ${examples.join(`\n\n`)}
 
+
+<br />
+<br />
+<br />
 `
 
 export default Page

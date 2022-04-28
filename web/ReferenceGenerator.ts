@@ -81,6 +81,7 @@ async function gen(inputFileName, outputDir) {
       id: slug,
       specFileName: inputFileName,
       title: pageSpec.title || pageSpec.pageName,
+      titleSize: pageSpec.titleSize || 'h3',
       description,
       parameters: hasTsRef ? generateParameters(tsDefinition) : '',
       spotlight: generateSpotlight(id, pageSpec['examples'] || [], docSpec.info.language),
