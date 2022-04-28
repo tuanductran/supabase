@@ -66,31 +66,37 @@ async function gen(inputFileName, outputDir) {
   await writeToDisk(dest, index, true)
 
   // Generate Pages
-  pages.forEach(async (pageSpec: OpenRef.Page) => {
+  const content = pages.map(async (pageSpec: OpenRef.Page) => {
+    const slug = slugify(pageSpec.pageName)
+    const hasTsRef = pageSpec['$ref'] || null
+    const tsDefinition = hasTsRef && extractTsDocNode(hasTsRef, definition)
+    if (hasTsRef && !tsDefinition) throw new Error('Definition not found: ' + hasTsRef)
+
+    const description =
+      pageSpec.description || tsDocCommentToMdComment(getDescriptionFromDefintion(tsDefinition))
+
+    // Create page
+    const content = Page({
+      slug,
+      id: slug,
+      specFileName: inputFileName,
+      title: pageSpec.title || pageSpec.pageName,
+      description,
+      parameters: hasTsRef ? generateParameters(tsDefinition) : '',
+      spotlight: generateSpotlight(id, pageSpec['examples'] || [], docSpec.info.language),
+      examples: generateCodeBlocks(id, pageSpec['examples'] || [], docSpec.info.language),
+      notes: pageSpec.notes,
+    })
+
+    return content
+  })
+
+  await Promise.all(content).then(async (pages) => {
+    const allContent = pages.join('\n')
+
     try {
-      const slug = slugify(pageSpec.pageName)
-      const hasTsRef = pageSpec['$ref'] || null
-      const tsDefinition = hasTsRef && extractTsDocNode(hasTsRef, definition)
-      if (hasTsRef && !tsDefinition) throw new Error('Definition not found: ' + hasTsRef)
-
-      const description =
-        pageSpec.description || tsDocCommentToMdComment(getDescriptionFromDefintion(tsDefinition))
-
-      // Create page
-      const content = Page({
-        slug,
-        id: slug,
-        specFileName: inputFileName,
-        title: pageSpec.title || pageSpec.pageName,
-        description,
-        parameters: hasTsRef ? generateParameters(tsDefinition) : '',
-        spotlight: generateCodeBlocks(id, pageSpec['examples'] || [], docSpec.info.language, true),
-        examples: generateCodeBlocks(id, pageSpec['examples'] || [], docSpec.info.language, false),
-        notes: pageSpec.notes,
-      })
-
       // Write to disk
-      await writeToDisk(dest, content, true)
+      await writeToDisk(dest, allContent, true)
       console.log('Saved: ', dest)
     } catch (error) {
       console.error(error)
@@ -186,31 +192,27 @@ function generateExamples(id: string, specExamples: any, allLanguages: any) {
   })
 }
 
-function generateCodeBlocks(id: string, specExamples: any, language: string, spotlight: boolean) {
-  return specExamples
-    .filter((x) => x.isSpotlight == spotlight)
-    .map((example) => {
-      return Example({
-        name: example.name,
-        description: example.description,
-        note: example.note,
-        codeBlock: example[language],
-      })
+function generateCodeBlocks(id: string, specExamples: any, language: string) {
+  return specExamples.map((example) => {
+    return Example({
+      name: example.name,
+      description: example.description,
+      note: example.note,
+      codeBlock: example[language],
     })
+  })
 }
 
 /**
  * A spotlight is an example which appears at the top of the page.
  */
-function generateSpotlight(id: string, specExamples: any | any[], allLanguages: any) {
+function generateSpotlight(id: string, specExamples: any | any[], language: any) {
   if (!Array.isArray(specExamples)) {
     throw new Error(`Examples for each spec should be an array, received: \n${specExamples}`)
   }
   const spotlight = (specExamples && specExamples.find((x) => x.isSpotlight)) || null
-  const spotlightContent = !spotlight
-    ? ''
-    : Tabs(id, allLanguages, generateTabs(allLanguages, spotlight))
-  return spotlightContent
+  if (spotlight) return spotlight[language]
+  else return ''
 }
 
 function generateTabs(allLanguages: any, example: any) {
