@@ -1,0 +1,90 @@
+---
+id: overview
+title: Using Auth Helpers
+---
+
+import { PanelLink } from '@site/src/components/ui'
+import ThemedImage from '@theme/ThemedImage'
+import useBaseUrl from '@docusaurus/useBaseUrl'
+import VuejsLogo from '@site/static/img/libraries/vuejs-icon.svg'
+import SvelteLogo from '@site/static/img/libraries/svelte-icon.svg'
+import NextjsLightLogo from '@site/static/img/libraries/nextjs-light-icon.svg'
+import NextjsDarkLogo from '@site/static/img/libraries/nextjs-dark-icon.svg'
+import ReactLogo from '@site/static/img/libraries/react-icon.svg'
+const frameworks = [
+  {
+    name: 'Next.js',
+    subtitle: 'Next.js is an open-source web development framework built on top of Node.js',
+    logo: '/img/libraries/nextjs-light-icon.svg',
+    logoDark: '/img/libraries/nextjs-dark-icon.svg',
+    href: '/docs/guides/with-nextjs',
+  },
+  {
+    name: 'React',
+    subtitle:
+      'React is a free and open-source front-end JavaScript library for building user interfaces based on UI components.',
+    logo: '/img/libraries/react-icon.svg',
+    href: '/docs/guides/with-react',
+  },
+  {
+    name: 'Svelte',
+    subtitle: 'Svelte is a free and open-source front end compiler created by Rich Harris.',
+    logo: '/img/libraries/svelte-icon.svg',
+    href: '/docs/guides/with-svelte',
+  },
+  {
+    name: 'VueJS',
+    subtitle: 'Vue.js is an open-source model–view–viewmodel front end JavaScript framework.',
+    logo: '/img/libraries/vuejs-icon.svg',
+    href: '/docs/guides/with-vue-3',
+  },
+]
+
+Supabase Auth Helpers is a collection of framework specific Auth utilities for working with Supabase Auth, so you can quickly implement Supabase Auth with little effort.
+
+These utilties are maintained by both the official Supabase team and also the community.
+
+## Installation
+
+Framework-specific installation guides that cover our most recommended approach to installing Supabase Auth Helpers in the most popular environments.
+
+<div class="container" style={{ padding: 0 }}>
+  <div class="row is-multiline">
+    {frameworks.map((x) => (
+      <div class="col col--6">
+        <PanelLink title={x.name} subtitle={x.subtitle} icon={x.logo} iconDark={x.logoDark} />
+      </div>
+    ))}
+  </div>
+</div>
+
+---
+
+<div class="container" style={{ padding: 0, marginTop: '48px' }}>
+  <div class="row is-multiline">
+    <div class="col col--6">
+      <ReactLogo width={21} />
+      <h2>Auth UI</h2>
+      <p>
+        Supabase Auth UI is a set of prebuilt UI components for building your web Auth flow. It's
+        currently only available for React.
+      </p>
+      <a>Get started</a>
+    </div>
+    <div class="col col--6">
+      <ThemedImage
+        // alt={x.name}
+        width="100%"
+        sources={{
+          light: useBaseUrl('/img/auth_auth-helpers_auth-ui__splash.png'),
+          dark: useBaseUrl('/img/auth_auth-helpers_auth-ui__splash.png'),
+        }}
+      />
+    </div>
+  </div>
+</div>
+
+<div className="grid grid-cols-2 bg-yellow-300">
+  <div>something</div>
+  <div>something</div>
+</div>

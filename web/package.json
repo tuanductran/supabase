@@ -19,6 +19,7 @@
     "@docusaurus/preset-classic": "^2.0.0-beta.18",
     "@kiwicopple/prism-react-renderer": "https://github.com/kiwicopple/prism-react-renderer.git",
     "@octokit/core": "^3.5.1",
+    "@stitches/core": "^1.2.8",
     "docusaurus-theme-search-typesense": "^0.4.0",
     "jsrsasign": "^10.4.1",
     "mermaid": "^8.13.8",

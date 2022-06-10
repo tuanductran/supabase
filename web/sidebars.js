@@ -163,6 +163,18 @@ module.exports = {
         },
         {
           type: 'category',
+          label: 'Auth Helpers',
+          collapsed: true,
+          items: [
+            'guides/auth/auth-helpers/overview',
+            'guides/auth/auth-helpers/react',
+            'guides/auth/auth-helpers/nextjs',
+            'guides/auth/auth-helpers/remix',
+            'guides/auth/auth-helpers/auth-ui',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Deep Dive',
           collapsed: true,
           items: [
@@ -185,7 +197,12 @@ module.exports = {
       type: 'category',
       label: 'Platform',
       collapsed: false,
-      items: ['guides/platform/logs', 'guides/platform/metrics', 'going-into-prod', 'guides/platform/performance'],
+      items: [
+        'guides/platform/logs',
+        'guides/platform/metrics',
+        'going-into-prod',
+        'guides/platform/performance',
+      ],
     },
     {
       type: 'category',
