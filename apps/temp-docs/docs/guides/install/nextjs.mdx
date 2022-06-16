@@ -1,0 +1,108 @@
+---
+title: 'Install Supabase in your NextJS App'
+breadcrumbs: true
+subtitle: 'Setting up Tailwind CSS in a Next.js v10+ project.'
+---
+
+The quickest way to start using Tailwind CSS in your Next.js project is to use the Next.js + Tailwind CSS Example. This will automatically configure your Tailwind setup based on the official Next.js example. If you'd like to configure Tailwind manually, continue with the rest of this guide.
+
+<div>
+
+<NumberSection number={1}>
+
+### Create your project
+
+Start by creating a new Next.js project if you don’t have one set up already. The most common approach is to use Create Next App.
+
+```bash
+
+npx create-next-app my-project
+cd my-project
+
+```
+
+#### Install the Supabase library
+
+We will install @supabase/supabase-js SDK via npm.
+
+```bash
+
+npm install supabase-js
+
+```
+
+</NumberSection>
+
+<NumberSection number={2}>
+
+### Create a table in the database
+
+You may have already created a project in Supabase, if not, [create one](https://app.supabase.com/new/new-project).
+
+Go to the [table editor](https://app.supabase.com/project/_/editor) in your project, and create a new table.
+Call the table name `cities`, and add a column called `name` that is type `text`. Click save, and the table will be created.
+
+In your new table called `cities`, create a `New row`, and in the `name` field, type in "London" (Or, any city name you like).
+You can add in as many rows as you like before proceeding.
+
+</NumberSection>
+
+<NumberSection number={3}>
+
+### Get your project keys
+
+Go to the [api settings page](https://app.supabase.com/project/_/settings/api) in your project.
+
+You will need the `anonKey` and `url`
+
+Now that we have the API credentials in place, let's create a helper file to initialize the Supabase client. These variables will be exposed on the browser, and that's completely fine since we have Row Level Security enabled on our Database.
+
+```js
+filename = utils / supabaseClient.js
+
+import { createClient } from '@supabase/supabase-js'
+
+export const supabase = createClient(
+  YOUR_ANON_KEY, // replace this with your project anon key
+  YOUR_URL // replace this with your project url
+)
+```
+
+</NumberSection>
+
+<NumberSection number={4}>
+
+### Select from your new database table
+
+Now that we have a utility set up in our NextJS app, we can now use it to interact with our project
+
+```js
+filename = pages / index.js
+
+import { useState, useEffect } from 'react'
+import { supabase } from '../utils/supabaseClient'
+
+export default function Home() {
+  const [cities, setCities] = useState([])
+
+  useEffect(async () => {
+    const { data, error } = await supabase.from('cities').select()
+    if (error) {
+      // handle error here
+    }
+    setCities(data)
+  }, [])
+
+  return (
+    <ul>
+      {cities.map((city) => (
+        <li>{city.name}</li>
+      ))}
+    </ul>
+  )
+}
+```
+
+</NumberSection>
+
+</div>

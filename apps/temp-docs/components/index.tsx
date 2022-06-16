@@ -5,14 +5,20 @@ import Sponsor from './Sponsor'
 import SponsorsWrapper from './SponsorsWrapper'
 import CodeBlock from './CodeBlock/CodeBlock'
 import AuthProviders from './AuthProviders'
+import { ProductIcon } from './ProductIcon'
+import { NumberSection } from './ArticleHelpers/NumberSection'
+import ReactMarkdown from 'react-markdown'
 
 const components = {
+  ReactMarkdown,
+  NumberSection,
+  ProductIcon,
   LinkCard,
   LinkCardsWrapper,
   SponsorsWrapper,
   Sponsor,
   AuthProviders,
-  Tabs: (props: any) => <Tabs {...props} type="underlined" size="small" />,
+  Tabs: (props: any) => <Tabs {...props} />,
   TabsPanel: (props: any) => {
     return <Tabs.Panel {...props} />
   },

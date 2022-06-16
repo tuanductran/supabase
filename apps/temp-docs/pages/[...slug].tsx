@@ -16,28 +16,55 @@ export default function Doc({
   content,
   toc,
 }: {
-  meta: { title: string; description: string }
+  meta: {
+    title: string
+    description: string
+    parent: { parent: { label: string; href: string } }
+    hideToc: boolean
+  }
   content: ReactElement
   toc: any
 }) {
   const { asPath } = useRouter()
   let page
   switch (asPath) {
+    // Docs
     case '/guides':
     case '/guides/local-development':
     case /\/guides\/[a-zA-Z]*\/[a-zA-Z\-]*/.test(asPath) && asPath:
-      page = 'Guides'
+      page = 'Docs'
       break
-    case asPath.includes('/reference') && asPath:
-      page = 'Reference'
+    // API Reference Docs
+    case asPath.includes('/reference/cli') && asPath:
+      page = 'CLI'
       break
+    case asPath.includes('/reference/javascript') && asPath:
+      page = 'Javascript'
+      break
+    case asPath.includes('/reference/dart') && asPath:
+      page = 'Dart'
+      break
+    case asPath.includes('/reference/postgres') && asPath:
+      page = 'Postgres'
+      break
+    // Tutorials
+    case asPath.includes('/tutorials') && asPath:
+      page = 'Tutorials'
+      break
+    // Docs
     default:
       page = 'Docs'
       break
   }
 
+  if (meta.hideToc) {
+    toc = null
+  }
+
+  // console.log('content of slug', content)
+
   return (
-    <Layout meta={meta} toc={toc} menuItems={menuItems[page]} currentPage={page}>
+    <Layout meta={meta} toc={toc} menuItems={menuItems[page]} currentPage={page} asPath={asPath}>
       <MDXProvider components={components}>
         <MDXRemote {...content} components={components} />
       </MDXProvider>
@@ -55,6 +82,8 @@ export async function getStaticProps({ params }: { params: { slug: string[] } })
   }
 
   let doc = getDocsBySlug(slug)
+
+  console.log('doc.content', doc.content)
 
   const content = await serialize(doc.content || '')
 

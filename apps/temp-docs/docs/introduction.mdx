@@ -1,20 +1,35 @@
 ---
 title: Introduction
 description: Introduction to Supabase
+hideToc: true
 ---
-
-# Introduction
 
 Supabase is an open source Firebase alternative.
 
 It provides all the backend services you need to build a product. You can use it completely, or just the services you require:
 
-<LinkCardsWrapper>
-  <LinkCard title="Database" description="A dedicated, scalable Postgres database" />
-  <LinkCard title="Auth" description="User management with Row Level Security" />
-  <LinkCard title="File Storage" description="Store, organize, and serve large files" />
-  <LinkCard title="Auto-generated APIs" description="Instantly generate APIs for your database" />
-</LinkCardsWrapper>
+<div className="not-prose my-16 grid grid-cols-2 gap-6">
+  <LinkCard
+    title="Database"
+    description="A dedicated, scalable Postgres database"
+    iconComponent={<ProductIcon size={'large'} variant="database" />}
+  />
+  <LinkCard
+    title="Auth"
+    description="A dedicated, scalable Postgres database"
+    iconComponent={<ProductIcon size={'large'} variant="auth" />}
+  />
+  <LinkCard
+    title="Storage"
+    description="A dedicated, scalable Postgres database"
+    iconComponent={<ProductIcon size={'large'} variant="auth" />}
+  />
+  <LinkCard
+    title="Edge Functions"
+    description="A dedicated, scalable Postgres database"
+    iconComponent={<ProductIcon size={'large'} variant="auth" />}
+  />
+</div>
 
 ## Getting Started
 
@@ -22,16 +37,20 @@ Visit [app.supabase.com](https://app.supabase.com) to get started with the hoste
 
 Supabase is just Postgres, which makes it compatible with a large number of tools and frameworks.
 
-<LinkCardsWrapper>
-  <LinkCard class="lg:w-1/4" title="Angular" />
-  <LinkCard class="lg:w-1/4" title="Expo" />
-  <LinkCard class="lg:w-1/4" title="Flutter" />
-  <LinkCard class="lg:w-1/4" title="Javascript" />
-  <LinkCard class="lg:w-1/4" title="Next.js" />
-  <LinkCard class="lg:w-1/4" title="React" />
-  <LinkCard class="lg:w-1/4" title="Svelte" />
-  <LinkCard class="lg:w-1/4" title="Vue" />
-</LinkCardsWrapper>
+<div className="not-prose my-16 grid grid-cols-2 gap-6">
+  <LinkCard
+    title="Angular"
+    icon="/img/libraries/angular-icon.svg"
+    description="A dedicated, scalable Postgres database"
+  />
+  <LinkCard title="Expo" icon="/img/libraries/expo-icon.svg" />
+  <LinkCard title="Flutter" icon="/img/libraries/dart-icon.svg" />
+  <LinkCard title="Javascript" icon="/img/libraries/javascript-icon.svg" />
+  <LinkCard title="Next.js" icon="/img/libraries/nextjs-icon.svg" />
+  <LinkCard title="React" icon="/img/libraries/react-icon.svg" />
+  <LinkCard title="Svelte" icon="/img/libraries/svelte-icon.svg" />
+  <LinkCard title="Vue" icon="/img/libraries/vuejs-icon.svg" />
+</div>
 
 ## How to use these docs
 

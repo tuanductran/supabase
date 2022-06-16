@@ -1,0 +1,51 @@
+---
+title: 'Social 0auth'
+subtitle: 'Supporting your application with all the popular social 0auth configurations'
+---
+
+Supabase supports all the popular social identity providers for web applications out of the box, so you can gather up-to-date user information without creating friction or compromising the user experience. To explore the full list of Auth0-supported and partner-supported social identity providers, visit Auth0 Marketplace: Social Connections.
+
+If you don't see what you're looking for, you can also create a connection to any OAuth2 Authorization Server.
+
+Finally, Auth0 supports the following social providers specifically for native applications:
+
+## 0Auth Providers guides
+
+<AuthProviders />
+
+## Installing a social provider
+
+The guides in the previous section will explain in detail how to add a 0auth social provider to your application, but if you already have
+
+<NumberSection number={1}>
+
+### Create a new project
+
+If you don't already have a project, go to [the supabase dashboard](app.supabase.com) and create a project.
+
+</NumberSection>
+
+<NumberSection number={2}>
+
+### Create a new project
+
+If you don't already have a project, go to [the supabase dashboard](app.supabase.com) and create a project.
+
+</NumberSection>
+
+<NumberSection number={3}>
+
+### Add to application
+
+Hello
+
+```js
+filename = index.js
+
+const { user, session, error } = await supabase.auth.signIn({
+  // provider can be 'github', 'google', 'gitlab', and more
+  provider: 'github',
+})
+```
+
+</NumberSection>

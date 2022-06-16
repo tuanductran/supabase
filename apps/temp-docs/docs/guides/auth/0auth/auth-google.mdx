@@ -1,13 +1,11 @@
 ---
 id: auth-google
-title: 'Login with Google'
+title: 'Add Sign in with Google'
 description: Add Google OAuth to your Supabase project
+parent: { label: 'adsdsa' }
+breadcrumbs: true
+subtitle: To enable Google Auth for your project, you need to set up a Google OAuth application and add the application credentials to your Supabase Dashboard.
 ---
-
-import Tabs from '@theme/Tabs'
-import TabsPanel from '@theme/TabsPanel'
-
-To enable Google Auth for your project, you need to set up a Google OAuth application and add the application credentials to your Supabase Dashboard.
 
 ## Overview
 
@@ -19,14 +17,20 @@ Setting up Google logins for your application consists of 3 parts:
 
 ## Steps
 
+<NumberSection number={1}>
+
 ### Access your Google Cloud Platform account
 
 - Go to [cloud.google.com](https://cloud.google.com).
 - Click on `Sign in` at the top right to log in.
 
-![Google Developer Portal.](/docs/img/guides/google-portal.png)
+![Google Developer Portal.](/img/guides/google-portal.png)
 
-### Create a Google Cloud Platform Project
+</NumberSection>
+
+<NumberSection number={2}>
+
+## Create a Google Cloud Platform Project
 
 - Click on `Select a Project` at the top left.
   - (Or, if a project is currently selected, click on the current project name at the top left.)
@@ -35,7 +39,11 @@ Setting up Google logins for your application consists of 3 parts:
   - (This can take a few minutes.)
 - This should bring you to the dashboard for your new project.
 
-### Create the OAuth Keys for your project
+</NumberSection>
+
+<NumberSection number={3}>
+
+## Create the OAuth Keys for your project
 
 From your project's dashboard screen:
 
@@ -44,12 +52,20 @@ From your project's dashboard screen:
 - On the `OAuth consent screen` page select `External`.
 - Click `Create`.
 
-### Edit your app information
+</NumberSection>
+
+<NumberSection number={4}>
+
+## Edit your app information
 
 - On the `Edit app registration` page fill out your app information.
 - Click `Save and continue` at the bottom.
 
-### Find your callback URL
+</NumberSection>
+
+<NumberSection number={5}>
+
+## Find your callback URL
 
 The next step requires a callback URL, which looks like this:
 
@@ -65,7 +81,11 @@ The next step requires a callback URL, which looks like this:
   <source src="/docs/videos/api/api-url-and-key.mp4" type="video/mp4" muted playsInline />
 </video>
 
-### Create your credentials
+</NumberSection>
+
+<NumberSection number={6}>
+
+## Create your credentials
 
 - Click `Credentials` at the left to go to the `Credentials` page
 - Click `Create Credentials` near the top then select `OAuth client ID`
@@ -82,7 +102,11 @@ Copy your new OAuth credentials
 - A box will appear called `OAuth client created`.
 - Copy and save the values under `Your Client ID` and `Your Client Secret`.
 
-### Enter your Google credentials into your Supabase Project
+</NumberSection>
+
+<NumberSection number={7}>
+
+## Enter your Google credentials into your Supabase Project
 
 - Go to your [Supabase Project Dashboard](https://supabase.com)
 - In the left sidebar, click the `Authentication` icon (near the top)
@@ -92,7 +116,11 @@ Copy your new OAuth credentials
 - Enter your `Google Client ID` and `Google Client Secret` saved in the previous step
 - Click `Save`
 
-### Add login code to your client app
+</NumberSection>
+
+<NumberSection number={8}>
+
+## Add login code to your client app
 
 The JavaScript client code is documented here: [Supabase OAuth Client Code](/docs/reference/javascript/auth-signin#sign-in-using-third-party-providers)
 
@@ -119,6 +147,8 @@ async function signout() {
   const { error } = await supabase.auth.signOut()
 }
 ```
+
+</NumberSection>
 
 ## Resources
 

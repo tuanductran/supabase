@@ -23,6 +23,9 @@ module.exports = ui({
     './_blog/*.mdx',
     // purge styles from supabase ui theme
     '../../node_modules/@supabase/ui/dist/config/default-theme.js',
+
+    // purge docs site mdx
+    './docs/**/*.mdx',
   ],
   darkMode: 'class', // 'media' or 'class'
   // mode: 'jit',
@@ -221,6 +224,9 @@ module.exports = ui({
       //   medium: '0 8px 30px rgba(0, 0, 0, 0.12)',
       //   override: '0px 0px 0px rgba(0, 0, 0, 0)',
       // },
+      maxWidth: {
+        '8xl': '90rem',
+      },
       fontFamily: {
         sans: ['custom-font', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
         mono: ['Source Code Pro', 'Menlo', 'monospace'],
