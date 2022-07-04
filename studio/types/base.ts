@@ -23,6 +23,8 @@ export interface Project extends ProjectBase {
   // available after projects.fetchDetail
   connectionString?: string
   kpsVersion?: string
+  serviceApiKey?: string
+  // To remove
   internalApiKey?: string
   restUrl?: string
   // store subscription tier products.metadata.supabase_prod_id

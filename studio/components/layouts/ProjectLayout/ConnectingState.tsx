@@ -37,6 +37,7 @@ const ConnectingState: FC<Props> = ({ project }) => {
   }, [project])
 
   const testProjectConnection = async () => {
+    console.log('Test project connection', project)
     const result = await pingPostgrest(project.restUrl!, project.internalApiKey!, {
       kpsVersion: project.kpsVersion,
     })
