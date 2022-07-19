@@ -187,6 +187,8 @@ Then edit and visit any of the following sites:
   - pulls all our github discussions into a nextjs site. Temporary/POC
 - `/apps/temp-community-tutorials`: http://localhost:3003
   - pulls all our DEV articles (which community members can write) into a nextjs site. Temporary/POC
+- `/apps/launchweek`: http://localhost:3004
+  - A Next.js app for hosting our Launch Week virtual events, based on Vercel's [virtual-event-starter-kit](https://github.com/vercel/virtual-event-starter-kit).
 
 ### Shared components
 
