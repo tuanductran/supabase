@@ -12,7 +12,8 @@
     "gen:supabase": "ts-node ReferenceGenerator.ts -o docs/reference/javascript spec/supabase.yml",
     "gen:cli": "ts-node ReferenceGenerator.ts -o docs/reference/cli spec/cli.yml",
     "gen:dart": "ts-node ReferenceGenerator.ts -o docs/reference/dart spec/dart.yml",
-    "gen:postgres": "ts-node ReferenceGenerator.ts -o docs/reference/postgres spec/postgres.yml"
+    "gen:postgres": "ts-node ReferenceGenerator.ts -o docs/reference/postgres spec/postgres.yml",
+    "gen:config:cli": "ts-node ConfigGenerator.ts -o docs/reference/config spec/cli_config.yml"
   },
   "dependencies": {
     "@docusaurus/core": "^2.0.0-beta.18",
@@ -45,6 +46,7 @@
     "babel-plugin-css-modules-transform": "^1.6.2",
     "clsx": "^1.1.1",
     "dotenv": "^10.0.0",
+    "ejs": "^3.1.8",
     "js-yaml": "^3.14.0",
     "minimist": "^1.2.5",
     "ts-node": "^10.8.0",

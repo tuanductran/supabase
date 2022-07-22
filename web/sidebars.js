@@ -40,7 +40,7 @@ module.exports = {
       type: 'category',
       label: 'Tools',
       collapsed: false,
-      items: ['reference/tools/reference-auth'],
+      items: ['reference/tools/reference-auth', 'reference/config/cli'],
     },
   ],
   docs: [
@@ -197,7 +197,7 @@ module.exports = {
         'guides/platform/metrics',
         'going-into-prod',
         'guides/platform/performance',
-        'guides/platform/permissions'
+        'guides/platform/permissions',
       ],
     },
     {
