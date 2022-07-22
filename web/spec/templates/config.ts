@@ -13,9 +13,15 @@ const template = `
 
 | Parameter | Required     | Default                |
 | :-------- | :------- | :------------------------- |
-| \`<%- parameter.title %>\` | \`<%= parameter.required %>\` | \`<%- parameter.default %>\` |
+| \`<%- parameter.title %>\` | \`<%= parameter.required %>\` | \`<%- parameter?.default %>\` |
 
 <%- parameter.description %>
+
+See also:
+
+<% parameter.links?.forEach(function(link){ %>
+- [<%- link.name %>](<%- link.link %>)
+<% }); %>
 
 <% }); %>
 
