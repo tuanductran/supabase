@@ -27,6 +27,7 @@ body,
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   @apply bg-bg-primary-light dark:bg-bg-primary-dark;
+  @apply overflow-hidden;
   @apply text-scale-1200;
 }
 
