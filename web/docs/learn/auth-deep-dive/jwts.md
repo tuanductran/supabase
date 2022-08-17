@@ -122,6 +122,7 @@ If we put this token into https://jwt.io, we see it decodes to:
 ```js
 {
   "role": "anon",
+  "iss": "supabase",
   "iat": 1614205174,
   "exp": 1929781174
 }
@@ -177,4 +178,4 @@ Now that you understand what JWTs are and where they're used in Supabase, you ca
 - [Part Three: Policies](/docs/learn/auth-deep-dive/auth-policies)
 - [Part Four: GoTrue](/docs/learn/auth-deep-dive/auth-gotrue)
 - [Part Five: Google Oauth](/docs/learn/auth-deep-dive/auth-google-oauth)
-- Sign up for Supabase: [app.supabase.io](https://app.supabase.io)
+- Sign up for Supabase: [app.supabase.com](https://app.supabase.com)

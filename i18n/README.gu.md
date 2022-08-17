@@ -1,5 +1,6 @@
 <p align="center">
-<img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/web/static/supabase-light-rounded-corner-background.svg"/>
+<img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo-wordmark--light.svg#gh-light-mode-only">
+<img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo-wordmark--dark.svg#gh-dark-mode-only">
 </p>
 
 ---
@@ -14,11 +15,13 @@
 - [x] સ્વત.-પેદા APIs
 - [x] ડેશબોર્ડ
 - [x] સ્ટોરેજ
-- [ ] ફંક્શન્સ (ટૂક સમયમાં આવી રહ્યું છે)
+- [x] ફંક્શન્સ
+
+![Supabase Dashboard](https://raw.githubusercontent.com/supabase/supabase/master/apps/www/public/images/github/supabase-dashboard.png)
 
 ## દસ્તાવેજીકરણ
 
-સંપૂર્ણ દસ્તાવેજીકરણ માટે, મુલાકાત લો [supabase.io/docs](https://supabase.com/docs)
+સંપૂર્ણ દસ્તાવેજીકરણ માટે, મુલાકાત લો [supabase.com/docs](https://supabase.com/docs)
 
 ## સમુદાય અને મદદ
 
@@ -30,7 +33,7 @@
 ## સ્થિતિ
 
 - [x] આલ્ફા: અમે ગ્રાહકોના બંધ સમૂહ સાથે સુપાબેઝનું પરીક્ષણ કરી રહ્યા છીએ
-- [x] જાહેર આલ્ફા: કોઈ પણ [app.supabase.io](https://app.supabase.io) પર જઈને સાઈન-અપ કરી શકે છે. પણ થોડો સંયમ રાખશો, હજુ અમુક સમસ્યાઓ છે
+- [x] જાહેર આલ્ફા: કોઈ પણ [app.supabase.com](https://app.supabase.com) પર જઈને સાઈન-અપ કરી શકે છે. પણ થોડો સંયમ રાખશો, હજુ અમુક સમસ્યાઓ છે
 - [x] જાહેર બીટા: મોટાભાગના નોન-એન્ટરપ્રાઇઝ યુઝ-કેસેટ્સ માટે અનુરૂપ
 - [ ] જાહેર: પ્રોડક્શન માટે તૈયાર
 
@@ -46,9 +49,9 @@
 
 **વર્તમાન સ્થાપત્ય**
 
-સુપાબેઝ એક [હોસ્ટેડ પ્લેટફોર્મ](https://app.supabase.io) છે. તમે સાઇન અપ કરી શકો છો અને કંઈપણ ઇન્સ્ટોલ કર્યા વગર સુપાબેઝનો ઉપયોગ શરૂ કરી શકો છો. અમે હજી પણ સ્થાનિક ડેવલપમેન્ટ અનુભવ બનાવી રહ્યા છીએ - પ્લેટફોર્મ સ્થિરતાની સાથે હવે આ અમારું મુખ્ય લક્ષ્ય છે.
+સુપાબેઝ એક [હોસ્ટેડ પ્લેટફોર્મ](https://app.supabase.com) છે. તમે સાઇન અપ કરી શકો છો અને કંઈપણ ઇન્સ્ટોલ કર્યા વગર સુપાબેઝનો ઉપયોગ શરૂ કરી શકો છો. અમે હજી પણ સ્થાનિક ડેવલપમેન્ટ અનુભવ બનાવી રહ્યા છીએ - પ્લેટફોર્મ સ્થિરતાની સાથે હવે આ અમારું મુખ્ય લક્ષ્ય છે.
 
-![સ્થાપત્ય](https://supabase.com/assets/images/supabase-architecture-9050a7317e9ec7efb7807f5194122e48.png)
+![સ્થાપત્ય](https://supabase.com/docs/assets/images/supabase-architecture-9050a7317e9ec7efb7807f5194122e48.png)
 
 - [PostgreSQL](https://www.postgresql.org/) એક ઓબ્જેક્ટ-રિલેશનલ ડેટાબેઝ સિસ્ટમ છે જેમાં 30 વર્ષથી વધુ સક્રિય વિકાસ છે જેણે તેને વિશ્વસનીયતા, લક્ષણ મજબુતાઇ અને પ્રદર્શન માટે મજબૂત પ્રતિષ્ઠા પ્રાપ્ત કરી છે
 - [Realtime](https://github.com/supabase/realtime) એલિક્સિર સર્વર છે જે તમને વેબસોકેટનો ઉપયોગ કરીને PostgreSQL દાખલ, અપડેટ્સ અને ડીલીટ માટે પરવાનગી આપે છે. સુપાબેઝ Postgresની બિલ્ટ-ઇન પ્રતિકૃતિ વિધેયને સાંભળે છે, પ્રતિકૃતિ બાઇટ પ્રવાહને JSON માં ફેરવે છે, પછી વેબસોકેટ્સ પર JSON પ્રસારિત કરે છે.

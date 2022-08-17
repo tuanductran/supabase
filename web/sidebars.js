@@ -5,15 +5,16 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-const supabaseClient = require('./sidebar_spec_supabase')
+const supabaseClient = require('./sidebar_spec_supabase_js_v1_ref')
 const supabaseCli = require('./sidebar_spec_cli')
 const dart = require('./sidebar_spec_dart')
 
 module.exports = {
   supabaseClient: [
+    'reference',
     {
       type: 'category',
-      label: 'Javascript',
+      label: 'JavaScript',
       collapsed: false,
       items: supabaseClient.docs,
     },
@@ -35,6 +36,12 @@ module.exports = {
       collapsed: false,
       items: supabaseCli.docs,
     },
+    {
+      type: 'category',
+      label: 'Tools',
+      collapsed: false,
+      items: ['reference/tools/reference-auth'],
+    },
   ],
   docs: [
     {
@@ -43,56 +50,40 @@ module.exports = {
       items: [
         'about',
         'architecture',
-        'guides/database',
-        'guides/auth',
-        'guides/storage',
-        'guides/api',
+        'guides/hosting/platform',
+        'guides/local-development',
         'guides/examples',
       ],
-      collapsed: false,
+      collapsed: true,
     },
     {
       type: 'category',
-      label: 'Tutorials',
-      collapsed: false,
+      label: 'Quickstarts',
+      collapsed: true,
       items: [
         'guides/with-angular',
+        'guides/with-expo',
         'guides/with-flutter',
+        'guides/with-ionic-angular',
+        'guides/with-ionic-react',
+        'guides/with-ionic-vue',
         'guides/with-nextjs',
+        'guides/with-nuxt-3',
         'guides/with-react',
         'guides/with-redwoodjs',
+        'guides/with-solidjs',
         'guides/with-svelte',
+        'guides/with-sveltekit',
         'guides/with-vue-3',
       ],
     },
     {
       type: 'category',
-      label: 'See Also',
-      collapsed: false,
-      items: [
-        'faq',
-        'going-into-prod',
-        'handbook/contributing',
-        'handbook/supasquad',
-        'company/terms',
-        'company/privacy',
-        'company/aup',
-      ],
-    },
-  ],
-  guides: [
-    {
-      type: 'category',
-      label: 'Guides',
-      items: ['guides', 'guides/local-development'],
-      collapsed: false,
-    },
-    {
-      type: 'category',
       label: 'Database',
-      collapsed: false,
+      collapsed: true,
       items: [
-        'guides/database/introduction',
+        'guides/database',
+        'guides/database/connecting-to-postgres',
         'guides/database/tables',
         'guides/database/functions',
         'guides/database/full-text-search',
@@ -113,16 +104,6 @@ module.exports = {
         },
         {
           type: 'category',
-          label: 'Connecting to Postgres',
-          collapsed: true,
-          items: [
-            'guides/database/connecting/connecting-to-postgres',
-            'guides/database/connecting/direct-connections',
-            'guides/database/connecting/connection-pooling',
-          ],
-        },
-        {
-          type: 'category',
           label: 'Configuration',
           collapsed: true,
           items: [
@@ -136,10 +117,22 @@ module.exports = {
     },
     {
       type: 'category',
+      label: 'APIs',
+      collapsed: true,
+      items: ['guides/api', 'guides/api/generating-types'],
+    },
+    {
+      type: 'category',
+      label: 'Functions',
+      collapsed: true,
+      items: ['guides/functions'],
+    },
+    {
+      type: 'category',
       label: 'Auth',
-      collapsed: false,
+      collapsed: true,
       items: [
-        'guides/auth/intro',
+        'guides/auth',
         {
           type: 'category',
           label: 'Authentication',
@@ -148,17 +141,24 @@ module.exports = {
             'guides/auth/auth-email',
             'guides/auth/auth-magic-link',
             'guides/auth/auth-apple',
+            'guides/auth/auth-azure',
             'guides/auth/auth-bitbucket',
             'guides/auth/auth-discord',
             'guides/auth/auth-facebook',
             'guides/auth/auth-github',
             'guides/auth/auth-gitlab',
             'guides/auth/auth-google',
+            'guides/auth/auth-keycloak',
+            'guides/auth/auth-linkedin',
+            'guides/auth/auth-notion',
             'guides/auth/auth-slack',
             'guides/auth/auth-spotify',
-            'guides/auth/auth-twitter',
             'guides/auth/auth-twitch',
+            'guides/auth/auth-twitter',
+            'guides/auth/auth-workos',
+            'guides/auth/auth-zoom',
             'guides/auth/auth-twilio',
+            'guides/auth/auth-vonage',
             'guides/auth/auth-messagebird',
           ],
         },
@@ -182,17 +182,64 @@ module.exports = {
         },
       ],
     },
-    // {
-    //   type: 'category',
-    //   label: 'Storage',
-    //   collapsed: false,
-    //   items: ['guides/storage/storage-sample'],
-    // },
+    {
+      type: 'category',
+      label: 'Storage',
+      collapsed: true,
+      items: ['guides/storage'],
+    },
+    {
+      type: 'category',
+      label: 'Platform',
+      collapsed: true,
+      items: [
+        'guides/platform/logs',
+        'guides/platform/metrics',
+        'going-into-prod',
+        'guides/platform/performance',
+        'guides/platform/permissions',
+      ],
+    },
     {
       type: 'category',
       label: 'Self Hosting',
-      collapsed: false,
-      items: ['guides/hosting/overview', 'guides/hosting/platform', 'guides/hosting/docker'],
+      collapsed: true,
+      items: ['guides/hosting/overview', 'guides/hosting/docker'],
+    },
+    {
+      type: 'category',
+      label: 'Integrations',
+      collapsed: true,
+      items: [
+        'guides/integrations/appsmith',
+        'guides/integrations/auth0',
+        'guides/integrations/authsignal',
+        'guides/integrations/clerk',
+        'guides/integrations/dashibase',
+        'guides/integrations/directus',
+        'guides/integrations/draftbit',
+        'guides/integrations/pgmustard',
+        'guides/integrations/plasmic',
+        'guides/integrations/prisma',
+        'guides/integrations/snaplet',
+        'guides/integrations/stytch',
+        'guides/integrations/supertokens',
+        'guides/integrations/vercel',
+      ],
+    },
+    {
+      type: 'category',
+      label: 'See Also',
+      collapsed: true,
+      items: [
+        'faq',
+        'handbook/contributing',
+        'handbook/supasquad',
+        'company/terms',
+        'company/privacy',
+        'company/aup',
+        'company/sla',
+      ],
     },
   ],
   postgresServer: [

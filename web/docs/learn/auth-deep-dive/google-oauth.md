@@ -14,7 +14,7 @@ How to add Google OAuth Logins to your Supabase Application.
 
 ### Logging in with external OAuth providers
 
-Connecting social logins such as Google, Github, or Facebook couldn't be easier. In this guide we'll walk you through the process of connecting Google, but the process is basically the same for all of the providers which includes: azure, bitbucket, github, gitlab, facebook, and google.
+Connecting social logins such as Google, GitHub, or Facebook couldn't be easier. In this guide we'll walk you through the process of connecting Google, but the process is basically the same for all of the providers which includes: azure, bitbucket, github, gitlab, facebook, and google.
 
 First you'll need to create a google project inside their [cloud console](https://console.cloud.google.com/home/dashboard), in other providers they may refer to this as an "app" and is usually available on the company's developer portal.
 
@@ -74,11 +74,11 @@ Note however that your app will usually have to be verified by Google before you
 
 The only thing left to implement is the UI, but if you prefer to use something pre-built, we have a handy [Auth Widget](https://github.com/supabase/ui/#using-supabase-ui-auth), where you can enable/disable whichever auth providers you want to support.
 
-For any support please get in touch at beta at supabase.io or for feature requests open an issue in the [backend](https://github.com/supabase/gotrue) or [frontend](https://github.com/supabase/gotrue-js) repos.
+For any support please get in touch at beta at [supabase.com](https://supabase.com) or for feature requests open an issue in the [backend](https://github.com/supabase/gotrue) or [frontend](https://github.com/supabase/gotrue-js) repos.
 
 ### Resources
 
-- JWT debugger: https://jwt.io/​
+- [JWT debugger](https://jwt.io)
 
 ### Next steps
 
@@ -87,4 +87,4 @@ For any support please get in touch at beta at supabase.io or for feature reques
 - Watch [Part Three: Policies](/docs/learn/auth-deep-dive/auth-policies)
 - Watch [Part Four: GoTrue](/docs/learn/auth-deep-dive/auth-gotrue)
 <!-- - Watch [Part Five: Google Oauth](/docs/learn/auth-deep-dive/auth-google-oauth) -->
-- Sign up for Supabase: [app.supabase.io](https://app.supabase.io)
+- Sign up for Supabase: [app.supabase.com](https://app.supabase.com)

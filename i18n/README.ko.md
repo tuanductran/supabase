@@ -1,5 +1,6 @@
 <p align="center">
-  <img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/web/static/supabase-light-rounded-corner-background.svg"/>
+<img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo-wordmark--light.svg#gh-light-mode-only">
+<img width="300" src="https://raw.githubusercontent.com/supabase/supabase/master/packages/common/assets/images/supabase-logo-wordmark--dark.svg#gh-dark-mode-only">
 </p>
 
 ---
@@ -14,11 +15,13 @@
 - [x] 자동 생성 API
 - [x] 대시 보드
 - [x] 스토리지
-- [ ] 함수 (출시 예정)
+- [x] 함수
+
+![Supabase Dashboard](https://raw.githubusercontent.com/supabase/supabase/master/apps/www/public/images/github/supabase-dashboard.png)
 
 ## 문서
 
-전체 문서는 [supabase.io/docs](https://supabase.com/docs)를 참조하세요.
+전체 문서는 [supabase.com/docs](https://supabase.com/docs)를 참조하세요.
 
 ## 커뮤니티 및 지원
 
@@ -29,7 +32,7 @@
 ## 상태
 
 - [x] Alpha: 제한된 사용자를 대상으로 테스트
-- [x] Public Alpha: 누구나[app.supabase.io](https://app.supabase.io)에서 등록 할 수 있습니다. 그러나, 버그 등이 있을 수 있으므로 양해 바랍니다.
+- [x] Public Alpha: 누구나[app.supabase.com](https://app.supabase.com)에서 등록 할 수 있습니다. 그러나, 버그 등이 있을 수 있으므로 양해 바랍니다.
 - [x] Public Beta: 기업을 제외한 대부분의 유스 케이스에 적합할 정도로 안정적
 - [ ] Public: 제품 준비중
 
@@ -45,10 +48,10 @@ Supabase는 오픈 소스 툴들을 조합한 것입니다. 엔터프라이즈 �
 
 **현재 아키텍쳐**
 
-Supabase는 [호스팅 플랫폼](https://app.supabase.io)입니다. 아무것도 설치하지 않고 가입하고 Supabase 사용을 시작할 수 있습니다.
+Supabase는 [호스팅 플랫폼](https://app.supabase.com)입니다. 아무것도 설치하지 않고 가입하고 Supabase 사용을 시작할 수 있습니다.
 또한 현재 로컬 개발 환경을 갖추고 있으며, 이는 플랫폼의 안정성과 함께 지금 최우선으로 진행하고 있는 프로젝트입니다.
 
-![아키텍쳐](https://supabase.com/assets/images/supabase-architecture-9050a7317e9ec7efb7807f5194122e48.png)
+![아키텍쳐](https://supabase.com/docs/assets/images/supabase-architecture-9050a7317e9ec7efb7807f5194122e48.png)
 
 - [PostgreSQL](https://www.postgresql.org/)PostgreSQL 은 30 년 이상 개발 · 개선되어왔다 객체 관계형 데이터베이스 시스템에서의 안정성, 기능의 안정성, 성능면에서 높은 평가를 얻고 있습니다.
 - [Realtime](https://github.com/supabase/realtime) 은 웹 소켓을 사용하여 PostgreSQL 삽입, 업데이트 및 삭제를 수신 할 수있는 Elixir 서버입니다. Supabase는 Postgres의 내장 복제 기능을 수신하고 복제 바이트 스트림을 JSON으로 변환 한 다음 웹 소켓을 통해 JSON을 브로드 캐스트합니다.

@@ -11,7 +11,6 @@ import Page from './spec/gen/components/Page'
 import Sidebar from './spec/gen/components/Sidebar'
 import SidebarCategory from './spec/gen/components/SidebarCategory'
 import Tab from './spec/gen/components/Tab'
-import Tabs from './spec/gen/components/Tabs'
 import { slugify, tsDocCommentToMdComment, writeToDisk } from './spec/gen/lib/helpers'
 import { TsDoc, OpenRef } from './spec/gen/definitions'
 
@@ -32,8 +31,7 @@ const main = (fileNames, options) => {
 
 async function gen(inputFileName, outputDir) {
   const docSpec = yaml.safeLoad(fs.readFileSync(inputFileName, 'utf8'))
-  const defRef = fs.readFileSync(docSpec.info.definition, 'utf8')
-  if (!defRef) return
+  const defRef = docSpec.info.definition ? fs.readFileSync(docSpec.info.definition, 'utf8') : '{}'
 
   const definition = JSON.parse(defRef)
   const id = docSpec.info.id
@@ -69,7 +67,7 @@ async function gen(inputFileName, outputDir) {
 
       // Create page
       const content = Page({
-        slug,
+        slug: (docSpec.info.slugPrefix || '') + slug,
         id: slug,
         specFileName: inputFileName,
         title: pageSpec.title || pageSpec.pageName,
@@ -166,21 +164,25 @@ ${description ? description : 'No description provided. '}
 
 function generateExamples(id: string, specExamples: any, allLanguages: any) {
   return specExamples.map((example) => {
-    let allTabs = example.hideCodeBlock
-      ? ''
-      : Tabs(id, allLanguages, generateTabs(allLanguages, example))
-    return Example({ name: example.name, description: example.description, tabs: allTabs })
+    let allTabs = example.hideCodeBlock ? '' : generateCodeBlocks(allLanguages, example)
+    return Example({
+      name: example.name,
+      description: example.description,
+      tabs: allTabs,
+      note: example.note,
+    })
   })
 }
 
 /**
  * A spotlight is an example which appears at the top of the page.
  */
-function generateSpotlight(id: string, specExamples: any, allLanguages: any) {
-  const spotlight = specExamples.find((x) => x.isSpotlight) || null
-  const spotlightContent = !spotlight
-    ? ''
-    : Tabs(id, allLanguages, generateTabs(allLanguages, spotlight))
+function generateSpotlight(id: string, specExamples: any | any[], allLanguages: any) {
+  if (!Array.isArray(specExamples)) {
+    throw new Error(`Examples for each spec should be an array, received: \n${specExamples}`)
+  }
+  const spotlight = (specExamples && specExamples.find((x) => x.isSpotlight)) || null
+  const spotlightContent = !spotlight ? '' : generateCodeBlocks(allLanguages, spotlight)
   return spotlightContent
 }
 
@@ -189,6 +191,15 @@ function generateTabs(allLanguages: any, example: any) {
     .map((library) => {
       let content = example[library.id] || notImplemented
       return Tab(library.id, content)
+    })
+    .join('\n')
+}
+
+function generateCodeBlocks(allLanguages: any, example: any) {
+  return allLanguages
+    .map((library) => {
+      let content = example[library.id] || notImplemented
+      return content
     })
     .join('\n')
 }
