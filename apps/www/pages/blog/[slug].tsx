@@ -32,6 +32,9 @@ const components = {
       return <code {...props} />
     }
   },
+  video: (props: any) => {
+    return <video {...props} className="rounded-lg border" />
+  },
   ImageGrid,
   img: (props: any) => {
     if (props.className !== ignoreClass) {
