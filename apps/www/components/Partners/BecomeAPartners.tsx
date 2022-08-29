@@ -173,7 +173,7 @@ export default function BecomeAPartner({ supabase }: { supabase: SupabaseClient 
                   layout="vertical"
                 >
                   {countries.map(({ code, name }) => (
-                    <Select.Option value={code}>{name}</Select.Option>
+                    <Select.Option key={code} value={code}>{name}</Select.Option>
                   ))}
                 </Select>
               </div>
@@ -202,7 +202,7 @@ export default function BecomeAPartner({ supabase }: { supabase: SupabaseClient 
           )}
         </Form>
 
-        {formSubmitted && <h3 className="h3">Thanks, we'll reach out to you shortly 👁⚡️👁</h3>}
+        {formSubmitted && <h3 className="h3">Thanks, we&apos;ll reach out to you shortly 👁⚡️👁</h3>}
       </div>
     </div>
   )

@@ -112,9 +112,9 @@ function AuthPage() {
                       />
                     </svg>
                   </div>
-                  {AuthProviders.map((auth) => {
+                  {AuthProviders.map((auth, i: number) => {
                     return (
-                      <div className="flex w-fit items-center">
+                      <div key={i} className="flex w-fit items-center">
                         <Image
                           src={`${basePath}/images/product/auth/${auth.name}-icon.svg`}
                           alt={`${auth.name} auth login icon`}

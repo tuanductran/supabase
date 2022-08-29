@@ -167,9 +167,9 @@ function FeaturedThumb(blog: PostTypes) {
             </div>
 
             <div className="grid w-max grid-flow-col grid-rows-4 gap-4">
-              {author.map((author: any) => {
+              {author.map((author: any, i: number) => {
                 return (
-                  <div className="flex items-center space-x-3">
+                  <div key={i} className="flex items-center space-x-3">
                     {author.author_image_url && (
                       <div className="relative h-10 w-10 overflow-auto">
                         <Image
