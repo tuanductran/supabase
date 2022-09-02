@@ -339,7 +339,7 @@ const NavigationMenuDemo = (props: any) => {
             <ContentList layout="two">
               {/* 
           // @ts-ignore */}
-              <ContentListItem title="Angular" href="/tutorials/with-angular">
+              <ContentListItem title="Angular" href="/docs/tutorials/with-angular">
                 build a simple user management app
               </ContentListItem>
               {/* 
