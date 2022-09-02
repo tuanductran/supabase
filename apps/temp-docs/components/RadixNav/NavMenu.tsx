@@ -383,17 +383,17 @@ const NavigationMenuDemo = (props: any) => {
               <ContentListItemCallout />
               {/* 
           // @ts-ignore */}
-              <ContentListItem title="Javascript" href="/reference/javascript/installing">
+              <ContentListItem title="Javascript" href="/docs/reference/javascript/installing">
                 @supabase/supabase-js
               </ContentListItem>
               {/* 
           // @ts-ignore */}
-              <ContentListItem title="CLI" href="/reference/cli/installing">
+              <ContentListItem title="CLI" href="/docs/reference/cli/installing">
                 Command line interface
               </ContentListItem>
               {/* 
           // @ts-ignore */}
-              <ContentListItem title="Dart" href="/reference/dart/installing">
+              <ContentListItem title="Dart" href="/docs/reference/dart/installing">
                 Dart
               </ContentListItem>
             </ContentList>

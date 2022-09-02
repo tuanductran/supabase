@@ -4,7 +4,7 @@ import { useRouter } from 'next/router'
 import { ProductIcon } from '../ProductIcon'
 
 const SideBar = ({ menuItems }: { menuItems: any }) => {
-  const { asPath } = useRouter()
+  const { asPath, basePath } = useRouter()
 
   const router = useRouter()
   // thin-scrollbar
