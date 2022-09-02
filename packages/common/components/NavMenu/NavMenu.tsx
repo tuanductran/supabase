@@ -154,6 +154,7 @@ const StyledArrow = styled('div', {
 })
 
 const StyledIndicatorWithArrow = forwardRef((props, forwardedRef) => (
+  // @ts-ignore
   <StyledIndicator {...props} ref={forwardedRef}>
     <StyledArrow />
   </StyledIndicator>
@@ -311,16 +312,24 @@ const NavigationMenuDemo = () => {
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
+          {/* // 
+          @ts-ignore */}
           <NavigationMenuTrigger>Learn</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ContentList layout="one">
               <ContentListItemCallout />
+              {/* // 
+          @ts-ignore */}
               <ContentListItem href="https://stitches.dev/" title="Stitches">
                 CSS-in-JS with best-in-class developer experience.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem href="/colors" title="Colors">
                 Beautiful, thought-out palettes with auto dark mode.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem href="https://icons.radix-ui.com/" title="Icons">
                 A crisp set of 15x15 icons, balanced and consistent.
               </ContentListItem>
@@ -329,27 +338,41 @@ const NavigationMenuDemo = () => {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
+          {/* // 
+          @ts-ignore */}
           <NavigationMenuTrigger>Overview</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ContentList layout="two">
+              {/* // 
+          @ts-ignore */}
               <ContentListItem title="Introduction" href="/docs/primitives/overview/introduction">
                 Build high-quality, accessible design systems and web apps.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem
                 title="Getting started"
                 href="/docs/primitives/overview/getting-started"
               >
                 A quick tutorial to get you up and running with Radix Primitives.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem title="Styling" href="/docs/primitives/overview/styling">
                 Unstyled and compatible with any styling solution.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem title="Animation" href="/docs/primitives/overview/animation">
                 Use CSS keyframes or any animation library of your choice.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem title="Accessibility" href="/docs/primitives/overview/accessibility">
                 Tested in a range of browsers and assistive technologies.
               </ContentListItem>
+              {/* // 
+          @ts-ignore */}
               <ContentListItem title="Releases" href="/docs/primitives/overview/releases">
                 Radix Primitives releases and their changelogs.
               </ContentListItem>
