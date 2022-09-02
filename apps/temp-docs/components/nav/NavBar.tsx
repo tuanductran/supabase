@@ -9,6 +9,7 @@ import {
 } from '@supabase/ui'
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import { NavigationMenuDemo } from '../../components/RadixNav'
 import { useTheme } from '../Providers'
@@ -17,6 +18,8 @@ import ThemeToggle from '../ThemeToggle'
 const NavBar = ({ currentPage }: { currentPage: string }) => {
   const [mounted, setMounted] = useState(false)
   const { isDarkMode } = useTheme()
+  const router = useRouter()
+  const { basePath } = router
 
   useEffect(() => {
     setMounted(true)
@@ -46,7 +49,9 @@ const NavBar = ({ currentPage }: { currentPage: string }) => {
             <a className="flex items-center">
               <Image
                 className="cursor-pointer"
-                src={isDarkMode ? `/supabase-dark.svg` : `/supabase-light.svg`}
+                src={
+                  isDarkMode ? `${basePath}/supabase-dark.svg` : `${basePath}/supabase-light.svg`
+                }
                 width={200}
                 height={32}
                 alt="Supabase Logo"
