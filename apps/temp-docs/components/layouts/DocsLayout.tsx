@@ -17,6 +17,7 @@ const DocsLayout = ({
     parent?: { label: string; href: string }
     breadcrumbs?: boolean
     subtitle?: string
+    hideToc?: boolean
   }
   children: string
   toc: any

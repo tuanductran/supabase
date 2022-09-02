@@ -132,6 +132,7 @@ const discussion = ({ data, prams }: any) => {
         description: meta_description,
       }}
       currentPage={'Discussions'}
+      asPath="discussions"
     >
       <div className="my-8 space-y-8">
         <div>

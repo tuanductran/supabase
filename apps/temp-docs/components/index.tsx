@@ -9,7 +9,8 @@ import { ProductIcon } from './ProductIcon'
 import { NumberSection } from './ArticleHelpers/NumberSection'
 import ReactMarkdown from 'react-markdown'
 
-const components = {
+// to do, type this properly
+const components: any = {
   ReactMarkdown,
   NumberSection,
   ProductIcon,

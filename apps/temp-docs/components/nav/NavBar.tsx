@@ -10,7 +10,7 @@ import {
 import Image from 'next/image'
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
-import { NavigationMenuDemo, NavigationMenuContainer } from '../../components/RadixNav'
+import { NavigationMenuDemo } from '../../components/RadixNav'
 import { useTheme } from '../Providers'
 import ThemeToggle from '../ThemeToggle'
 

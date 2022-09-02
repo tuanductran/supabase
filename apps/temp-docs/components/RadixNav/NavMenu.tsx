@@ -106,6 +106,7 @@ const StyledCaret = styled(CaretDownIcon, {
   },
 })
 
+// eslint-disable-next-line react/display-name
 const StyledTriggerWithCaret = forwardRef(({ children, ...props }, forwardedRef) => (
   // @ts-ignore
   <StyledTrigger {...props} ref={forwardedRef}>
@@ -163,7 +164,9 @@ const StyledArrow = styled('div', {
   borderTopLeftRadius: 2,
 })
 
+// eslint-disable-next-line react/display-name
 const StyledIndicatorWithArrow = forwardRef((props, forwardedRef) => (
+  // @ts-expect-error
   <StyledIndicator {...props} ref={forwardedRef}>
     <StyledArrow />
   </StyledIndicator>
@@ -191,14 +194,14 @@ const StyledViewport = styled(NavigationMenuPrimitive.Viewport, {
 })
 
 // Exports
-const NavigationMenu = StyledMenu
-const NavigationMenuList = StyledList
-const NavigationMenuItem = NavigationMenuPrimitive.Item
-const NavigationMenuTrigger = StyledTriggerWithCaret
-const NavigationMenuLink = StyledLink
-const NavigationMenuContent = StyledContent
-const NavigationMenuViewport = StyledViewport
-const NavigationMenuIndicator = StyledIndicatorWithArrow
+const NavigationMenu = (props: any) => <StyledMenu {...props} />
+const NavigationMenuList = (props: any) => <StyledList {...props} />
+const NavigationMenuItem = (props: any) => <NavigationMenuPrimitive.Item {...props} />
+const NavigationMenuTrigger = (props: any) => <StyledTriggerWithCaret {...props} />
+const NavigationMenuLink = (props: any) => <StyledLink {...props} />
+const NavigationMenuContent = (props: any) => <StyledContent {...props} />
+const NavigationMenuViewport = (props: any) => <StyledViewport {...props} />
+const NavigationMenuIndicator = (props: any) => <StyledIndicatorWithArrow {...props} />
 
 // Your app...
 const ContentList = styled('ul', {
@@ -245,6 +248,7 @@ const LinkText = styled('p', {
 })
 
 // @ts-ignore
+// eslint-disable-next-line react/display-name
 const ContentListItem = forwardRef(({ children, title, ...props }, forwardedRef) => (
   <ListItem>
     <NavigationMenuLink
@@ -262,6 +266,7 @@ const ContentListItem = forwardRef(({ children, title, ...props }, forwardedRef)
   </ListItem>
 ))
 
+// eslint-disable-next-line react/display-name
 const ContentListItemCallout = forwardRef(({ children, ...props }, forwardedRef) => (
   <ListItem css={{ gridRow: 'span 3' }}>
     <NavigationMenuLink
@@ -327,27 +332,41 @@ const NavigationMenuDemo = (props: any) => {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Tutorials</NavigationMenuTrigger>
+          {/* 
+          // @ts-ignore */}
+          <NavigationMenuTrigger>{'Tutorials'}</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ContentList layout="two">
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Angular" href="/tutorials/with-angular">
                 build a simple user management app
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem
                 title="Getting started"
                 href="/docs/primitives/overview/getting-started"
               >
                 A quick tutorial to get you up and running with Radix Primitives.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Styling" href="/docs/primitives/overview/styling">
                 Unstyled and compatible with any styling solution.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Animation" href="/docs/primitives/overview/animation">
                 Use CSS keyframes or any animation library of your choice.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Accessibility" href="/docs/primitives/overview/accessibility">
                 Tested in a range of browsers and assistive technologies.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Releases" href="/docs/primitives/overview/releases">
                 Radix Primitives releases and their changelogs.
               </ContentListItem>
@@ -356,16 +375,24 @@ const NavigationMenuDemo = (props: any) => {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
+          {/* 
+          // @ts-ignore */}
           <NavigationMenuTrigger>APIs & CLI</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ContentList layout="one">
               <ContentListItemCallout />
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Javascript" href="/reference/javascript/installing">
                 @supabase/supabase-js
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="CLI" href="/reference/cli/installing">
                 Command line interface
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Dart" href="/reference/dart/installing">
                 Dart
               </ContentListItem>
@@ -374,27 +401,41 @@ const NavigationMenuDemo = (props: any) => {
         </NavigationMenuItem>
 
         <NavigationMenuItem>
+          {/* 
+          // @ts-ignore */}
           <NavigationMenuTrigger>GitHub</NavigationMenuTrigger>
           <NavigationMenuContent>
             <ContentList layout="two">
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Introduction" href="/docs/primitives/overview/introduction">
                 Build high-quality, accessible design systems and web apps.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem
                 title="Getting started"
                 href="/docs/primitives/overview/getting-started"
               >
                 A quick tutorial to get you up and running with Radix Primitives.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Styling" href="/docs/primitives/overview/styling">
                 Unstyled and compatible with any styling solution.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Animation" href="/docs/primitives/overview/animation">
                 Use CSS keyframes or any animation library of your choice.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Accessibility" href="/docs/primitives/overview/accessibility">
                 Tested in a range of browsers and assistive technologies.
               </ContentListItem>
+              {/* 
+          // @ts-ignore */}
               <ContentListItem title="Releases" href="/docs/primitives/overview/releases">
                 Radix Primitives releases and their changelogs.
               </ContentListItem>

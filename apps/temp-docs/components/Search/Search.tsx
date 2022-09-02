@@ -38,6 +38,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
     isOpen,
     onOpen,
     onClose,
+    // @ts-ignore
     onInput,
   })
 
@@ -47,6 +48,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
         <link rel="preconnect" href={`https://${APP_ID}-dsn.algolia.net`} crossOrigin="true" />
       </Head>
       <SearchContext.Provider
+        // @ts-ignore
         value={{
           isOpen,
           onOpen,
@@ -59,6 +61,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
       {isOpen &&
         createPortal(
           <DocSearchModal
+            // @ts-ignore
             initialQuery={initialQuery}
             initialScrollY={window.scrollY}
             // searchParameters={{
@@ -71,6 +74,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
             apiKey={API_KEY}
             appId={APP_ID}
             navigator={{
+              // @ts-ignore
               navigate({ suggestionUrl }) {
                 setIsOpen(false)
                 router.push(suggestionUrl)
@@ -112,7 +116,7 @@ export function SearchProvider({ children }: { children: React.ReactNode }) {
   )
 }
 
-function Hit({ hit, children }) {
+function Hit({ hit, children }: any) {
   return (
     <Link href={hit.url}>
       <a
@@ -130,13 +134,13 @@ function Hit({ hit, children }) {
   )
 }
 
-export function SearchButton({ children, ...props }) {
+export function SearchButton({ children, ...props }: any) {
   let searchButtonRef = useRef()
   let actionKey = useActionKey()
-  let { onOpen, onInput } = useContext(SearchContext)
+  let { onOpen, onInput } = useContext<any>(SearchContext)
 
   useEffect(() => {
-    function onKeyDown(event) {
+    function onKeyDown(event: any) {
       if (searchButtonRef && searchButtonRef.current === document.activeElement && onInput) {
         if (/[a-zA-Z0-9]/.test(String.fromCharCode(event.keyCode))) {
           onInput(event)
@@ -156,9 +160,9 @@ export function SearchButton({ children, ...props }) {
   )
 }
 
-function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }) {
+function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }: any) {
   useEffect(() => {
-    function onKeyDown(event) {
+    function onKeyDown(event: any) {
       function open() {
         // We check that no other DocSearch modal is showing before opening
         // another one.
@@ -189,7 +193,7 @@ function useDocSearchKeyboardEvents({ isOpen, onOpen, onClose }) {
   }, [isOpen, onOpen, onClose])
 }
 
-function isEditingContent(event) {
+function isEditingContent(event: any) {
   let element = event.target
   let tagName = element.tagName
   return (

@@ -152,7 +152,11 @@ const discussions = ({ data, page }: { data: any; page: number }) => {
   }
 
   return (
-    <Layout meta={{ title: meta_title, description: meta_description }} currentPage={'Discussions'}>
+    <Layout
+      meta={{ title: meta_title, description: meta_description }}
+      currentPage={'Discussions'}
+      asPath="discussions"
+    >
       <div className="mb-16 space-y-8">
         <div className="mt-4 flex items-center justify-between">
           <h2 className="text-3xl md:text-4xl">Discussions</h2>

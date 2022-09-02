@@ -15,6 +15,8 @@ export default function Home({
 }) {
   return (
     <Layout meta={meta} menuItems={menuItems['Docs']} currentPage="Docs">
+      {/* // 
+      @ts-ignore */}
       <MDXProvider components={components}>
         <MDXRemote {...content} />
       </MDXProvider>

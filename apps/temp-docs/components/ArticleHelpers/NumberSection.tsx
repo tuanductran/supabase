@@ -35,6 +35,7 @@ Props) => {
   const firstType = renderedChildren[0].props.originalType
 
   if (firstType === 'h2' || firstType === 'h3' || firstType === 'h4') {
+    // @ts-expect-error
     title = renderedChildren[0]
     renderedChildren.shift()
   }

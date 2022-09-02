@@ -21,7 +21,7 @@ export default function Doc({
     parent: { parent: { label: string; href: string } }
     hideToc: boolean
   }
-  content: ReactElement
+  content: React.ReactElement
   toc: any
 }) {
   const { asPath } = useRouter()
@@ -63,8 +63,13 @@ export default function Doc({
   // console.log('content of slug', content)
 
   return (
+    // @ts-ignore
     <Layout meta={meta} toc={toc} menuItems={menuItems[page]} currentPage={page} asPath={asPath}>
+      {/* 
+      // @ts-ignore */}
       <MDXProvider components={components}>
+        {/* 
+      // @ts-ignore */}
         <MDXRemote {...content} components={components} />
       </MDXProvider>
     </Layout>

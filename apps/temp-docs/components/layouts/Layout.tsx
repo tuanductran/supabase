@@ -8,6 +8,8 @@ const Layout = ({
   meta,
   currentPage,
   asPath,
+  menuItems,
+  toc,
 }: {
   meta: {
     title: string
@@ -15,10 +17,11 @@ const Layout = ({
     parent?: { label: string; href: string }
     breadcrumbs?: boolean
     subtitle?: string
+    hideToc?: boolean
   }
-  children: string
-  toc: any
-  menuItems: any
+  children: React.ReactNode
+  toc?: any
+  menuItems?: any
   currentPage: string
   asPath: string
 }) => {
