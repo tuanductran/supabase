@@ -3,11 +3,9 @@ import Footer from '../Footer'
 import NavBar from '../nav/NavBar'
 import SideBar from '../nav/SideBar'
 
-const DocsLayout = ({
-  meta,
+const Layout = ({
   children,
-  toc,
-  menuItems,
+  meta,
   currentPage,
   asPath,
 }: {
@@ -79,7 +77,6 @@ const DocsLayout = ({
         />
         <link href={`https://unpkg.com/prismjs@0.0.1/themes/prism-${theme}.css`} rel="stylesheet" /> */}
       </Head>
-
       <main>
         <NavBar currentPage={currentPage} />
         <div className="max-w-8xl mx-auto px-4 sm:px-6 md:px-8">
@@ -128,4 +125,4 @@ const DocsLayout = ({
   )
 }
 
-export default DocsLayout
+export default Layout

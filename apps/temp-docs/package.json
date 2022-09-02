@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@apollo/client": "^3.6.6",
     "@mdx-js/loader": "^1.6.22",
     "@mdx-js/react": "^1.6.22",
     "@next/mdx": "^12.0.4",
@@ -18,6 +19,7 @@
     "@supabase/ui": "v0.37.0-alpha.50",
     "@tailwindcss/typography": "^0.4.1",
     "common": "*",
+    "graphql": "^16.5.0",
     "gray-matter": "^4.0.3",
     "jsx-to-string": "^1.4.0",
     "markdown-toc": "^1.2.0",

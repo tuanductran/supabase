@@ -1,12 +1,12 @@
 import React from 'react'
 import { observer } from 'mobx-react-lite'
-import { IconMoon, IconSun, Typography, Input, Listbox } from '@supabase/ui'
+import { IconMoon, IconSun, Input, Listbox } from '@supabase/ui'
 
 import { useProfile, useStore } from 'hooks'
 import { post } from 'lib/common/fetch'
 import { API_URL } from 'lib/constants'
 import { AccountLayout } from 'components/layouts'
-import Panel from 'components/to-be-cleaned/Panel'
+import Panel from 'components/ui/Panel'
 import SchemaFormPanel from 'components/to-be-cleaned/forms/SchemaFormPanel'
 import { NextPageWithLayout } from 'types'
 
@@ -90,11 +90,11 @@ const GithubProfile = observer(() => {
 
   return (
     <Panel
-      title={[
-        <Typography.Title key="panel-title" level={5} className="mb-0">
+      title={
+        <h5 key="panel-title" className="mb-0">
           Account Information
-        </Typography.Title>,
-      ]}
+        </h5>
+      }
     >
       <Panel.Content>
         <div className="space-y-2">
@@ -122,13 +122,7 @@ const ThemeSettings = observer(() => {
   const { ui } = useStore()
 
   return (
-    <Panel
-      title={[
-        <Typography.Title key="panel-title" level={5}>
-          Theme
-        </Typography.Title>,
-      ]}
-    >
+    <Panel title={<h5 key="panel-title">Theme</h5>}>
       <Panel.Content>
         <Listbox
           value={ui.themeOption}
