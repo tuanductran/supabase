@@ -1,5 +1,7 @@
 # whatsapp-cloud-api
 
+## NOTE: WIP does not yet work on Supabase Edge Functions
+
 Try it out: https://wa.me/15550464302
 
 ![demo](./demo.gif)
@@ -11,7 +13,6 @@ Try it out: https://wa.me/15550464302
 ## Test locally
 
 - `supabase functions serve --no-verify-jwt whatsapp-cloud-api --env-file ./supabase/.env.local`
-
 
 ## Deploy
 
