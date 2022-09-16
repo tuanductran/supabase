@@ -24,7 +24,9 @@ const ProjectCard: FC<Props> = ({ project, rewriteHref }) => {
         linkHref={rewriteHref ? rewriteHref : `/project/${projectRef}`}
         title={
           <div className="flex w-full flex-row justify-between gap-1">
-            <span className="flex-shrink truncate">{name}</span>
+            <span className="flex-shrink truncate" data-test-id="projectName">
+              {name}
+            </span>
           </div>
         }
         footer={

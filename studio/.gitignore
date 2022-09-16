@@ -33,3 +33,10 @@ yarn-error.log*
 .env.production.local
 
 !.vercel
+
+# e2e testing
+/test-results/
+/playwright-report/
+/playwright/.cache/
+/test-examples
+storageState.json

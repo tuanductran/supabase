@@ -58,7 +58,13 @@ const InviteUserModal = () => {
     <div>
       <Tooltip.Root delayDuration={0}>
         <Tooltip.Trigger>
-          <Button as="span" onClick={handleToggle} icon={<IconPlus />} disabled={!canInviteUsers}>
+          <Button
+            as="span"
+            onClick={handleToggle}
+            icon={<IconPlus />}
+            disabled={!canInviteUsers}
+            data-test-id="inviteUser"
+          >
             Invite
           </Button>
         </Tooltip.Trigger>
@@ -105,6 +111,7 @@ const InviteUserModal = () => {
                   type="email"
                   name="email"
                   placeholder="User email"
+                  data-test-id="userEmail"
                 />
               </Modal.Content>
               <Modal.Content>

@@ -22,6 +22,7 @@ const NavigationIconButton: FC<Props> = ({ route, isActive = false }) => {
               'text-scale-900 hover:text-scale-1200 ', // Dark mode
               `${isActive ? 'bg-scale-500 shadow-sm text-scale-1200' : ''}`,
             ].join(' ')}
+            data-test-id={route.key}
           >
             {route.icon}
           </a>

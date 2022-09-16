@@ -24,7 +24,9 @@ const Home: NextPageWithLayout = () => {
   return (
     <div className="mx-auto my-16 w-full max-w-7xl space-y-16">
       <div className="mx-6 flex items-center space-x-6">
-        <h1 className="text-3xl">{projectName}</h1>
+        <h1 className="text-3xl" data-test-id="projectName">
+          {projectName}
+        </h1>
       </div>
 
       <div className="mx-6">
