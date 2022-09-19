@@ -37,6 +37,7 @@ const PolicySelection: FC<Props> = ({
               </div>
             }
             onClick={onViewTemplates}
+            testId="policyGetStartedQuickly"
           />
           <CardButton
             title="For full customization"

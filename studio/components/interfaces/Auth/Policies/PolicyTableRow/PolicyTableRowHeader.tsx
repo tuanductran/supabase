@@ -44,6 +44,7 @@ const PolicyTableRowHeader: FC<Props> = ({
                 disabled={!canCreatePolicies}
                 className="ml-2"
                 onClick={() => onSelectCreatePolicy(table)}
+                data-test-i="newPolicy"
               >
                 New Policy
               </Button>

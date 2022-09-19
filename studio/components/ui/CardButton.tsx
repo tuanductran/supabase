@@ -14,6 +14,7 @@ interface Props {
   onClick?: () => void
   icon?: React.ReactNode
   containerHeightClassName?: string
+  testId?: string
 }
 
 const CardButton: FC<Props> = ({
@@ -28,6 +29,7 @@ const CardButton: FC<Props> = ({
   onClick,
   icon,
   containerHeightClassName = 'h-32',
+  testId,
 }) => {
   const LinkContainer = ({ children }: { children: React.ReactNode }) => (
     <Link href={linkHref}>
@@ -66,7 +68,7 @@ const CardButton: FC<Props> = ({
   }
 
   const contents = (
-    <div className={containerClasses.join(' ')}>
+    <div className={containerClasses.join(' ')} data-test-id={testId}>
       {imgUrl && (
         <ImageContainer>
           <img
