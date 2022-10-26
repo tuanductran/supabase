@@ -13,18 +13,18 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev --parallel",
-    "dev:reference": "turbo run dev --filter=reference --parallel",
-    "dev:studio": "turbo run dev --filter=studio --parallel",
-    "lint": "turbo run lint",
+    "build": "turbo build",
+    "dev": "turbo dev --parallel",
+    "dev:reference": "turbo dev --filter=reference --parallel",
+    "dev:studio": "turbo dev --filter=studio --parallel",
+    "lint": "turbo lint",
     "format": "prettier --write \"apps/**/*.{js,jsx,ts,tsx,css,md,json}\"",
     "docker:dev": "cd docker && docker-compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml up --renew-anon-volumes",
     "docker:up": "cd docker && docker-compose up",
     "docker:down": "cd docker && docker-compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml down --remove-orphans",
     "docker:remove": "cd docker && docker-compose -f docker-compose.yml -f ./dev/docker-compose.dev.yml rm -vfs",
     "test": "jest",
-    "test:studio": "turbo run test --filter=studio",
+    "test:studio": "turbo test --filter=studio",
     "perf:kong": "ab -t 5 -c 20 -T application/json http://localhost:8000/",
     "perf:meta": "ab -t 5 -c 20 -T application/json http://localhost:5555/tables"
   },
@@ -35,7 +35,7 @@
     "json-stringify-safe": "^5.0.1",
     "prettier": "^2.5.1",
     "ts-jest": "^27.0.7",
-    "turbo": "1.4.7"
+    "turbo": "^1.6.1"
   },
   "repository": {
     "type": "git",

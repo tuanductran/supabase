@@ -1,3 +1,4 @@
+const path = require('path')
 const { withSentryConfig } = require('@sentry/nextjs')
 const withPlugins = require('next-compose-plugins')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -65,8 +66,12 @@ const nextConfig = {
   images: {
     domains: ['github.com'],
   },
+  output: 'standalone',
+  experimental: {
+    outputFileTracingRoot: path.join(__dirname, '../'),
+  },
 }
-
+path
 // Export all config
 const plugins = [[withBundleAnalyzer({})], withTM()]
 
