@@ -99,35 +99,11 @@ const StorageMenu: FC<Props> = () => {
         <div className="h-px w-full bg-scale-500"></div>
         <div className="">
           <Menu.Group title="Configuration" />
-<<<<<<< HEAD
           <Link href={`/project/${projectRef}/storage/policies`}>
             <Menu.Item rounded active={page === 'policies'}>
               <p className="truncate">Policies</p>
             </Menu.Item>
           </Link>
-=======
-          {IS_PLATFORM && (
-            <Link href={`/project/${projectRef}/storage/settings`}>
-              <Menu.Item rounded active={page === 'settings'}>
-                <Typography.Text className="truncate">Settings</Typography.Text>
-              </Menu.Item>
-            </Link>
-          )}
-
-          <Link href={`/project/${projectRef}/storage/policies`}>
-            <Menu.Item rounded active={page === 'policies'}>
-              <Typography.Text className="truncate">Policies</Typography.Text>
-            </Menu.Item>
-          </Link>
-
-          {IS_PLATFORM && (
-            <Link href={`/project/${projectRef}/storage/usage`}>
-              <Menu.Item rounded active={page === 'usage'}>
-                <Typography.Text className="truncate">Usage</Typography.Text>
-              </Menu.Item>
-            </Link>
-          )}
->>>>>>> 44e882c0a7098012cb37ec8dae57ff9470c5da17
         </div>
       </div>
     </Menu>
