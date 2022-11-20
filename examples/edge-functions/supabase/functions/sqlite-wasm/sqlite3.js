@@ -147,8 +147,7 @@ Module[xNameOfInstantiateWasm] = function callee(imports,onSuccess){
   //  "instantiateWasm() uri =", uri
   //);
 
-  const uri = new URL("sqlite3.wasm", import.meta.url);
-  const wfetch = ()=>fetch(uri, {credentials: 'same-origin'});
+  const wfetch = ()=>fetch("https://sqlite-wasm.vercel.app/sqlite3.wasm");
   const loadWasm = WebAssembly.instantiateStreaming
         ? async ()=>{
           return WebAssembly.instantiateStreaming(wfetch(), imports)
