@@ -3,36 +3,37 @@
 // This enables autocomplete, go to definition, etc.
 
 import sqlite3InitModule from './sqlite3.js'
-import { serve } from "https://deno.land/std@0.131.0/http/server.ts"
+import { serve } from 'https://deno.land/std@0.131.0/http/server.ts'
 
-serve(async (req) => {
-  const mod = await sqlite3InitModule();
-  const db = new mod.sqlite3.oo1.DB();
+console.info('this is info')
+console.warn('this is warning')
+console.debug('this is debug')
+console.error('this is error')
 
-  try {
-    db.exec([
-      "create table t(a);",
-      "insert into t(a) ",
-      "values(10),(20),(30)"
-    ]);
+serve(
+  async (req) => {
+    const mod = await sqlite3InitModule()
+    const db = new mod.sqlite3.oo1.DB()
 
-   const results = db.exec([
-      "select * from t;"
-    ], { returnValue: "resultRows"});
+    try {
+      db.exec(['create table t(a);', 'insert into t(a) ', 'values(10),(20),(30)'])
 
-    console.log("results", results);
+      const results = db.exec(['select * from t;'], { returnValue: 'resultRows' })
 
-    return new Response(
-      JSON.stringify(results),
-      { headers: { "Content-Type": "application/json" } },
-    )
-  } catch (e) {
-    console.error(e);
-    return new Response(
-      JSON.stringify({ msg: e}),
-      { headers: { "Content-Type": "application/json" }, status: 500},
-    )
-  } finally {
-      db.close();
+      console.log('results', results)
+
+      return new Response(JSON.stringify(results), {
+        headers: { 'Content-Type': 'application/json' },
+      })
+    } catch (e) {
+      console.error(e)
+      return new Response(JSON.stringify({ msg: e }), {
+        headers: { 'Content-Type': 'application/json' },
+        status: 500,
+      })
+    } finally {
+      db.close()
     }
-  }, {port:  9000 })
+  },
+  { port: 9000 }
+)
