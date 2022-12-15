@@ -450,7 +450,7 @@ export default function launchweek() {
                     id={day4.d.toString()}
                   >
                     {day4.steps.length > 0 && (
-                      <div className="h-[400px] flex flex-col gap-5 lg:flex-row group/day4 relative overflow-hidden">
+                      <div className="h-[400px] flex flex-col gap-5 lg:flex-row group/day4 relative overflow-hidden ">
                         <div
                           className="absolute opacity-60 group-hover/day4:opacity-100 w-full h-full z-10 transition-all duration-500 rounded-b-xl"
                           style={{
@@ -460,11 +460,11 @@ export default function launchweek() {
                           }}
                         ></div>
                         <div
-                          className={`flex flex-col justify-between flex-1 basis-1/2 lg:basis-2/3 border rounded-xl h-full p-14 text-2xl bg-no-repeat bg-cover sm:bg-contain bg-[url('/images/launchweek/wrappers-bg-light.png')] dark:bg-[url('/images/launchweek/wrappers-bg.png')] bg-[left_90%_bottom] sm:bg-[center_bottom] !px-3 sm:!px-14`}
+                          className={`flex flex-col flex-1 items-center gap-5 lg:items-start justify-between basis-1/2 lg:basis-2/3 border rounded-xl h-full p-14 text-2xl bg-no-repeat bg-cover sm:bg-contain bg-[url('/images/launchweek/wrappers-bg-light.png')] dark:bg-[url('/images/launchweek/wrappers-bg.png')] bg-[left_90%_bottom] sm:bg-[center_bottom] !px-3 sm:!px-14`}
                         >
-                          <div className="flex items-center">
+                          <div className="flex items-center flex-col-reverse lg:flex-row">
                             <span>{day4.steps[0].title}</span>
-                            <Badge className="!bg-transparent h-fit ml-4 text-sm !py-1 !px-4 text-transparent bg-clip-text bg-gradient-to-r from-[#99bbab] to-[#396f55] border-[#4d898c] dark:from-white dark:to-[#1a7a4ca1] dark:border-[#DFFFF1]">
+                            <Badge className="!bg-transparent h-fit ml-4 mb-2 lg:mb-0 text-sm !py-1 !px-4 text-transparent bg-clip-text bg-gradient-to-r from-[#99bbab] to-[#396f55] border-[#4d898c] dark:from-white dark:to-[#1a7a4ca1] dark:border-[#DFFFF1]">
                               New
                             </Badge>
                           </div>
