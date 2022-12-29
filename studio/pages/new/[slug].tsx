@@ -4,10 +4,10 @@ import { debounce, isUndefined, values } from 'lodash'
 import { toJS } from 'mobx'
 import { observer } from 'mobx-react-lite'
 import generator from 'generate-password'
-import { Button, Listbox, IconUsers, Input, Alert } from 'ui'
+import { Button, Listbox, IconUsers, Input, Alert, Toggle } from 'ui'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 
-import { NextPageWithLayout } from 'types'
+import { NextPageWithLayout, Organization } from 'types'
 import { passwordStrength, pluckObjectFields } from 'lib/helpers'
 import { get, post } from 'lib/common/fetch'
 import {
@@ -20,6 +20,7 @@ import {
   PRICING_TIER_DEFAULT_KEY,
   PRICING_TIER_FREE_KEY,
   PRICING_TIER_PRODUCT_IDS,
+  PROJECT_TEMPLATES,
 } from 'lib/constants'
 import {
   useStore,
@@ -39,6 +40,17 @@ import {
   NotOrganizationOwnerWarning,
   EmptyPaymentMethodWarning,
 } from 'components/interfaces/Organization/NewProject'
+
+type NewProjectDataProps = {
+  cloud_provider: string
+  org_id: number | undefined
+  name: string
+  db_pass: string
+  db_region: string
+  db_pricing_tier_id: string
+  kps_enabled: boolean
+  db_sql?: string
+}
 
 const Wizard: NextPageWithLayout = () => {
   const router = useRouter()
@@ -60,6 +72,8 @@ const Wizard: NextPageWithLayout = () => {
   const [passwordStrengthWarning, setPasswordStrengthWarning] = useState('')
   const [passwordStrengthScore, setPasswordStrengthScore] = useState(0)
   const [paymentMethods, setPaymentMethods] = useState<any[] | undefined>(undefined)
+  const [fromTemplate, setFromTemplate] = useState<boolean>(false)
+  const [selectedTemplate, setSelectedTemplate] = useState<any>(PROJECT_TEMPLATES[0].title)
 
   const organizations = values(toJS(app.organizations.list()))
   const currentOrg = organizations.find((o: any) => o.slug === slug)
@@ -157,7 +171,7 @@ const Wizard: NextPageWithLayout = () => {
 
   const onClickNext = async () => {
     setNewProjectLoading(true)
-    const data = {
+    const data: NewProjectDataProps = {
       cloud_provider: PROVIDERS.AWS.id, // hardcoded for DB instances to be under AWS
       org_id: currentOrg?.id,
       name: projectName,
@@ -165,6 +179,9 @@ const Wizard: NextPageWithLayout = () => {
       db_region: dbRegion,
       db_pricing_tier_id: (PRICING_TIER_PRODUCT_IDS as any)[dbPricingTierKey],
       kps_enabled: kpsEnabled,
+    }
+    if (fromTemplate) {
+      data.db_sql = PROJECT_TEMPLATES.find((template) => selectedTemplate === template.title)?.sql
     }
     const response = await post(`${API_URL}/projects`, data)
     if (response.error) {
@@ -347,6 +364,38 @@ const Wizard: NextPageWithLayout = () => {
                       )
                     })}
                   </Listbox>
+                </Panel.Content>
+
+                <Panel.Content className="Form section-block--body has-inputs-centered border-b border-panel-border-interior-light dark:border-panel-border-interior-dark">
+                  <div className="flex justify-between">
+                    <p className="text-scale-1100 text-sm">Template</p>
+                    <Toggle
+                      size="medium"
+                      checked={fromTemplate}
+                      onChange={() => setFromTemplate(!fromTemplate)}
+                    />
+                  </div>
+                  {fromTemplate && (
+                    <Listbox
+                      layout="horizontal"
+                      type="select"
+                      value={selectedTemplate}
+                      // @ts-ignore
+                      onChange={(value: string) => setSelectedTemplate(value)}
+                      descriptionText="Select one of our templates"
+                      className="mt-4"
+                      defaultValue={PROJECT_TEMPLATES[0]}
+                    >
+                      {PROJECT_TEMPLATES.map(({ title }: { title: string; sql: string }, i) => {
+                        const label = title
+                        return (
+                          <Listbox.Option key={title} label={label} value={label}>
+                            <span className="text-scale-1200">{label}</span>
+                          </Listbox.Option>
+                        )
+                      })}
+                    </Listbox>
+                  )}
                 </Panel.Content>
               </>
             )}
