@@ -4,13 +4,18 @@ import { observer } from 'mobx-react-lite'
 import { Badge, IconArrowRight, IconLoader, Button } from 'ui'
 import ExampleProject from 'components/interfaces/Home/ExampleProject'
 import ClientLibrary from 'components/interfaces/Home/ClientLibrary'
-import { CLIENT_LIBRARIES, EXAMPLE_PROJECTS } from 'components/interfaces/Home/Home.constants'
+import {
+  CLIENT_LIBRARIES,
+  EXAMPLE_PROJECTS,
+  QUICKSTARTS,
+} from 'components/interfaces/Home/Home.constants'
 
 import { API_URL, PROJECT_STATUS } from 'lib/constants'
 import { useStore } from 'hooks'
 import { getWithTimeout } from 'lib/common/fetch'
 import { Project } from 'types'
 import { DisplayApiSettings, DisplayConfigSettings } from 'components/ui/ProjectSettings'
+import Quickstarts from 'components/interfaces/Home/Quickstarts'
 
 interface Props {
   project: Project
@@ -128,6 +133,17 @@ const BuildingState: FC<Props> = ({ project }) => {
       </div>
       {project.status === PROJECT_STATUS.COMING_UP && (
         <div className="mx-auto my-16 w-full max-w-7xl space-y-16">
+          <div className="space-y-8">
+            <div className="mx-6">
+              <h5>Quickstarts</h5>
+            </div>
+            <code className="mx-6 mt-4">npx supa-start quick-start-name {project.ref}</code>
+            <div className="mx-6 grid gap-8 md:grid-cols-3">
+              {QUICKSTARTS.map((quickstart) => (
+                <Quickstarts key={quickstart.gitUrl} {...quickstart} />
+              ))}
+            </div>
+          </div>
           <div className="space-y-8">
             <div className="mx-6">
               <h5>Client libraries</h5>

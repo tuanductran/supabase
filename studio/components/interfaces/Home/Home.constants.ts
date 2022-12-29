@@ -96,3 +96,27 @@ export const EXAMPLE_PROJECTS = [
     url: 'https://github.com/supabase/examples/tree/main/supabase-js-v1/todo-list/vue3-ts-todo-list',
   },
 ]
+
+export const QUICKSTARTS = [
+  {
+    title: 'Test 1',
+    description: 'Testing a possible quickstart card',
+    docsUrl: 'https://supabase.com/docs', // docs explaining a particular quickstart?
+    gitUrl: 'https://github.com/supabase/',
+    framework: 'NextJS',
+  },
+  {
+    title: 'Test 2',
+    description: 'Testing a possible quickstart card for another framework',
+    docsUrl: 'https://supabase.com/docs', // docs explaining a particular quickstart?
+    gitUrl: 'https://github.com/supabase/',
+    framework: 'Svelte',
+  },
+  {
+    title: 'Test 3',
+    description: 'Testing a possible quickstart card for another framework',
+    docsUrl: 'https://supabase.com/docs', // docs explaining a particular quickstart?
+    gitUrl: 'https://github.com/supabase/',
+    framework: 'Svelte',
+  },
+]

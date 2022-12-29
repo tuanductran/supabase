@@ -5,10 +5,15 @@ import { NextPageWithLayout } from 'types'
 import { IS_PLATFORM, PROJECT_STATUS } from 'lib/constants'
 import { ProjectLayoutWithAuth } from 'components/layouts'
 import { ExampleProject, ClientLibrary } from 'components/interfaces/Home'
-import { CLIENT_LIBRARIES, EXAMPLE_PROJECTS } from 'components/interfaces/Home/Home.constants'
+import {
+  CLIENT_LIBRARIES,
+  EXAMPLE_PROJECTS,
+  QUICKSTARTS,
+} from 'components/interfaces/Home/Home.constants'
 import ProjectUsageSection from 'components/interfaces/Home/ProjectUsageSection'
 import ProjectPausedState from 'components/layouts/ProjectLayout/ProjectPausedState'
 import OveragesBanner from 'components/ui/OveragesBanner/OveragesBanner'
+import Quickstarts from 'components/interfaces/Home/Quickstarts'
 
 const Home: NextPageWithLayout = () => {
   const { ui } = useStore()
@@ -37,7 +42,17 @@ const Home: NextPageWithLayout = () => {
       <div className="mx-6">
         {IS_PLATFORM && project?.status !== PROJECT_STATUS.INACTIVE && <ProjectUsageSection />}
       </div>
-
+      <div className="space-y-8">
+        <div className="mx-6 mb-4">
+          <h4 className="text-lg">Quickstarts</h4>
+        </div>
+        <code className="mx-6">npx supa-start quick-start-name {project?.ref}</code>
+        <div className="mx-6 mb-12 flex gap-12 md:grid-cols-3">
+          {QUICKSTARTS.map((quickstart) => (
+            <Quickstarts key={quickstart.gitUrl} {...quickstart} />
+          ))}
+        </div>
+      </div>
       <div className="space-y-8">
         <div className="mx-6">
           <h4 className="text-lg">Client libraries</h4>
