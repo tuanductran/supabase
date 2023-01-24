@@ -6,7 +6,7 @@ import { IconGlobe, IconTerminal } from 'ui'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 
 import { NextPageWithLayout } from 'types'
-import { checkPermissions, useProjectSettings, useStore } from 'hooks'
+import { checkPermissions, useProjectSettings, useStore, useFunctionCode } from 'hooks'
 import FunctionsLayout from 'components/layouts/FunctionsLayout'
 import CommandRender from 'components/interfaces/Functions/CommandRender'
 import NoPermission from 'components/ui/NoPermission'
@@ -24,16 +24,7 @@ const PageLayout: NextPageWithLayout = () => {
     setSelectedFunction(functions.byId(id))
   }, [functions.isLoaded, ui.selectedProject])
 
-  useEffect(() => {
-    const getBody = async () => {
-      const body = await functions.getBody(selectedFunction.slug)
-      setFuncBody(body)
-    }
-
-    if (selectedFunction) {
-      getBody()
-    }
-  }, [selectedFunction])
+  const code = useFunctionCode(ref, selectedFunction ? selectedFunction.slug : null)
 
   // get the .co or .net TLD from the restUrl
   const restUrl = ui.selectedProject?.restUrl
@@ -147,8 +138,6 @@ const PageLayout: NextPageWithLayout = () => {
   if (!canReadFunction) {
     return <NoPermission isFullPage resourceText="access this edge function's details" />
   }
-
-  console.log(funcBody)
 
   return (
     <div className="grid gap-y-4 lg:grid-cols-2 lg:gap-x-8">

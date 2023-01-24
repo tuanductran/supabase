@@ -1,12 +1,24 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import { getAccessToken } from 'lib/common/fetch'
 
-export function useFunctionCode(funcBody: string) {
+export function useFunctionCode(ref: string | null, slug: string | null) {
+  const [accessToken, setAccessToken] = useState(null)
+
   useEffect(() => {
-    if (funcBody) {
-      const worker = new Worker(new URL('../../workers/functions.ts', import.meta.url))
-      worker.postMessage(funcBody)
+    const call = async () => {
+      const accessToken = await getAccessToken()
+      setAccessToken(accessToken)
     }
-  }, [funcBody])
+
+    call()
+  }, [])
+
+  useEffect(() => {
+    if (ref && slug && accessToken) {
+      const worker = new Worker(new URL('../../workers/functions.ts', import.meta.url))
+      worker.postMessage({ ref, slug, accessToken })
+    }
+  }, [ref, slug, accessToken])
 
   return ''
 }
