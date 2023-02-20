@@ -1,3 +1,4 @@
+import { PRICING_TIER_PRODUCT_IDS } from 'lib/constants'
 import { SubscriptionAddon } from './AddOns/AddOns.types'
 import {
   formatComputeSizes,
@@ -77,7 +78,7 @@ export const formSubscriptionUpdatePayload = (
     ...(tierPriceId && { tier: tierPriceId.id }),
     addons,
     proration_date,
-    payment_method: selectedPaymentMethod
+    payment_method: selectedPaymentMethod,
   }
 }
 
@@ -143,4 +144,12 @@ export const getCurrentAddons = (
   })
 
   return { computeSize, pitrDuration, customDomains, supportPlan }
+}
+
+export const isPayAsYouGo = (subscription?: StripeSubscription) => {
+  return (
+    subscription?.tier.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.PAYG ||
+    (subscription?.tier.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.PRO &&
+      subscription?.billing.spend_cap)
+  )
 }

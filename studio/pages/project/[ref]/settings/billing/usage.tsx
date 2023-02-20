@@ -6,12 +6,13 @@ import { IconArrowRight, Loading } from 'ui'
 import { Project, NextPageWithLayout } from 'types'
 import { useStore } from 'hooks'
 import { useProjectSubscriptionQuery } from 'data/subscriptions/project-subscription-query'
-import { STRIPE_PRODUCT_IDS, TIME_PERIODS_REPORTS, TIME_PERIODS_BILLING } from 'lib/constants'
+import { TIME_PERIODS_REPORTS, TIME_PERIODS_BILLING } from 'lib/constants'
 import { SettingsLayout } from 'components/layouts'
 import LoadingUI from 'components/ui/Loading'
 import DateRangePicker from 'components/to-be-cleaned/DateRangePicker'
 import { PAYGUsage } from 'components/interfaces/Billing'
 import ProjectUsageBars from 'components/interfaces/Settings/ProjectUsageBars/ProjectUsageBars'
+import { isPayAsYouGo } from 'components/interfaces/Billing/Billing.utils'
 
 const ProjectBillingUsage: NextPageWithLayout = () => {
   const { ui } = useStore()
@@ -46,7 +47,7 @@ const Settings: FC<SettingsProps> = ({ project }) => {
   } = useProjectSubscriptionQuery({ projectRef: ui.selectedProject?.ref })
 
   const [dateRange, setDateRange] = useState<any>()
-  const isPayg = subscription?.tier?.prod_id === STRIPE_PRODUCT_IDS.PAYG
+  const isPayg = isPayAsYouGo(subscription)
 
   useEffect(() => {
     if (error) {

@@ -6,7 +6,6 @@ import * as Tooltip from '@radix-ui/react-tooltip'
 import { PermissionAction } from '@supabase/shared-types/out/constants'
 
 import { checkPermissions, useFlag, useParams } from 'hooks'
-import { STRIPE_PRODUCT_IDS } from 'lib/constants'
 import { formatBytes } from 'lib/helpers'
 
 import { PRICING_TIER_PRODUCT_IDS } from 'lib/constants'
@@ -15,6 +14,7 @@ import { StripeSubscription } from './Subscription.types'
 import NoPermission from 'components/ui/NoPermission'
 import { USAGE_BASED_PRODUCTS } from 'components/interfaces/Billing/Billing.constants'
 import { ProjectUsageResponseUsageKeys, useProjectUsageQuery } from 'data/usage/project-usage-query'
+import { isPayAsYouGo } from '../Billing.utils'
 
 interface Props {
   project: any
@@ -46,7 +46,7 @@ const Subscription: FC<Props> = ({
 
   const { data: usage, isLoading: loadingUsage } = useProjectUsageQuery({ projectRef })
 
-  const isPayg = subscription?.tier.prod_id === STRIPE_PRODUCT_IDS.PAYG
+  const isPayg = isPayAsYouGo(subscription)
   const isEnterprise = subscription.tier.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.ENTERPRISE
 
   const addOns = subscription?.addons ?? []

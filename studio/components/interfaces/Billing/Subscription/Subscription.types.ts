@@ -4,6 +4,7 @@ export interface StripeSubscription {
     current_period_end: number
     current_period_start: number
     billing_cycle_anchor: number
+    spend_cap: boolean
   }
   addons: StripeProduct[]
 }
