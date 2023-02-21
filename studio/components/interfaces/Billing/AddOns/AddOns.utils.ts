@@ -101,7 +101,7 @@ export const formatCustomDomainOptions = (addons: SubscriptionAddon[]) => {
   const customDomainOrder = ['addon_custom_domains']
   const noCustomDomainOption: SubscriptionAddon = {
     id: undefined,
-    name: 'Disable Custom Domains',
+    name: 'Disable Custom Domain',
     metadata: {
       default_price_id: undefined,
       supabase_prod_id: 'addon_custom_domains_disabled',

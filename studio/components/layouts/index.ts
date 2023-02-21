@@ -17,6 +17,7 @@ import BillingLayout from './BillingLayout'
 import LogsLayout from './LogsLayout/LogsLayout'
 import ReportsLayout from './ReportsLayout/ReportsLayout'
 import OrganizationLayout from './OrganizationLayout'
+import InfraLayout from './InfraLayout'
 
 export {
   ProjectLayoutWithAuth,
@@ -35,6 +36,7 @@ export {
   WizardLayoutWithoutAuth,
   VercelIntegrationLayout,
   BillingLayout,
+  InfraLayout,
   LogsLayout,
   ReportsLayout,
   OrganizationLayout,

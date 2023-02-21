@@ -46,37 +46,14 @@ export const validateSubscriptionUpdatePayload = (selectedAddons: {
 export const formSubscriptionUpdatePayload = (
   currentSubscription: StripeSubscription,
   selectedTier: any,
-  selectedAddons: {
-    computeSize: SubscriptionAddon
-    pitrDuration: SubscriptionAddon
-    customDomains: SubscriptionAddon
-  },
-  nonChangeableAddons: SubscriptionAddon[],
-  selectedPaymentMethod: string,
-  region: string
+  selectedPaymentMethod: string
 ) => {
-  const { computeSize, pitrDuration, customDomains } = selectedAddons
-
-  const computeSizePriceId = getProductPriceId(currentSubscription, computeSize)
-  const pitrAddonPriceId = getProductPriceId(currentSubscription, pitrDuration)
-  const customDomainPriceId = getProductPriceId(currentSubscription, customDomains)
   const tierPriceId = selectedTier ? getProductPrice(selectedTier) : undefined
 
-  const nonChangeablePriceIds = nonChangeableAddons.map((addon) =>
-    getProductPriceId(currentSubscription, addon)
-  )
-
-  const addons =
-    region === 'af-south-1'
-      ? []
-      : [computeSizePriceId, pitrAddonPriceId, customDomainPriceId]
-          .concat(nonChangeablePriceIds)
-          .filter((x) => x !== undefined)
   const proration_date = Math.floor(Date.now() / 1000)
 
   return {
     ...(tierPriceId && { tier: tierPriceId.id }),
-    addons,
     proration_date,
     payment_method: selectedPaymentMethod,
   }
@@ -150,6 +127,6 @@ export const isPayAsYouGo = (subscription?: StripeSubscription) => {
   return (
     subscription?.tier.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.PAYG ||
     (subscription?.tier.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.PRO &&
-      subscription?.billing.spend_cap)
+      !Boolean(subscription?.billing.spend_cap))
   )
 }

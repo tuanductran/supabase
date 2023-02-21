@@ -6,7 +6,7 @@ import { Button, Modal } from 'ui'
 import { useFlag, useStore } from 'hooks'
 import { useFreeProjectLimitCheckQuery } from 'data/organizations/free-project-limit-check-query'
 import { get } from 'lib/common/fetch'
-import { API_URL, PRICING_TIER_PRODUCT_IDS, STRIPE_PRODUCT_IDS } from 'lib/constants'
+import { API_URL, PRICING_TIER_PRODUCT_IDS } from 'lib/constants'
 
 import { BillingLayout } from 'components/layouts'
 import ConfirmModal from 'components/ui/Dialogs/ConfirmDialog'
@@ -84,11 +84,11 @@ const BillingUpdate: NextPageWithLayout = () => {
   }
 
   const onSelectPlan = (plan: any) => {
-    if (plan.id === STRIPE_PRODUCT_IDS.PRO) {
+    if (plan.metadata.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.PRO) {
       router.push(`/project/${projectRef}/settings/billing/update/pro`)
-    } else if (plan.id === STRIPE_PRODUCT_IDS.TEAM) {
+    } else if (plan.metadata.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.TEAM) {
       router.push(`/project/${projectRef}/settings/billing/update/team`)
-    } else if (plan.id === STRIPE_PRODUCT_IDS.FREE) {
+    } else if (plan.metadata.supabase_prod_id === PRICING_TIER_PRODUCT_IDS.FREE) {
       setSelectedPlan(plan)
       setShowConfirmDowngrade(true)
     }
@@ -117,7 +117,7 @@ const BillingUpdate: NextPageWithLayout = () => {
   const teamTierEnabled = userIsOnTeamTier || useFlag('teamTier')
 
   const productTiers = (products?.tiers ?? []).filter(
-    (tier) => teamTierEnabled || tier.id !== STRIPE_PRODUCT_IDS.TEAM
+    (tier) => teamTierEnabled || tier.metadata.supabase_prod_id !== PRICING_TIER_PRODUCT_IDS.TEAM
   )
 
   return (

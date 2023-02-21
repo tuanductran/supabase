@@ -28,6 +28,7 @@ import {
 import BackButton from 'components/ui/BackButton'
 import SupportPlan from './AddOns/SupportPlan'
 import HCaptcha from '@hcaptcha/react-hcaptcha'
+import SubscriptionChangeSummaryPanel from './PaymentSummaryPanel/SubscriptionChangeSummaryPanel'
 
 // Do not allow compute size changes for af-south-1
 
@@ -57,11 +58,8 @@ const TeamUpgrade: FC<Props> = ({
   const [captchaToken, setCaptchaToken] = useState<string | null>(null)
   const captchaRef = useRef<HCaptcha>(null)
 
-  const { addons } = products
-  const computeSizes = formatComputeSizes(addons)
-  const pitrDurationOptions = formatPITROptions(addons)
-  const customDomainOptions = formatCustomDomainOptions(addons)
-  const currentAddons = getCurrentAddons(currentSubscription, addons)
+  console.log({products})
+
 
   const projectId = ui.selectedProject?.id ?? -1
   const projectRef = ui.selectedProject?.ref
@@ -72,40 +70,10 @@ const TeamUpgrade: FC<Props> = ({
   const [isSuccessful, setIsSuccessful] = useState(false)
   const [showAddPaymentMethodModal, setShowAddPaymentMethodModal] = useState(false)
 
-  // [Joshen TODO] Ideally we just have a state to hold all the add ons selection, rather than individual
-  // Even better if we can just use the <Form> component to handle all of these. Mainly to reduce the amount
-  // of unnecessary state management on this complex page.
-  const [selectedComputeSize, setSelectedComputeSize] = useState<SubscriptionAddon>(
-    currentAddons.computeSize
-  )
-  const [selectedPITRDuration, setSelectedPITRDuration] = useState<SubscriptionAddon>(
-    currentAddons.pitrDuration
-  )
-  const [selectedCustomDomainOption, setSelectedCustomDomainOption] = useState<SubscriptionAddon>(
-    currentAddons.customDomains
-  )
-
-  // [Joshen TODO] Future - We may need to also include any add ons outside of
-  // compute size, pitr, custom domain and support plan, although we dont have any now
-  const nonChangeableAddons = [currentAddons.supportPlan].filter(
-    (x) => x !== undefined
-  ) as SubscriptionAddon[]
-
-  // [Joshen] Scaffolded here
-  const selectedAddons = {
-    computeSize: selectedComputeSize,
-    pitrDuration: selectedPITRDuration,
-    customDomains: selectedCustomDomainOption,
-  }
-
   const [selectedPaymentMethodId, setSelectedPaymentMethodId] = useState<string>('')
   const [subscriptionPreview, setSubscriptionPreview] = useState<SubscriptionPreview>()
 
-  const selectedTier = products?.tiers.find((tier: any) => tier.id === STRIPE_PRODUCT_IDS.TEAM)
-
-  const isManagingTeamSubscription = currentSubscription.tier.prod_id === STRIPE_PRODUCT_IDS.TEAM
-
-  const isChangingComputeSize = currentAddons.computeSize?.id !== selectedAddons.computeSize.id
+  const selectedTier = PRICING_TIER_PRODUCT_IDS.TEAM
 
   useEffect(() => {
     if (!isLoadingPaymentMethods && paymentMethods && paymentMethods.length > 0) {
@@ -115,20 +83,20 @@ const TeamUpgrade: FC<Props> = ({
 
   useEffect(() => {
     getSubscriptionPreview()
-  }, [selectedComputeSize, selectedPITRDuration, selectedCustomDomainOption])
+  }, [])
 
   const getSubscriptionPreview = async () => {
     const payload = formSubscriptionUpdatePayload(
       currentSubscription,
       selectedTier,
-      selectedAddons,
-      nonChangeableAddons,
-      selectedPaymentMethodId,
-      projectRegion
+      selectedPaymentMethodId
     )
 
     setIsRefreshingPreview(true)
-    const preview = await post(`${API_URL}/projects/${projectRef}/subscription/preview`, payload)
+    const preview = await post(
+      `${API_URL}/projects/${projectRef}/subscription/preview/tier`,
+      payload
+    )
     if (preview.error) {
       ui.setNotification({
         category: 'error',
@@ -174,10 +142,7 @@ const TeamUpgrade: FC<Props> = ({
     const payload = formSubscriptionUpdatePayload(
       currentSubscription,
       selectedTier,
-      selectedAddons,
-      nonChangeableAddons,
-      selectedPaymentMethodId,
-      projectRegion
+      selectedPaymentMethodId
     )
     const res = await patch(`${API_URL}/projects/${projectRef}/subscription`, payload)
     resetCaptcha()
@@ -188,18 +153,7 @@ const TeamUpgrade: FC<Props> = ({
         message: `Failed to update subscription: ${res?.error?.message}`,
       })
     } else {
-      if (isChangingComputeSize) {
-        app.onProjectStatusUpdated(projectId, PROJECT_STATUS.RESTORING)
-        ui.setNotification({
-          category: 'success',
-          message:
-            'Your project has been updated and is currently restarting to update its instance size',
-          duration: 8000,
-        })
-        router.push(`/project/${projectRef}`)
-      } else {
-        setIsSuccessful(true)
-      }
+      setIsSuccessful(true)
     }
     setIsSubmitting(false)
   }
@@ -235,74 +189,26 @@ const TeamUpgrade: FC<Props> = ({
               style={{ height: 'calc(100vh - 9rem - 57px)' }}
             >
               <div className="space-y-2">
-                {!isManagingTeamSubscription ? (
-                  <>
-                    <h3 className="text-xl">
-                      Welcome to <span className="text-brand-900">Team</span>
-                    </h3>
-                    <p className="text-base text-scale-1100">
-                      Your new subscription will begin immediately after payment
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <h3 className="text-3xl">
-                      Managing your <span className="text-brand-900">Team</span> plan
-                    </h3>
-                  </>
-                )}
+                <h3 className="text-xl">
+                  Welcome to <span className="text-brand-900">Team</span>
+                </h3>
+                <p className="text-base text-scale-1100">
+                  Your new subscription will begin immediately after payment
+                </p>
               </div>
-
-              {projectRegion !== 'af-south-1' && (
-                <>
-                  {currentAddons.supportPlan !== undefined && (
-                    <>
-                      <Divider light />
-                      <SupportPlan currentOption={currentAddons.supportPlan} />
-                    </>
-                  )}
-                  <Divider light />
-                  <CustomDomainSelection
-                    options={customDomainOptions}
-                    currentOption={
-                      isManagingTeamSubscription ? currentAddons.customDomains : undefined
-                    }
-                    selectedOption={selectedAddons.customDomains}
-                    onSelectOption={setSelectedCustomDomainOption}
-                  />
-                  <Divider light />
-                  <PITRDurationSelection
-                    pitrDurationOptions={pitrDurationOptions}
-                    currentPitrDuration={
-                      isManagingTeamSubscription ? currentAddons.pitrDuration : undefined
-                    }
-                    selectedPitrDuration={selectedAddons.pitrDuration}
-                    onSelectOption={setSelectedPITRDuration}
-                  />
-                  <Divider light />
-                  <ComputeSizeSelection
-                    computeSizes={computeSizes || []}
-                    currentComputeSize={currentAddons.computeSize}
-                    selectedComputeSize={selectedAddons.computeSize}
-                    onSelectOption={setSelectedComputeSize}
-                  />
-                </>
-              )}
             </div>
           </div>
         </div>
         <div className="w-[34rem]">
-          <PaymentSummaryPanel
+          <SubscriptionChangeSummaryPanel
             isRefreshingPreview={isRefreshingPreview}
             subscriptionPreview={subscriptionPreview}
             isSpendCapEnabled={false}
             // Current subscription configuration based on DB
             currentPlan={currentSubscription.tier}
-            currentAddons={currentAddons}
             currentSubscription={currentSubscription}
             // Selected subscription configuration based on UI
             selectedPlan={selectedTier}
-            selectedAddons={selectedAddons}
             paymentMethods={paymentMethods}
             isLoadingPaymentMethods={isLoadingPaymentMethods}
             selectedPaymentMethod={selectedPaymentMethodId}
