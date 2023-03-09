@@ -8,10 +8,18 @@ type Props = {
   open?: boolean
   handleCancel?: any
   singleBgColor?: boolean
+  isLauchWeekPage?: boolean
 }
 
 const FlyOut = (props: Props) => {
-  const { title = '', children, className = '', singleBgColor = false, handleCancel } = props
+  const {
+    title = '',
+    children,
+    className = '',
+    singleBgColor = false,
+    handleCancel,
+    isLauchWeekPage,
+  } = props
 
   useEffect(() => {
     function handleScroll() {
@@ -36,14 +44,25 @@ const FlyOut = (props: Props) => {
         <>
           <div className="absolute inset-x-0 transform shadow-lg ">
             <div
-              className="dark:border-scale-500 absolute inset-0 flex border-b sm:flex-col lg:flex-row"
+              className={[
+                'dark:border-scale-300 absolute inset-0 flex border-b sm:flex-col lg:flex-row',
+                isLauchWeekPage && '!bg-transparent backdrop-blur-sm !border-[#ffffff30]',
+              ].join(' ')}
               aria-hidden="true"
             >
-              <div className="dark:bg-scale-200 dark:border-scale-400 border-r bg-white sm:h-1/2 sm:w-full lg:h-full lg:w-1/2" />
               <div
-                className={`${
-                  singleBgColor ? 'dark:bg-scale-200 bg-white' : 'dark:bg-scale-200 bg-gray-50'
-                } sm:h-1/2 sm:w-full lg:h-full lg:w-1/2`}
+                className={[
+                  'dark:bg-scale-400 dark:border-scale-400 border-r bg-white sm:h-1/2 sm:w-full lg:h-full lg:w-1/2',
+                  isLauchWeekPage && '!bg-transparent !border-[#ffffff30]',
+                ].join(' ')}
+              />
+              <div
+                className={[
+                  `${
+                    singleBgColor ? 'dark:bg-scale-200 bg-white' : 'dark:bg-scale-200 bg-gray-50'
+                  } sm:h-1/2 sm:w-full lg:h-full lg:w-1/2`,
+                  isLauchWeekPage && '!bg-transparent',
+                ].join(' ')}
               />
             </div>
             <div className="container relative mx-auto px-6 py-2 lg:grid-cols-2 lg:px-10 xl:px-14">

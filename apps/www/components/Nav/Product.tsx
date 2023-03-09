@@ -7,7 +7,7 @@ import { Badge } from 'ui'
 import Image from 'next/image'
 import Link from 'next/link'
 
-const Product = () => {
+const Product = ({ isLauchWeekPage }: { isLauchWeekPage?: boolean }) => {
   const { basePath } = useRouter()
 
   const iconSections = Object.values(SolutionsData).map((solution) => {
@@ -20,7 +20,9 @@ const Product = () => {
           <h5 className="text-scale-1200 overwrite ml-3 mb-0 text-base">{name}</h5>
         </div>
         <div className="ml-4 mt-3 md:flex md:flex-1 md:flex-col md:justify-between lg:ml-0">
-          <p className="text-scale-1000 text-sm">{description}</p>
+          <p className={['text-scale-1000 text-sm', isLauchWeekPage && '!text-white'].join(' ')}>
+            {description}
+          </p>
           {label && (
             <div className="mt-2">
               <Badge>{label}</Badge>
@@ -32,7 +34,12 @@ const Product = () => {
     return (
       url && (
         <Link href={url} key={name}>
-          <a className="hover:bg-scale-300 dark:hover:bg-scale-500 col-span-6 rounded p-3 transition">
+          <a
+            className={[
+              'hover:bg-scale-300 dark:hover:bg-scale-500 col-span-6 rounded p-3 transition',
+              isLauchWeekPage && 'hover:!bg-[#ffffff30]',
+            ].join(' ')}
+          >
             {content}
           </a>
         </Link>
@@ -56,7 +63,12 @@ const Product = () => {
               return (
                 <li className="flow-root" key={`flyout_case_${idx}`}>
                   <Link href={caseStudy.url}>
-                    <a className="dark:hover:bg-dark-700 flex items-center rounded-lg border p-3 transition duration-150 ease-in-out hover:bg-gray-100">
+                    <a
+                      className={[
+                        'dark:hover:bg-dark-700 flex items-center rounded-lg border p-3 transition duration-150 ease-in-out hover:bg-gray-100',
+                        isLauchWeekPage && '!border-[#ffffff30] hover:!bg-[#ffffff30]',
+                      ].join(' ')}
+                    >
                       <div className="relative hidden h-20 w-32 flex-shrink-0 overflow-auto rounded-md sm:block">
                         <Image
                           src={`${basePath}/${caseStudy.imgUrl}`}
@@ -69,7 +81,13 @@ const Product = () => {
                         <h4 className="text-scale-1200 text-normal mb-0 text-base">
                           {caseStudy.title}
                         </h4>
-                        <p className="p text-sm">{caseStudy.description}</p>
+                        <p
+                          className={['p text-sm', isLauchWeekPage && '!text-[#ffffff90]'].join(
+                            ' '
+                          )}
+                        >
+                          {caseStudy.description}
+                        </p>
                       </div>
                     </a>
                   </Link>

@@ -196,7 +196,7 @@ const Nav = () => {
           } absolute top-0 h-full w-full opacity-80`}
         ></div>
         <nav
-          className={`border-scale-400 border-b  backdrop-blur-sm ${
+          className={`border-scale-400 border-b backdrop-blur-sm ${
             isLauchWeekPage ? 'border-[#be9eea]' : ''
           }`}
         >
@@ -398,11 +398,11 @@ const Nav = () => {
             </div>
           </Transition>
         </nav>
-        <FlyOut open={openProduct} handleCancel={handleCancel}>
-          <Solutions />
+        <FlyOut open={openProduct} handleCancel={handleCancel} isLauchWeekPage>
+          <Solutions isLauchWeekPage />
         </FlyOut>
-        <FlyOut open={openDevelopers} handleCancel={handleCancel}>
-          <Developers />
+        <FlyOut open={openDevelopers} handleCancel={handleCancel} isLauchWeekPage>
+          <Developers isLauchWeekPage />
         </FlyOut>
       </div>
     </>

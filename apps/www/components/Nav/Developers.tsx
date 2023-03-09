@@ -12,7 +12,7 @@ type Props = {
   icon?: string
 }
 
-const Developers = () => {
+const Developers = ({ isLauchWeekPage }: { isLauchWeekPage?: boolean }) => {
   const { basePath } = useRouter()
 
   const iconSections = Object.values(DevelopersData).map((company: Props) => {
@@ -33,7 +33,9 @@ const Developers = () => {
         </svg>
         <div className="ml-4">
           <h5 className="text-scale-1200 text-base">{text}</h5>
-          <p className="text-scale-900 text-sm">{description}</p>
+          <p className={['text-scale-900 text-sm', isLauchWeekPage && 'text-scale-1200'].join(' ')}>
+            {description}
+          </p>
         </div>
       </div>
     )
@@ -65,10 +67,15 @@ const Developers = () => {
             {AnnouncementsData.map((caseStudy: any, idx: number) => (
               <li className="flow-root" key={`flyout_case_${idx}`}>
                 <Link href={caseStudy.url}>
-                  <a className="dark:hover:bg-dark-700 flex items-center rounded-lg border p-3 transition duration-150 ease-in-out hover:bg-gray-100">
+                  <a
+                    className={[
+                      'dark:hover:bg-dark-700 flex items-center rounded-lg border p-3 transition duration-150 ease-in-out hover:bg-gray-100',
+                      isLauchWeekPage && '!border-[#ffffff30] hover:!bg-[#ffffff30]',
+                    ].join(' ')}
+                  >
                     <div className="relative hidden h-20 w-32 flex-shrink-0 overflow-auto rounded-md sm:block">
                       <Image
-                        src={`${basePath}/${caseStudy.imgUrl}`}
+                        src={`${basePath}${caseStudy.imgUrl}`}
                         alt="caseStudyThumb"
                         layout="fill"
                         objectFit="cover"
@@ -78,7 +85,11 @@ const Developers = () => {
                       <h4 className="text-scale-1200 text-normal mb-0 text-base">
                         {caseStudy.title}
                       </h4>
-                      <p className="p text-sm">{caseStudy.description}</p>
+                      <p
+                        className={['p text-sm', isLauchWeekPage && '!text-[#ffffff90]'].join(' ')}
+                      >
+                        {caseStudy.description}
+                      </p>
                     </div>
                   </a>
                 </Link>
