@@ -1,6 +1,6 @@
 import React, { FC } from 'react'
 import Lottie from 'lottie-react'
-import loadingAnim from './Loading.anim.json'
+import loadingAnim from './Loading-v2.anim.json'
 
 interface Props {}
 
