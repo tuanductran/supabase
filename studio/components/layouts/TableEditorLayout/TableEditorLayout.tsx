@@ -8,6 +8,7 @@ import { checkPermissions, useStore } from 'hooks'
 import { useParams } from 'common/hooks'
 import { Entity } from 'data/entity-types/entity-type-query'
 import { ENTITY_TYPE } from 'data/entity-types/entity-type-constants'
+import { useTableQuery } from 'data/tables/table-query'
 import ProjectLayout from '../ProjectLayout/ProjectLayout'
 import TableEditorMenu from './TableEditorMenu'
 import NoPermission from 'components/ui/NoPermission'
@@ -15,6 +16,7 @@ import useEntityType from 'hooks/misc/useEntityType'
 import Connecting from 'components/ui/Loading/Loading'
 import useLatest from 'hooks/misc/useLatest'
 import useTableRowsPrefetchWrapper from './TableEditorLayout.utils'
+import { useProjectContext } from '../ProjectLayout/ProjectContext'
 
 export interface TableEditorLayoutProps {
   selectedSchema?: string
@@ -35,9 +37,6 @@ const TableEditorLayout = ({
   children,
 }: PropsWithChildren<TableEditorLayoutProps>) => {
   const { vault, meta, ui } = useStore()
-  const router = useRouter()
-  const { id: _id } = useParams()
-  const id = _id ? Number(_id) : undefined
 
   const canReadTables = checkPermissions(PermissionAction.TENANT_SQL_ADMIN_READ, 'tables')
 
@@ -54,67 +53,67 @@ const TableEditorLayout = ({
     }
   }, [ui.selectedProject?.ref])
 
-  const [loadedIds, setLoadedIds] = useState<Set<number>>(() => new Set())
-  const isLoaded = id !== undefined && loadedIds.has(id)
+  // const [loadedIds, setLoadedIds] = useState<Set<number>>(() => new Set())
+  // const isLoaded = id !== undefined && loadedIds.has(id)
 
-  const entity = useEntityType(id, function onNotFound(id) {
-    setLoadedIds((loadedIds) => {
-      const newLoadedIds = new Set(loadedIds)
-      newLoadedIds.add(id)
-      return newLoadedIds
-    })
-  })
+  // const entity = useEntityType(id, function onNotFound(id) {
+  //   setLoadedIds((loadedIds) => {
+  //     const newLoadedIds = new Set(loadedIds)
+  //     newLoadedIds.add(id)
+  //     return newLoadedIds
+  //   })
+  // })
 
-  const prefetch = useLatest(useTableRowsPrefetchWrapper())
+  // const prefetch = (useTableRowsPrefetchWrapper())
 
-  useEffect(() => {
-    let mounted = true
+  // useEffect(() => {
+  //   let mounted = true
 
-    function loadTable() {
-      if (entity?.type) {
-        switch (entity.type) {
-          case ENTITY_TYPE.MATERIALIZED_VIEW:
-          case ENTITY_TYPE.VIEW:
-            return meta.views.loadById(entity.id)
+  //   function loadTable() {
+  //     if (entity?.type) {
+  //       switch (entity.type) {
+  //         case ENTITY_TYPE.MATERIALIZED_VIEW:
+  //         case ENTITY_TYPE.VIEW:
+  //           return meta.views.loadById(entity.id)
 
-          case ENTITY_TYPE.FOREIGN_TABLE:
-            return meta.foreignTables.loadById(entity.id)
+  //         case ENTITY_TYPE.FOREIGN_TABLE:
+  //           return meta.foreignTables.loadById(entity.id)
 
-          default:
-            return meta.tables.loadById(entity.id)
-        }
-      }
-    }
+  //         default:
+  //           return meta.tables.loadById(entity.id)
+  //       }
+  //     }
+  //   }
 
-    loadTable()
-      ?.then(async (entity: any) => {
-        await prefetch.current(entity)
+  //   loadTable()
+  //     ?.then(async (entity: any) => {
+  //       await prefetch.current(entity)
 
-        return entity
-      })
-      .then((entity: any) => {
-        if (mounted) {
-          setLoadedIds((loadedIds) => {
-            const newLoadedIds = new Set(loadedIds)
-            newLoadedIds.add(entity.id ?? entity?.id)
-            return newLoadedIds
-          })
-        }
-      })
-      .catch(() => {
-        if (mounted && entity?.id) {
-          setLoadedIds((loadedIds) => {
-            const newLoadedIds = new Set(loadedIds)
-            newLoadedIds.add(entity.id)
-            return newLoadedIds
-          })
-        }
-      })
+  //       return entity
+  //     })
+  //     .then((entity: any) => {
+  //       if (mounted) {
+  //         setLoadedIds((loadedIds) => {
+  //           const newLoadedIds = new Set(loadedIds)
+  //           newLoadedIds.add(entity.id ?? entity?.id)
+  //           return newLoadedIds
+  //         })
+  //       }
+  //     })
+  //     .catch(() => {
+  //       if (mounted && entity?.id) {
+  //         setLoadedIds((loadedIds) => {
+  //           const newLoadedIds = new Set(loadedIds)
+  //           newLoadedIds.add(entity.id)
+  //           return newLoadedIds
+  //         })
+  //       }
+  //     })
 
-    return () => {
-      mounted = false
-    }
-  }, [entity])
+  //   return () => {
+  //     mounted = false
+  //   }
+  // }, [entity])
 
   useEffect(() => {
     if (isVaultEnabled) {
@@ -144,7 +143,7 @@ const TableEditorLayout = ({
         />
       }
     >
-      {router.isReady && id !== undefined ? isLoaded ? children : <Connecting /> : children}
+      {children}
     </ProjectLayout>
   )
 }

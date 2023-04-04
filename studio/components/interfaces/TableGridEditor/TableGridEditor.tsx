@@ -33,10 +33,13 @@ import { ForeignRowSelectorProps } from './SidePanelEditor/RowEditor/ForeignRowS
 import TwoOptionToggle from 'components/ui/TwoOptionToggle'
 import ViewDefinition from './ViewDefinition'
 import APIDocumentationPanel from './APIDocumentationPanel'
+import Connecting from 'components/ui/Loading/Loading'
 
 export interface TableGridEditorProps {
   /** Theme for the editor */
   theme?: 'dark' | 'light'
+
+  isLoading?: boolean
 
   selectedSchema?: string
   selectedTable: any // PostgresTable | SchemaView
@@ -72,6 +75,8 @@ export interface TableGridEditorProps {
 
 const TableGridEditor = ({
   theme = 'dark',
+
+  isLoading = false,
 
   selectedSchema,
   selectedTable,
@@ -188,6 +193,10 @@ const TableGridEditor = ({
       getEncryptedColumns(selectedTable)
     }
   }, [selectedTable?.id])
+
+  if (isLoading) {
+    return <Connecting />
+  }
 
   // NOTE: DO NOT PUT HOOKS AFTER THIS LINE
   if (isUndefined(selectedTable)) {
