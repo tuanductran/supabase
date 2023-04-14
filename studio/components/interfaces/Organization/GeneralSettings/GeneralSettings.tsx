@@ -111,7 +111,7 @@ const GeneralSettings = () => {
                         disabled={!canUpdateOrganization}
                         size="small"
                         label="Opt-in to sending anonymous data to OpenAI"
-                        descriptionText="By opting into sending anonymous data, Supabase AI can improve the answers it shows you"
+                        descriptionText="By opting into sending anonymous data, Supabase AI can improve the responses it gives you."
                       />
                       <Collapsible open={open} onOpenChange={setOpen}>
                         <Collapsible.Trigger asChild>
