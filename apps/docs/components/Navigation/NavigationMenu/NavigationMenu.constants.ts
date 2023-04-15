@@ -578,7 +578,6 @@ export const functions = {
           name: 'Connecting directly to Postgres',
           url: '/guides/functions/connect-to-postgres',
         },
-        { name: 'Dart Edge on Supabase', url: '/guides/functions/dart-edge' },
       ],
     },
     {
@@ -902,6 +901,7 @@ export const integrations = {
       url: undefined,
       items: [
         { name: 'Estuary', url: '/guides/integrations/estuary' },
+        { name: 'Dart Edge', url: '/guides/integrations/dart-edge' },
         { name: 'OpenAI', url: '/guides/functions/examples/openai' },
         { name: 'pgMustard', url: '/guides/integrations/pgmustard' },
         { name: 'Prisma', url: '/guides/integrations/prisma' },

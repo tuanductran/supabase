@@ -1908,4 +1908,9 @@ module.exports = [
     source: '/docs/support',
     destination: '/support',
   },
+  {
+    permanent: true,
+    source: '/docs/guides/functions/dart-edge',
+    destination: '/docs/guides/integrations/dart-edge',
+  },
 ]
