@@ -42,7 +42,8 @@ type CreateChatCompletionResponseChoicesInnerDelta = Omit<
 }
 
 function getEdgeFunctionUrl() {
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '')
+  // const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '')
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL_LOCAL?.replace(/\/$/, '')
 
   if (!supabaseUrl) {
     return undefined
@@ -178,10 +179,10 @@ export function useAiChat({
       setHasError(false)
       setIsLoading?.(true)
 
-      const eventSource = new SSE(`${edgeFunctionUrl}/ai-docs`, {
+      const eventSource = new SSE(`${edgeFunctionUrl}/ai-command`, {
         headers: {
-          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY ?? '',
-          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY}`,
+          apikey: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_LOCAL ?? '',
+          Authorization: `Bearer ${process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY_LOCAL}`,
           'Content-Type': 'application/json',
         },
         payload: JSON.stringify({

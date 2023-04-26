@@ -47,7 +47,11 @@ export default FilterPopover
 
 export interface FilterOverlayProps extends FilterPopoverProps {}
 
-const FilterOverlay = ({ table, filters: filtersFromUrl, setParams }: FilterOverlayProps) => {
+export const FilterOverlay = ({
+  table,
+  filters: filtersFromUrl,
+  setParams,
+}: FilterOverlayProps) => {
   const initialFilters = useMemo(
     () => formatFilterURLParams((filtersFromUrl as string[]) ?? []),
     [filtersFromUrl]

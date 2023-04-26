@@ -34,12 +34,14 @@ import APIKeys from './APIKeys'
 import SearchableStudioItems from './SearchableStudioItems'
 import CommandMenuShortcuts from './CommandMenuShortcuts'
 import { BadgeExperimental } from './Command.Badges'
+import GenerateFilters from './GenerateFilters/GenerateFilters'
 
 export const CHAT_ROUTES = [
   COMMAND_ROUTES.AI, // this one is temporary
   COMMAND_ROUTES.AI_ASK_ANYTHING,
   COMMAND_ROUTES.AI_RLS_POLICY,
   COMMAND_ROUTES.GENERATE_SQL,
+  COMMAND_ROUTES.GENERATE_FILTERS,
 ]
 
 const iconPicker: { [key: string]: React.ReactNode } = {
@@ -186,6 +188,15 @@ const CommandMenu = ({ projectRef }: CommandMenuProps) => {
                     <AiIcon className="text-scale-1100" />
                     <CommandLabel>Generate SQL with Supabase AI</CommandLabel>
                   </CommandItem>
+                  <CommandItem
+                    forceMount
+                    type="command"
+                    badge={<BadgeExperimental />}
+                    onSelect={() => setPages([...pages, COMMAND_ROUTES.GENERATE_FILTERS])}
+                  >
+                    <AiIcon className="text-scale-1100" />
+                    <CommandLabel>Filter Tables with Supabase AI</CommandLabel>
+                  </CommandItem>
                 </CommandGroup>
               )}
 
@@ -266,6 +277,7 @@ const CommandMenu = ({ projectRef }: CommandMenuProps) => {
           {currentPage === COMMAND_ROUTES.AI && <AiCommand />}
           {currentPage === COMMAND_ROUTES.DOCS_SEARCH && <DocsSearch />}
           {currentPage === COMMAND_ROUTES.GENERATE_SQL && <GenerateSQL />}
+          {currentPage === COMMAND_ROUTES.GENERATE_FILTERS && <GenerateFilters />}
           {currentPage === COMMAND_ROUTES.THEME && <ThemeOptions />}
           {currentPage === COMMAND_ROUTES.API_KEYS && <APIKeys />}
         </CommandList>
