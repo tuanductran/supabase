@@ -9,6 +9,7 @@
     "apps/www",
     "apps/docs",
     "apps/new-docs",
+    "apps/open-source",
     "studio",
     "tests",
     "packages/*"
@@ -16,6 +17,7 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev --parallel",
+    "dev:open-source": "turbo run dev --filter=open-source --parallel",
     "dev:reference": "turbo run dev --filter=reference --parallel",
     "dev:studio": "turbo run dev --filter=studio --parallel",
     "dev:docs": "turbo run dev --filter=docs --parallel",
