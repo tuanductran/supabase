@@ -1913,4 +1913,9 @@ module.exports = [
     source: '/docs/guides/cli/local-development',
     destination: '/docs/guides/getting-started/local-development',
   },
+  {
+    permanent: true,
+    source: '/oss',
+    destination: '/open-source',
+  },
 ]
