@@ -27,7 +27,7 @@ const ShinyBox = ({ children }: PropsWithChildren<{}>) => {
   }
 
   useEffect(() => {
-    if (typeof window === 'undefined') return null
+    if (typeof window === 'undefined') return
 
     window.addEventListener('mousemove', handleGlow)
     return () => {
