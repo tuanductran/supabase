@@ -1,6 +1,6 @@
-import { Button } from './'
-import { IconPackage } from './../Icon/icons/IconPackage'
-import { IconChevronRight } from './../Icon/icons/IconChevronRight'
+import { Button } from '.'
+import { IconPackage } from '../Icon/icons/IconPackage'
+import { IconChevronRight } from '../Icon/icons/IconChevronRight'
 
 export default {
   title: 'General/Button',
@@ -9,7 +9,6 @@ export default {
 
 export const Neutral = (args: any) => <Button {...args}>Button text</Button>
 export const Success = (args: any) => <Button {...args}>Button text</Button>
-
 export const withStyles = (args: any) => <Button {...args}>Button text</Button>
 export const withIcon = (args: any) => <Button {...args}>Button text</Button>
 export const withIconRight = (args: any) => <Button {...args}>Button text</Button>

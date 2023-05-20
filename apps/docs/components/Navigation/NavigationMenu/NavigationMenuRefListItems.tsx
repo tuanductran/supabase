@@ -10,7 +10,7 @@ import RevVersionDropdown from '~/components/RefVersionDropdown'
 import { useMenuActiveRefId } from '~/hooks/useMenuState'
 
 import React, { Fragment } from 'react'
-import { cn } from 'ui/src/utils/cn'
+import { cn } from 'ui/src/lib/utils/cn'
 import { ICommonItem, ICommonSection } from '~/components/reference/Reference.types'
 import HomeMenuIconPicker from './HomeMenuIconPicker'
 import { deepFilterSections } from './NavigationMenu.utils'

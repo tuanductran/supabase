@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react'
-import { IconContext } from './../Icon/IconContext'
-import { IconLoader } from './../Icon/icons/IconLoader'
+import { IconContext } from '../Icon/IconContext'
+import { IconLoader } from '../Icon/icons/IconLoader'
 
 import styleHandler from '../../lib/theme/styleHandler'
 
