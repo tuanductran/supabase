@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { Fragment } from 'react'
 import { Badge } from '~/../../packages/ui'
-import { cn } from 'ui/src/utils/cn'
+import { cn } from 'ui/src/lib/utils/cn'
 import { HOMEPAGE_MENU_ITEMS } from './NavigationMenu.constants'
 import HomeMenuIconPicker from './HomeMenuIconPicker'
 
