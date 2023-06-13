@@ -134,15 +134,15 @@ const BillingBreakdown = ({}: BillingBreakdownProps) => {
                     ? (usageMeta?.usage ?? 0) / (usageMeta?.limit ?? 0)
                     : 0
 
-                const hasLimit = usageMeta.limit > 0
+                const hasLimit = usageMeta && usageMeta.limit > 0
                 const usageCurrentLabel =
                   metric.units === 'bytes'
-                    ? formatBytes(usageMeta.usage)
-                    : usageMeta.usage?.toLocaleString()
+                    ? formatBytes(usageMeta?.usage)
+                    : usageMeta?.usage?.toLocaleString()
                 const usageLimitLabel =
                   metric.units === 'bytes'
-                    ? formatBytes(usageMeta.limit)
-                    : usageMeta.limit.toLocaleString()
+                    ? formatBytes(usageMeta?.limit)
+                    : usageMeta?.limit?.toLocaleString()
                 const usageLabel = `${usageCurrentLabel} ${hasLimit ? `of ${usageLimitLabel}` : ''}`
                 const percentageLabel = `${(usageRatio * 100).toFixed(2)}%`
 
@@ -282,16 +282,16 @@ const BillingBreakdown = ({}: BillingBreakdownProps) => {
                           </Tooltip.Root>
                         )}
                     </div>
-                    {usageMeta.available_in_plan ? (
+                    {usageMeta?.available_in_plan ? (
                       <SparkBar
                         type="horizontal"
                         // If the limit is 0, it means that the usage is unlimited and not billed
                         // By setting "1" as max, the bar is only filled if the metric has any usage
                         // This is only the case for Enterprise plans
-                        max={usageMeta.limit || 1}
-                        value={usageMeta.usage ?? 0}
+                        max={usageMeta?.limit || 1}
+                        value={usageMeta?.usage ?? 0}
                         barClass={
-                          !hasLimit && usageMeta.usage > 0
+                          !hasLimit && usageMeta?.usage > 0
                             ? 'bg-scale-1100'
                             : isExceededLimit && !isUsageBillingEnabled
                             ? 'bg-red-900'
