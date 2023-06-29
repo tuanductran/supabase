@@ -160,7 +160,7 @@ export default function IndexPage() {
         </div>
 
         <div className="mx-auto max-w-7xl flex flex-col">
-          {/* <div className="absolute inset-0 shadow-sm bg-scale-200 h-3/5" /> */}
+          {/* <div className="absolute inset-0 shadow-sm bg-[var(--color-bg-darkest)] h-3/5" /> */}
 
           <div
             className="relative z-10 mx-auto -mt-8 w-full px-4 sm:px-6
@@ -189,7 +189,7 @@ export default function IndexPage() {
                     ].join(' ')}
                   >
                     <div
-                      className={`dark:bg-scale-300 bg-white px-8 pt-6 rounded-tr-[4px] rounded-tl-[4px] ${
+                      className={`dark:bg-[var(--color-bg-darkest)] bg-white px-8 pt-6 rounded-tr-[4px] rounded-tl-[4px] ${
                         plan.name === 'Pro' ? 'rounded-tr-[4px] rounded-tl-[4px]' : ''
                       }`}
                     >
@@ -247,7 +247,7 @@ export default function IndexPage() {
 
                               {plan.warning && (
                                 <p className="-mt-2">
-                                  <span className="bg-scale-200 text-brand-1100 border shadow-sm rounded-md bg-opacity-30 py-0.5 px-2 text-xs">
+                                  <span className="bg-[var(--color-bg-darkest)] text-brand-1100 border shadow-sm rounded-md bg-opacity-30 py-0.5 px-2 text-xs">
                                     {plan.warning}
                                   </span>
                                 </p>
@@ -259,7 +259,7 @@ export default function IndexPage() {
                     </div>
                     <div
                       className={[
-                        `dark:border-scale-400 dark:bg-scale-300 flex h-full rounded-bl-[4px] rounded-br-[4px] flex-1 flex-col bg-white px-8 py-6`,
+                        `dark:border-scale-400 dark:bg-[var(--color-bg-darkest)] flex h-full rounded-bl-[4px] rounded-br-[4px] flex-1 flex-col bg-white px-8 py-6`,
                         plan.name === 'Pro' ? 'mb-0.5 rounded-bl-[4px] rounded-br-[4px]' : '',
                       ].join(' ')}
                     >
@@ -302,7 +302,7 @@ export default function IndexPage() {
         </div>
 
         <div className="mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-md lg:max-w-6xl grid grid-cols-1 lg:grid-cols-3 mx-auto border bg-scale-100 rounded-md p-8 lg:px-0 mt-8 gap-x-5">
+          <div className="max-w-md lg:max-w-6xl grid grid-cols-1 lg:grid-cols-3 mx-auto border bg-[var(--color-bg-darkest)] rounded-md p-8 lg:px-0 mt-8 gap-x-5">
             <div className="flex flex-col justify-center lg:px-8">
               <div>
                 <h3
@@ -368,7 +368,10 @@ export default function IndexPage() {
 
           <div className="grid lg:grid-cols-3 gap-4 mb-16">
             {addons.map((addon) => (
-              <div className="bg-white dark:bg-scale-300 rounded-[4px]" key={addon.name}>
+              <div
+                className="bg-white dark:bg-[var(--color-bg-darkest)] rounded-[4px]"
+                key={addon.name}
+              >
                 <div className="overflow-hidden rounded-lg">
                   <img
                     className="w-full"
@@ -435,7 +438,7 @@ export default function IndexPage() {
           className="grid lg:grid-cols-2 gap-8 items-center mt-12 lg:mt-8 max-w-6xl mx-auto"
         >
           <div>
-            <span className="bg-brand-500 text-brand-1100 rounded-md bg-opacity-30 inline-block  dark:bg-scale-400 dark:text-scale-1100 py-0.5 px-2 text-xs mt-2">
+            <span className="bg-brand-500 text-brand-1100 rounded-md bg-opacity-30 inline-block  dark:bg-[var(--color-bg-darkest)] dark:text-scale-1100 py-0.5 px-2 text-xs mt-2">
               Available for Pro plan
             </span>
             <h2 className="text-scale-1200 text-4xl mt-4">Cost control with spend caps</h2>
@@ -455,7 +458,7 @@ export default function IndexPage() {
         </div>
       </div>
 
-      <div className="bg-scale-200">
+      <div className="!light">
         <div className="sm:py-18 container relative mx-auto px-4 py-16 md:py-24 lg:px-16 lg:py-24 xl:px-20">
           <div className="text-center">
             <h2 className="text-scale-1200 text-3xl scroll-m-20" id="compare-plans">
@@ -471,15 +474,15 @@ export default function IndexPage() {
 
             <div className="lg:hidden">
               {/* Free - Mobile  */}
-              <div className="bg-slate-200 p-2 sticky top-14 z-10 pt-4">
-                <div className="bg-slate-300 rounded-lg border border-slate-500 py-2 px-4 flex justify-between items-center">
+              <div className="bg-[var(--color-bg-darkest)] p-2 sticky top-14 z-10 pt-4">
+                <div className="bg-[var(--color-bg-darkest)] rounded-lg border border-slate-500 py-2 px-4 flex justify-between items-center">
                   <label className="text-scale-1000">Change plan</label>
                   <Select
                     id="change-plan"
                     name="Change plan"
                     layout="vertical"
                     value={activeMobilePlan}
-                    className="min-w-[120px] bg-slate-400 text-red-500"
+                    className="min-w-[120px] bg-[var(--color-bg-darkest)] text-red-500"
                     onChange={(e) => setActiveMobilePlan(e.target.value)}
                   >
                     <Select.Option value="Free">Free</Select.Option>
@@ -711,7 +714,7 @@ export default function IndexPage() {
             <div className="hidden lg:block">
               <table className="h-px w-full table-fixed">
                 <caption className="sr-only">Pricing plan comparison</caption>
-                <thead className="bg-scale-200 dark:bg-scale-200 sticky top-[62px] z-10">
+                <thead className="bg-[var(--color-bg-darkest)] dark:bg-[var(--color-bg-darkest)] sticky top-[62px] z-10">
                   <tr>
                     <th
                       className="text-scale-1200 w-1/3 px-6 pt-2 pb-2 text-left text-sm font-normal"
@@ -791,7 +794,7 @@ export default function IndexPage() {
 
                             {plan.warning && (
                               <p className="-mt-2">
-                                <span className="bg-scale-100 text-brand-1100 border shadow-sm rounded-md bg-opacity-30 py-0.5 px-2 text-xs">
+                                <span className="bg-[var(--color-bg-darkest)] text-brand-1100 border shadow-sm rounded-md bg-opacity-30 py-0.5 px-2 text-xs">
                                   {plan.warning}
                                 </span>
                               </p>

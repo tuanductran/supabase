@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --color-base-100: 215, 30%, 3%;
-  --color-base-200: 215, 30%, 5%;
+  --color-base-100: 216, 28%, 6%;
+  --color-base-200: 215, 30%, 3%;
   --color-base-300: 215, 30%, 7%;
   --color-base-400: 215, 10%, 12%;
   --color-base-500: 215, 10%, 45%;
