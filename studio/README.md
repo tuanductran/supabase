@@ -1,5 +1,7 @@
 # Supabase Studio
 
+force commit
+
 A dashboard for managing your self-hosted Supabase project, and used on our [hosted platform](https://app.supabase.com). Built with:
 
 - [Next.js](https://nextjs.org/)
