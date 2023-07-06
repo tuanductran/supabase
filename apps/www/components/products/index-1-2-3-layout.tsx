@@ -52,27 +52,8 @@ const Products = (props: any) => {
   const isSm = useBreakpoint(640)
 
   return (
-    <SectionContainer>
-      {/* Epic energy beam option: */}
-      {/* <div className="absolute -z-10 w-screen aspect-[1.29/1] left-[-9999px] right-[-9999px] mx-auto top-[-700px]">
-        <Image
-          src="/images/index/plasma-planet-02.jpg"
-          alt=""
-          layout="fill"
-          objectFit="contain"
-          quality={100}
-          className="rotate-180 opacity-100"
-        />
-        <Image
-          src="/images/index/gradient-bg.png"
-          alt=""
-          layout="fill"
-          objectFit="contain"
-          quality={100}
-          className="absolute rotate-180 -z-10"
-        />
-      </div> */}
-      <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-4 lg:gap-6 md:grid-cols-12">
+    <SectionContainer className="space-y-8">
+      <dl className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-4 lg:gap-6 md:grid-cols-6">
         <ProductCard
           alignLeft
           url={props.products['database'].url}
@@ -94,7 +75,8 @@ const Products = (props: any) => {
           }
           onClick={() => sendTelemetryEvent(name)}
           image={<DatabaseVisual />}
-          className="col-span-6"
+          // className="col-start-2 col-span-4"
+          className="col-span-full"
         />
         <ProductCard
           url={props.products['authentication'].url}
@@ -121,77 +103,6 @@ const Products = (props: any) => {
           }
           className="col-span-3"
           onClick={() => sendTelemetryEvent(name)}
-        />
-        <ProductCard
-          url={props.products['storage'].url}
-          icon={props.products['storage'].icon}
-          title={props.products['storage'].name}
-          subtitle={<>Store, organize, and serve large files, from videos to images.</>}
-          image={
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/images/index/products/storage.svg"
-                alt="Supabase Edge Functions feature, hover image with glow"
-                layout="fill"
-                objectPosition="50% 50%"
-                objectFit="cover"
-                quality={95}
-              />
-            </div>
-          }
-          className="!col-span-3"
-          onClick={() => sendTelemetryEvent(name)}
-        />
-        <ProductCard
-          url={props.products['edge-functions'].url}
-          icon={props.products['edge-functions'].icon}
-          title={props.products['edge-functions'].name}
-          subtitle={
-            <>
-              Easily write custom code
-              <br className="inline-block sm:hidden lg:inline-block" /> without deploying or scaling
-              servers.
-            </>
-          }
-          onClick={() => sendTelemetryEvent(name)}
-          image={
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/images/index/products/edge-functions.svg"
-                alt="Supabase Edge Functions feature, hover image with glow"
-                layout="fill"
-                objectPosition="50% 50%"
-                objectFit="cover"
-                quality={95}
-              />
-            </div>
-          }
-          className="!col-span-3"
-        />
-        <ProductCard
-          url={props.products['realtime'].url}
-          icon={props.products['realtime'].icon}
-          title={props.products['realtime'].name}
-          subtitle={
-            <>
-              Build multiplayer experiences
-              <br className="inline-block sm:hidden lg:inline-block" /> with realtime data
-              synchronization.
-            </>
-          }
-          image={
-            <div className="absolute inset-0 z-0">
-              <Image
-                src="/images/index/products/realtime-base.svg"
-                alt="Supabase Edge Functions feature, hover image with glow"
-                layout="fill"
-                objectPosition="50% 50%"
-                objectFit="cover"
-                quality={95}
-              />
-            </div>
-          }
-          className="!col-span-3"
         />
         <ProductCard
           alignLeft
@@ -229,7 +140,78 @@ const Products = (props: any) => {
               />
             </div>
           }
-          className="col-span-full md:col-span-6"
+          className="col-span-full md:col-span-3"
+        />
+        <ProductCard
+          url={props.products['storage'].url}
+          icon={props.products['storage'].icon}
+          title={props.products['storage'].name}
+          subtitle={<>Store, organize, and serve large files, from videos to images.</>}
+          image={
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/images/index/products/storage.svg"
+                alt="Supabase Edge Functions feature, hover image with glow"
+                layout="fill"
+                objectPosition="50% 50%"
+                objectFit="cover"
+                quality={95}
+              />
+            </div>
+          }
+          className="!col-span-2"
+          onClick={() => sendTelemetryEvent(name)}
+        />
+        <ProductCard
+          url={props.products['edge-functions'].url}
+          icon={props.products['edge-functions'].icon}
+          title={props.products['edge-functions'].name}
+          subtitle={
+            <>
+              Easily write custom code
+              <br className="inline-block sm:hidden lg:inline-block" /> without deploying or scaling
+              servers.
+            </>
+          }
+          onClick={() => sendTelemetryEvent(name)}
+          image={
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/images/index/products/edge-functions.svg"
+                alt="Supabase Edge Functions feature, hover image with glow"
+                layout="fill"
+                objectPosition="50% 50%"
+                objectFit="cover"
+                quality={95}
+              />
+            </div>
+          }
+          className="!col-span-2"
+        />
+        <ProductCard
+          url={props.products['realtime'].url}
+          icon={props.products['realtime'].icon}
+          title={props.products['realtime'].name}
+          subtitle={
+            <>
+              Build multiplayer experiences
+              <br className="inline-block sm:hidden lg:inline-block" /> with realtime data
+              synchronization.
+            </>
+          }
+          image={
+            <div className="absolute inset-0 z-0">
+              <Image
+                src="/images/index/products/realtime-base.svg"
+                alt="Supabase Edge Functions feature, hover image with glow"
+                layout="fill"
+                objectPosition="50% 50%"
+                objectFit="cover"
+                quality={95}
+              />
+            </div>
+          }
+          className="!col-span-2"
         />
       </dl>
     </SectionContainer>

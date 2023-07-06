@@ -34,7 +34,7 @@ const ExampleAppsSection = ({ title, paragraph, examples }: Props) => {
       <SectionContainer className="flex flex-col gap-12">
         <div className="relative -z-10 w-full aspect-[1.83/1] -mb-[50px] lg:-mb-[100px] -mt-[200px] lg:-mt-[350px]">
           <Image
-            src="/images/index/energy-visual.svg"
+            src="/images/index/energy-visual-lighter.svg"
             alt=""
             layout="fill"
             objectFit="contain"

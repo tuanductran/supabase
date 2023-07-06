@@ -1,4 +1,4 @@
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, LazyMotion, domAnimation, m } from 'framer-motion'
 import SectionContainer from './Layouts/SectionContainer'
 import InteractiveShimmerCard from './Panel'
 import { ReactNode, useEffect, useState } from 'react'
@@ -46,28 +46,30 @@ const UseSupabaseTo = (props: Props) => {
   }, [activeStringIdx])
 
   return (
-    <SectionContainer className="">
-      <div className="relative z-10">
-        <p className="mb-2 text-scale-1100 text-center">Use Supabase to</p>
-        <div className="flex flex-col items-center overflow-hidden mt-2 !leading-tight text-2xl md:text-5xl">
-          <AnimatePresence exitBeforeEnter>
-            <motion.span
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              key={activeStringIdx}
-              variants={textVariants}
-              className="stroke-text text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-scale-300 will-change-transform"
-            >
-              {props.strings[activeStringIdx]}
-            </motion.span>
-          </AnimatePresence>
+    <LazyMotion features={domAnimation}>
+      <SectionContainer className="">
+        <div className="relative z-10">
+          <p className="mb-2 text-scale-1100 text-center">Use Supabase to</p>
+          <div className="flex flex-col items-center overflow-hidden mt-2 !leading-tight text-2xl md:text-5xl">
+            <AnimatePresence exitBeforeEnter>
+              <m.span
+                initial="initial"
+                animate="animate"
+                exit="exit"
+                key={activeStringIdx}
+                variants={textVariants}
+                className="stroke-text text-center text-transparent bg-clip-text bg-gradient-to-b from-white to-scale-300 will-change-transform"
+              >
+                {props.strings[activeStringIdx]}
+              </m.span>
+            </AnimatePresence>
+          </div>
         </div>
-      </div>
-      <div className="absolute inset-0 md:top-[-50%] md:bottom-[-50%]">
-        <img src="/images/index/soft-blur-01.png" className="w-[200%] h-full" />
-      </div>
-    </SectionContainer>
+        <div className="absolute inset-0 md:top-[-50%] md:bottom-[-50%]">
+          <img src="/images/index/soft-blur-01.png" className="w-[200%] h-full" />
+        </div>
+      </SectionContainer>
+    </LazyMotion>
   )
 }
 

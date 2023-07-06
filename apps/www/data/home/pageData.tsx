@@ -60,7 +60,7 @@ export default {
         ),
       },
       {
-        title: 'Maximum flexibility',
+        title: 'Open Source',
         paragraph:
           'To avoid lock-in, we make it easy to migrate in and out by adopting open source tools.',
         outerClassName: '!w-full !h-[400px]',

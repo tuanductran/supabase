@@ -25,10 +25,10 @@ const Index = ({ customerStories }: Props) => {
   return (
     <Layout>
       <Hero {...pageData.heroSection} />
-      <Highlights {...pageData.highlightsSection} />
-      <UseSupabaseTo {...pageData.useSupabaseTo} />
-      {/* <HomepageMetricsSection /> */}
       <Products {...pageData.productsSection} />
+      <UseSupabaseTo {...pageData.useSupabaseTo} />
+      <Highlights {...pageData.highlightsSection} />
+      {/* <HomepageMetricsSection /> */}
       <DashboardFeatures {...pageData.dashboardFeatures} />
       <TimedTabsSection {...pageData.APIsection} />
       <ExampleAppsSection {...pageData.examplesSection} />

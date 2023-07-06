@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Panel from '../Panel'
 
 const ProductCard = ({
-  classname,
+  className,
   title,
   subtitle,
   highlights,
@@ -20,7 +20,7 @@ const ProductCard = ({
   url: string
   icon?: string
   image: any
-  classname?: string
+  className?: string
   onClick?: any
   alignLeft?: boolean
 }) => (
@@ -29,7 +29,7 @@ const ProductCard = ({
       <a
         className={[
           'relative w-full aspect-square sm:aspect-auto sm:h-[400px] flex flex-col gap-5 lg:flex-row',
-          classname,
+          className,
         ].join(' ')}
         onClick={onClick}
       >
